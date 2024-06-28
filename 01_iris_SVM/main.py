@@ -14,6 +14,7 @@ svc = SVC(gamma="auto")
 
 X = iris.drop('target', axis=1) #separando x e y
 y = iris['target'] #separando x e y
+
 cv_result = cross_val_score(svc, X, y, cv=10, scoring="accuracy")
 print('Acurácia com Cross Validation:', cv_result.mean()*100)
 
