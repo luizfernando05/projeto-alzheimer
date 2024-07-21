@@ -81,6 +81,18 @@ weighted avg       0.82      0.82      0.82       430
 - Acurácia Geral: o modelo tem uma acurácia geral de 82%;
 - Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 107 casos de Alzheimer. Houve 31 falsos negativos e 46 falsos positivos.
 
+### Buscando as melhores características para a classificação da doença
+
+Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste qui-quadrado (chi2). Especificamente, foram selecionadas K=10, ou seja, as 10 features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
+
+As melhores features selecionadas pelo SelectKBest foram:
+
+```
+['BMI', 'SleepQuality', 'CholesterolLDL', 'CholesterolHDL', 'CholesterolTriglycerides', 'MMSE', 'FunctionalAssessment', 'MemoryComplaints', 'BehavioralProblems', 'ADL']
+```
+
+Após a busca dessas características os modelos foram treinados novamente, obtendo o seguintes resultados:
+
 ### Usando o SVM com as melhores características
 
 Ao utilizar o SVM (Support Vector Machine) com melhores características foram observados os seguintes resultados:
