@@ -37,7 +37,7 @@ Cada uma dessas categorias representam o seguinte:
 - Biomarcadores de Fluidos Corporais: substâncias encontradas em fluidos corporais (como sangue, urina, etc.) que podem indicar processos biológicos, condições ou doenças;
 - Dados adicionais: informações que não se enquadram nas categorias acima, mas são relevantes para a saúde e diagnósticos.
 
-## 🤖 Treinamento dos modelo
+## 🤖 Treinamento dos modelos
 
 ### Metodologia
 
