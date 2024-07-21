@@ -81,6 +81,37 @@ weighted avg       0.82      0.82      0.82       430
 - Acurácia Geral: o modelo tem uma acurácia geral de 82%;
 - Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 107 casos de Alzheimer. Houve 31 falsos negativos e 46 falsos positivos.
 
+### Usando o Random Forest com todas as colunas da tabela
+
+Ao utilizar o Random Forest com todas as colunas da tabela foram observados os seguintes resultados:
+
+<b>Relatório de Classificação:</b>
+
+```
+precision    recall  f1-score   support
+
+0       0.91      0.98      0.94       277
+1       0.96      0.82      0.89       153
+
+accuracy                           0.93       430
+macro avg       0.94      0.90      0.92       430
+weighted avg       0.93      0.93      0.92       430
+```
+
+<b>Matriz de Confusão:</b>
+
+```
+[[246  31]
+ [ 46 107]]
+```
+
+<b>Interpretação dos Resultados:</b>
+
+- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 91% e para a classe 1 (Alzheimer) é de 96%;
+- Revocação (Recall): a revocação para a classe 0 é de 98% e para a classe 1 é de 82%;
+- Acurácia Geral: o modelo tem uma acurácia geral de 93%;
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 107 casos de Alzheimer. Houve 31 falsos negativos e 46 falsos positivos.
+
 ### Buscando as melhores características para a classificação da doença
 
 Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste qui-quadrado (chi2). Especificamente, foram selecionadas K=10, ou seja, as 10 features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
@@ -124,37 +155,6 @@ weighted avg       0.83      0.83      0.83       430
 - Revocação (Recall): a revocação para a classe 0 é de 89% e para a classe 1 é de 73%;
 - Acurácia Geral: o modelo tem uma acurácia geral de 83%;
 - Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 111 casos de Alzheimer. Houve 31 falsos negativos e 42 falsos positivos.
-
-### Usando o Random Forest com todas as colunas da tabela
-
-Ao utilizar o Random Forest com todas as colunas da tabela foram observados os seguintes resultados:
-
-<b>Relatório de Classificação:</b>
-
-```
-precision    recall  f1-score   support
-
-0       0.91      0.98      0.94       277
-1       0.96      0.82      0.89       153
-
-accuracy                           0.93       430
-macro avg       0.94      0.90      0.92       430
-weighted avg       0.93      0.93      0.92       430
-```
-
-<b>Matriz de Confusão:</b>
-
-```
-[[246  31]
- [ 46 107]]
-```
-
-<b>Interpretação dos Resultados:</b>
-
-- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 91% e para a classe 1 (Alzheimer) é de 96%;
-- Revocação (Recall): a revocação para a classe 0 é de 98% e para a classe 1 é de 82%;
-- Acurácia Geral: o modelo tem uma acurácia geral de 93%;
-- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 107 casos de Alzheimer. Houve 31 falsos negativos e 46 falsos positivos.
 
 ### Usando o Random Forest com as melhores características
 
