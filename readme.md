@@ -17,11 +17,12 @@ alzheimer/
 ├── 01_iris_SVM/
 │ └── iris.ipynb
 │ └── main.py
-├── 02_alzheimer_SCM_classification/
+├── 02_alzheimer_classification/
 │ ├── alzheimer.md
 │ ├── exploration.ipynb
 │ ├── main.ipynb
 └── README.md
+└── requirements.txt
 ```
 
 ## 🚀 Tecnologias Utilizadas
@@ -52,7 +53,7 @@ Para utilizar a aplicação siga esses passos:
 - Luiz Fernando da Cunha Silva (UFERSA)
 - Letícia Maria Banderia de Lucena (UFERSA)
 
-#### Docentes Orientadores
+#### Docentes Orientadoras
 
 - Prof. Dra. Samara Martins Nascimento (UFERSA)
 - Prof. Dra. Verônica Maria Lima Silva (UFPB)
