@@ -160,7 +160,7 @@ weighted avg    0.76      0.74      0.72       430
 
 ### Buscando as melhores características para a classificação da doença
 
-Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste qui-quadrado (chi2). Também foi utilizado o modelo KNN para descobrir o melhor valor para o k, ou seja, o número de features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
+Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste f_classif. Também foi utilizado o modelo KNN para descobrir o melhor valor para o k, ou seja, o número de features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
 
 As melhores features selecionadas pelo SelectKBest foram:
 
