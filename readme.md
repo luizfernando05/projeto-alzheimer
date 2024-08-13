@@ -13,16 +13,20 @@ O objetivo deste projeto é desenvolver e avaliar um modelo de classificação q
 O repositório está dividido em pastas relacionadas as entregas solicitadas em cada etapa do projeto, seguindo a seguinte estruturação:
 
 ```
-alzheimer/
-├── 01_iris_SVM/
-│ └── iris.ipynb
-│ └── main.py
-├── 02_alzheimer_classification/
-│ ├── alzheimer.md
-│ ├── exploration.ipynb
-│ ├── main.ipynb
-└── README.md
-└── requirements.txt
+projeto-alzheimer
+├─ 01_iris_SVM
+│  ├─ iris.ipynb
+│  └─ main.py
+├─ 02_alzheimer_classification
+│  ├─ alzheimer.md
+│  ├─ alzheimer_disease_dataset
+│  │  └─ alzheimers_disease_data.csv
+│  ├─ exploration.ipynb
+│  ├─ knn.ipynb
+│  ├─ randomforest.ipynb
+│  └─ svm.ipynb
+├─ readme.md
+└─ requirements.txt
 ```
 
 ## 🚀 Tecnologias Utilizadas
@@ -51,7 +55,7 @@ Para utilizar a aplicação siga esses passos:
 #### Discentes
 
 - Luiz Fernando da Cunha Silva (UFERSA)
-- Letícia Maria Banderia de Lucena (UFERSA)
+- Letícia Maria Bandeira de Lucena (UFERSA)
 
 #### Docentes Orientadoras
 

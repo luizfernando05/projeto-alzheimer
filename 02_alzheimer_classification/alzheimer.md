@@ -1,6 +1,6 @@
 # 🧠 Classificação da Doença de Alzheimer
 
-Este projeto visa a classificação da Doença de Alzheimer utilizando dois modelos de aprendizado de máquina: Support Vector Machine (SVM) e Random Forest. O dataset utilizado - [Alzheimer's Disease Dataset](https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset) - contém várias características clínicas dos pacientes, e o objetivo é prever a presença ou ausência da doença.
+Este projeto visa a classificação da Doença de Alzheimer utilizando três modelos de aprendizado de máquina: Support Vector Machine (SVM), Random Forest e K-Nearest Neighbors (KNN). O dataset utilizado - [Alzheimer's Disease Dataset](https://www.kaggle.com/datasets/rabieelkharoua/alzheimers-disease-dataset) - contém várias características clínicas dos pacientes, e o objetivo é prever a presença ou ausência da doença.
 
 ## 🗂️ Sobre a base de dados
 
@@ -45,8 +45,8 @@ A seguinte metodologia foi seguida para o treinamento dos modelos de ML:
 
 - Pré-processamento dos Dados: remoção de colunas desnecessárias e padronização dos dados;
 - Divisão dos Dados: os dados foram divididos em conjuntos de treino e teste (80% treino, 20% teste);
-- Treinamento do Modelo: o modelo Random Forest foi treinado utilizando o conjunto de treino;
-- Avaliação do Modelo: o modelo foi avaliado utilizando o conjunto de teste, gerando um relatório de classificação e uma matriz de confusão.
+- Treinamento dos Modelos: os modelos foram treinados utilizando o conjunto de treino;
+- Avaliação dos Modelos: os modelos foram avaliados utilizando o conjunto de teste, gerando um relatório de classificação e uma matriz de confusão.
 
 ### Resultados
 
@@ -57,14 +57,14 @@ Ao utilizar o SVM (Support Vector Machine) com todas as colunas da tabela foram 
 <b>Relatório de Classificação:</b>
 
 ```
-precision    recall  f1-score   support
+            precision    recall  f1-score   support
 
-0       0.84      0.89      0.86       277
-1       0.78      0.70      0.74       153
+        0       0.84      0.89      0.86       277
+        1       0.78      0.70      0.74       153
 
-accuracy                           0.82       430
+accuracy                            0.82       430
 macro avg       0.81      0.79      0.80       430
-weighted avg       0.82      0.82      0.82       430
+weighted avg    0.82      0.82      0.82       430
 ```
 
 <b>Matriz de Confusão:</b>
@@ -72,6 +72,11 @@ weighted avg       0.82      0.82      0.82       430
 ```
 [[246  31]
  [ 46 107]]
+```
+
+<b>Specificity:</b>
+```
+0.89
 ```
 
 <b>Interpretação dos Resultados:</b>
@@ -88,21 +93,26 @@ Ao utilizar o Random Forest com todas as colunas da tabela foram observados os s
 <b>Relatório de Classificação:</b>
 
 ```
-precision    recall  f1-score   support
+                precision    recall  f1-score   support
 
-0       0.91      0.98      0.94       277
-1       0.96      0.82      0.89       153
+            0       0.91      0.98      0.94       277
+            1       0.96      0.82      0.89       153
 
-accuracy                           0.93       430
-macro avg       0.94      0.90      0.92       430
-weighted avg       0.93      0.93      0.92       430
+accuracy                                0.93       430
+macro avg           0.94      0.90      0.92       430
+weighted avg        0.93      0.93      0.92       430
 ```
 
 <b>Matriz de Confusão:</b>
 
 ```
-[[246  31]
- [ 46 107]]
+[[272   5]
+ [ 27 126]]
+```
+
+<b>Specificity:</b>
+```
+0.98
 ```
 
 <b>Interpretação dos Resultados:</b>
@@ -110,11 +120,47 @@ weighted avg       0.93      0.93      0.92       430
 - Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 91% e para a classe 1 (Alzheimer) é de 96%;
 - Revocação (Recall): a revocação para a classe 0 é de 98% e para a classe 1 é de 82%;
 - Acurácia Geral: o modelo tem uma acurácia geral de 93%;
-- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 107 casos de Alzheimer. Houve 31 falsos negativos e 46 falsos positivos.
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 272 casos de Não-Alzheimer e 126 casos de Alzheimer. Houve 5 falsos negativos e 27 falsos positivos.
+
+### Usando o K-Nearest Neighbors com todas as colunas da tabela
+
+Quando utilizadas todas as colunas no modelo KNN, foram observados os seguintes resultados:
+
+<b>Relatório de Classificação:</b>
+
+```
+            precision    recall  f1-score   support
+
+        0       0.73      0.95      0.83       277
+        1       0.79      0.38      0.51       153
+
+accuracy                            0.74       430
+macro avg       0.76      0.66      0.67       430
+weighted avg    0.76      0.74      0.72       430
+```
+
+<b>Matriz de Confusão:</b>
+
+```
+ [[262  15]
+ [ 95  58]]
+```
+
+<b>Specificity:</b>
+```
+0.95
+```
+
+<b>Interpretação dos Resultados:</b>
+
+- Precisão (Precision): A precisão para a classe 0 (Não-Alzheimer) é de 73% e para a classe 1 (Alzheimer) é de 79%;
+- Revocação (Recall): A revocação para a classe 0 é de 95% e para a classe 1 é de 38%;
+- Acurácia Geral: O modelo tem uma acurácia geral de 74%;
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 262 casos de Não-Alzheimer e 58 casos de Alzheimer. Houve 15 falsos negativos e 95 falsos positivos.
 
 ### Buscando as melhores características para a classificação da doença
 
-Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste qui-quadrado (chi2). Especificamente, foram selecionadas K=10, ou seja, as 10 features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
+Para melhorar a acurácia dos modelos utilizados na classificação da doença, foi utilizada a função `SelectKBest` do módulo `sklearn`. Esta função seleciona as K melhores features do dataset com base em um teste estatístico, neste caso, utilizando o teste qui-quadrado (chi2). Também foi utilizado o modelo KNN para descobrir o melhor valor para o k, ou seja, o número de features que obtiveram o melhor score no teste. Essas features são consideradas as mais relevantes para a classificação da doença. No contexto do projeto, as melhores features selecionadas pelo `SelectKBest` foram as seguintes:
 
 As melhores features selecionadas pelo SelectKBest foram:
 
@@ -131,30 +177,34 @@ Ao utilizar o SVM (Support Vector Machine) com melhores características foram o
 <b>Relatório de Classificação:</b>
 
 ```
-precision    recall  f1-score   support
+               precision    recall  f1-score   support
 
-0       0.85      0.89      0.87       277
-1       0.78      0.73      0.75       153
+           0       0.92      0.96      0.94       277
+           1       0.93      0.85      0.89       153
 
-accuracy                           0.83       430
-macro avg       0.82      0.81      0.81       430
-weighted avg       0.83      0.83      0.83       430
+    accuracy                           0.92       430
+   macro avg       0.92      0.91      0.91       430
+weighted avg       0.92      0.92      0.92       430
 ```
 
 <b>Matriz de Confusão:</b>
 
 ```
-[[246  31]
- [ 42 111]]
+[[267  10]
+ [ 23 130]]
+```
 
+<b>Specificity:</b>
+```
+0.96
 ```
 
 <b>Interpretação dos Resultados:</b>
 
-- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 85% e para a classe 1 (Alzheimer) é de 78%;
-- Revocação (Recall): a revocação para a classe 0 é de 89% e para a classe 1 é de 73%;
-- Acurácia Geral: o modelo tem uma acurácia geral de 83%;
-- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 111 casos de Alzheimer. Houve 31 falsos negativos e 42 falsos positivos.
+- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 92% e para a classe 1 (Alzheimer) é de 93%;
+- Revocação (Recall): a revocação para a classe 0 é de 96% e para a classe 1 é de 85%;
+- Acurácia Geral: o modelo tem uma acurácia geral de 92%;
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 267 casos de Não-Alzheimer e 130 casos de Alzheimer. Houve 10 falsos negativos e 23 falsos positivos.
 
 ### Usando o Random Forest com as melhores características
 
@@ -163,27 +213,67 @@ Ao utilizar o Random Forest com melhores características foram observados os se
 <b>Relatório de Classificação:</b>
 
 ```
-precision    recall  f1-score   support
+               precision    recall  f1-score   support
 
-0       0.94      0.98      0.96       277
-1       0.96      0.88      0.92       153
+           0       0.95      0.98      0.96       277
+           1       0.97      0.90      0.93       153
 
-accuracy                           0.95       430
-macro avg       0.95      0.93      0.94       430
+    accuracy                           0.95       430
+   macro avg       0.96      0.94      0.95       430
 weighted avg       0.95      0.95      0.95       430
 ```
 
 <b>Matriz de Confusão:</b>
 
 ```
-[[246  31]
- [ 42 111]]
+ [[272   5]
+ [ 15 138]]
+```
 
+<b>Specificity:</b>
+```
+0.98
 ```
 
 <b>Interpretação dos Resultados:</b>
 
-- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 94% e para a classe 1 (Alzheimer) é de 96%;
-- Revocação (Recall): a revocação para a classe 0 é de 98% e para a classe 1 é de 88%;
+- Precisão (Precision): a precisão para a classe 0 (Não-Alzheimer) é de 95% e para a classe 1 (Alzheimer) é de 97%;
+- Revocação (Recall): a revocação para a classe 0 é de 98% e para a classe 1 é de 90%;
 - Acurácia Geral: o modelo tem uma acurácia geral de 95%;
-- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 246 casos de Não-Alzheimer e 111 casos de Alzheimer. Houve 31 falsos negativos e 42 falsos positivos.
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 272 casos de Não-Alzheimer e 138 casos de Alzheimer. Houve 5 falsos negativos e 15 falsos positivos.
+
+### Usando o K-Nearest Neighbors com as melhores características
+
+Ao utilizar o K-Nearest Neighbors com melhores características foram observados os seguintes resultados:
+
+<b>Relatório de Classificação:</b>
+
+```
+               precision    recall  f1-score   support
+
+           0       0.93      0.95      0.94       277
+           1       0.90      0.86      0.88       153
+
+    accuracy                           0.92       430
+   macro avg       0.91      0.90      0.91       430
+weighted avg       0.92      0.92      0.92       430
+```
+
+<b>Matriz de Confusão:</b>
+
+```
+ [[262  15]
+ [ 21 132]]
+```
+
+<b>Specificity:</b>
+```
+0.95
+```
+
+<b>Interpretação dos Resultados:</b>
+
+- Precisão (Precision): A precisão para a classe 0 (Não-Alzheimer) é de 93%, e para a classe 1 (Alzheimer) é de 90%.
+- Revocação (Recall): A revocação para a classe 0 é de 95%, e para a classe 1 é de 86%.
+- Acurácia Geral: O modelo tem uma acurácia geral de 92%.
+- Matriz de Confusão: A matriz de confusão mostra que o modelo previu corretamente 262 casos de Não-Alzheimer e 132 casos de Alzheimer. Houve 15 falsos negativos e 21 falsos positivos.
