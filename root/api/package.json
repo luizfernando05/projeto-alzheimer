@@ -8,7 +8,12 @@
     "services:up": "docker-compose -f docker-compose.yml up -d",
     "services:stop": "docker-compose -f docker-compose.yml  stop",
     "services:down": "docker-compose -f docker-compose.yml down",
-    "start": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/server.ts"
+    "start": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/server.ts",
+    "typeorm-cli": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
+    "migration:create": "npm run typeorm-cli migration:create",
+    "migration:generate": "npm run typeorm-cli migration:generate",
+    "migration:run": "npm run typeorm-cli -- -d ./src/config/data-source.ts migration:run",
+    "migration:revert": "npm run typeorm-cli -- -d ./src/config/data-source.ts migration:revert"
   },
   "keywords": [],
   "author": "",
