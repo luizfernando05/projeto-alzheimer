@@ -8,6 +8,9 @@
     "services:up": "docker-compose -f docker-compose.yml up -d",
     "services:stop": "docker-compose -f docker-compose.yml  stop",
     "services:down": "docker-compose -f docker-compose.yml down",
+    "lint": "eslint src/**/*.{ts,js}",
+    "lint:fix": "eslint src/**/*.{ts,js} --fix",
+    "format": "prettier --write src/**/*.{ts,js,json}",
     "start": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only src/server.ts",
     "typeorm-cli": "npx ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
     "migration:create": "npm run typeorm-cli migration:create",
@@ -28,6 +31,8 @@
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.14.1",
+    "@typescript-eslint/eslint-plugin": "^8.25.0",
+    "@typescript-eslint/parser": "^8.25.0",
     "cross-env": "^7.0.3",
     "eslint": "^9.24.0",
     "eslint-config-prettier": "^10.1.2",
