@@ -19,3 +19,5 @@ export class AdminRepository implements IAdminRepository {
     return this.ormRepository.findOne({ where: { email } });
   }
 }
+
+export default AdminRepository;
