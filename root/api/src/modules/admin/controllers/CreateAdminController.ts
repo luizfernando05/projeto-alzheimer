@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import AdminRepository from '../repositories/AdminRepository';
 import CreateAdminUseCase from '../useCases/CreateAdminUseCase';
-import { json } from 'stream/consumers';
 
 export class CreateAdminController {
   async handle(

@@ -1,7 +1,7 @@
 import { hash } from 'bcrypt';
 import { AppError } from '../../shared/errors/AppError';
 import { CreateAdminDTO } from '../dtos/CreateAdminDTO';
-import Admin from '../entities/Admin';
+import Admin from '../../../domain/entities/Admin';
 import { IAdminRepository } from '../interfaces/IAdminRepository';
 
 export class CreateAdminUseCase {

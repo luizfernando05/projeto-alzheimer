@@ -1,5 +1,5 @@
 import { Repository } from 'typeorm';
-import Admin from '../entities/Admin';
+import Admin from '../../../domain/entities/Admin';
 import { IAdminRepository } from '../interfaces/IAdminRepository';
 import { AppDataSource } from '../../../config/data-source';
 

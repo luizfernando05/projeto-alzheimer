@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { AppDataSource } from './config/data-source';
 import { errorMiddleware } from './modules/shared/middlewares/errorMiddleware';
 import { AppError } from './modules/shared/errors/AppError';
+import { routes } from './infra/http/routes/routes';
 
 dotenv.config();
 
@@ -17,6 +18,8 @@ app.get('/', (req, res) => {
 
 AppDataSource.initialize().then(() => {
   console.log('Database connected');
+
+  app.use(routes);
 
   app.use((req: Request, res: Response, next: NextFunction) => {
     next(new AppError('Route not found', 404));
