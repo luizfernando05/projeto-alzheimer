@@ -31,7 +31,8 @@
     "jsonwebtoken": "^9.0.2",
     "pg": "^8.14.1",
     "reflect-metadata": "^0.2.2",
-    "typeorm": "^0.3.22"
+    "typeorm": "^0.3.22",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
