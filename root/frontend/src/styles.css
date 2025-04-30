@@ -34,3 +34,7 @@
   --color-indigo-11: var(--indigo-11);
   --color-indigo-12: var(--indigo-12);
 }
+
+body {
+  background-color: var(--gray-1);
+}
