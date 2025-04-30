@@ -4,7 +4,7 @@ import LogoIcon from '../../Assets/LogoIcon.svg?react';
 
 export default function DoctorLogin() {
   return (
-    <div>
+    <div className="">
       <div className="title">
         <LogoIcon />
         <h1>Login como médico</h1>
