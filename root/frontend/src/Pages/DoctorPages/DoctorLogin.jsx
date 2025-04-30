@@ -3,8 +3,6 @@ import { indigo, gray } from '@radix-ui/colors';
 import LogoIcon from '../../Assets/LogoIcon.svg?react';
 
 export default function DoctorLogin() {
-  const [showPassword, setShowPassword] = useState(false);
-
   return (
     <div>
       <div className="title">
@@ -17,9 +15,7 @@ export default function DoctorLogin() {
           <input type="email" placeholder="exemplo@email.com" />
           <label htmlFor="">Senha</label>
           <input type="password" />
-          <a href="#" className="text-gray-500 hover:underline">
-            Esqueci minha senha
-          </a>
+          <a href="#">Esqueci minha senha</a>
           <button type="submit">Entrar</button>
         </form>
       </div>
