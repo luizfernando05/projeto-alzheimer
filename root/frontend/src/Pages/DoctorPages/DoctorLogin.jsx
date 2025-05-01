@@ -23,7 +23,7 @@ export default function DoctorLogin() {
         >
           <div className="flex flex-col space-y-1">
             <label
-              className="font-roboto text-gray-12 text-sm font-normal"
+              className="font-roboto text-gray-12 text-sm font-normal mb-2"
               htmlFor=""
             >
               Username ou E-mail
@@ -37,7 +37,7 @@ export default function DoctorLogin() {
 
           <div className="flex flex-col space-y-1">
             <label
-              className="font-roboto text-gray-12 text-sm font-normal"
+              className="font-roboto text-gray-12 text-sm font-normal mb-2"
               htmlFor=""
             >
               Senha
