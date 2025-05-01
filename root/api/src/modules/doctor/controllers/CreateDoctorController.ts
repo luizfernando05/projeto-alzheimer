@@ -20,8 +20,11 @@ export class CreateDoctorController {
       const createDoctorUseCase = new CreateDoctorUseCase(doctorRepository);
 
       const doctor = await createDoctorUseCase.execute({
-          name, email, crm, password,
-          created_by_admin_id: new Admin
+        name,
+        email,
+        crm,
+        password,
+        created_by_admin_id: new Admin(),
       });
 
       return res.status(200).json(doctor);

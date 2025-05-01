@@ -1,4 +1,9 @@
-import { MigrationInterface, QueryRunner, Table, TableForeignKey } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+} from 'typeorm';
 
 export class CreateDoctorTable1746052045216 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
@@ -40,7 +45,6 @@ export class CreateDoctorTable1746052045216 implements MigrationInterface {
             name: 'created_by_admin_id',
             type: 'uuid',
             isNullable: false,
-
           },
           {
             name: 'created_at',
@@ -57,7 +61,15 @@ export class CreateDoctorTable1746052045216 implements MigrationInterface {
       })
     );
 
-    await queryRunner.createForeignKey("doctors", new TableForeignKey({columnNames:["created_by_admin_id"], referencedColumnNames:["uui"], referencedTableName:"admins", onDelete:"CASCADE"}));
+    await queryRunner.createForeignKey(
+      'doctors',
+      new TableForeignKey({
+        columnNames: ['created_by_admin_id'],
+        referencedColumnNames: ['id'],
+        referencedTableName: 'admins',
+        onDelete: 'CASCADE',
+      })
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
