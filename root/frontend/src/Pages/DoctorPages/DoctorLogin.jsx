@@ -1,4 +1,5 @@
 import LogoIcon from '../../Assets/LogoIcon.svg?react';
+import SimpleFooter from '../../Components/Footer/SimpleFooter';
 import InputField from '../../Components/Form/InputField';
 import PasswordField from '../../Components/Form/PasswordField';
 
@@ -50,17 +51,7 @@ export default function DoctorLogin() {
           </button>
         </div>
 
-        <p className="font-roboto text-gray-11 text-xs font-normal text-center">
-          © AlzCheck, 2025.{' '}
-          <a href="#" className="hover:text-indigo-12">
-            Termos
-          </a>
-          .{' '}
-          <a href="#" className="hover:text-indigo-12">
-            Política de privacidade
-          </a>
-          .
-        </p>
+        <SimpleFooter />
       </div>
     </div>
   );
