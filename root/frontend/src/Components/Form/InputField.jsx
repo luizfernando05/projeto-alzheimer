@@ -10,7 +10,7 @@ export default function InputField({
         {label}
       </label>
       <input
-        className="rounded-sm border border-gray-06 bg-gray-02 p-3 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07"
+        className="rounded-sm border border-gray-06 bg-gray-02 p-3 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07"
         type={type}
         placeholder={placeholder}
         {...props}

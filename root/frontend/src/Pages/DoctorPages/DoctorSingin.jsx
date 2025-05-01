@@ -3,8 +3,16 @@ import LogoIcon from '../../Assets/LogoIcon.svg?react';
 import InputField from '../../Components/Form/InputField';
 import SelectField from '../../Components/Form/SelectField';
 import { estadosBrasileiros } from '../../Utils/states';
+import FileUpload from '../../Components/Form/FileUpload';
 
 function DoctorSingin() {
+  const handleCRMFile = (file) => {
+    console.log('CRM file:', file);
+  };
+
+  const handleFaceFile = (file) => {
+    console.log('CRM file:', file);
+  };
   return (
     <div>
       <div className="flex flex-col items-center space-y-6 p-8 ">
@@ -34,6 +42,20 @@ function DoctorSingin() {
             label="Número do CRM"
             type="mumber"
             placeholder="Apenas números"
+          />
+
+          <FileUpload
+            label="Foto do CRM"
+            accept=".jpg,.jpeg,.png,.pdf"
+            formatsText="Formatos: .jpg, .jpeg, .png, .pdf"
+            onFileChange={handleCRMFile}
+          />
+
+          <FileUpload
+            label="Foto do rosto"
+            accept=".jpg,.jpeg,.png"
+            formatsText="Formatos: .jpg, .jpeg, .png"
+            onFileChange={handleFaceFile}
           />
         </div>
       </form>
