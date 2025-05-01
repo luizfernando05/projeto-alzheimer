@@ -38,3 +38,15 @@
 body {
   background-color: var(--gray-1);
 }
+
+input[type='password']::-webkit-credentials-auto-fill-button,
+input[type='password']::-webkit-clear-button,
+input[type='password']::-webkit-password-reveal-button,
+input[type='password']::-webkit-textfield-decoration-container {
+  display: none;
+}
+
+input[type='password']::-ms-reveal,
+input[type='password']::-ms-clear {
+  display: none;
+}
