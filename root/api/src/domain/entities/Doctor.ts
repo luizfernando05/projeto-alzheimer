@@ -28,7 +28,7 @@ export class Doctor {
 
   @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by_admin_id' })
-  created_by_admin_id: Admin;
+  createdByAdminId: Admin;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

@@ -13,7 +13,7 @@ export class CreateDoctorUseCase {
 
   async execute(data: CreateDoctorDTO): Promise<Doctor> {
     const existingAdmin = await this.adminRepository.findById(
-      data.created_by_admin_id
+      data.createdByAdminId
     );
 
     if (!existingAdmin) {
@@ -33,7 +33,7 @@ export class CreateDoctorUseCase {
     doctor.email = data.email;
     doctor.crm = data.crm;
     doctor.password = hashedPassword;
-    doctor.created_by_admin_id = { id: data.created_by_admin_id } as any;
+    doctor.createdByAdminId = { id: data.createdByAdminId } as any;
 
     return this.doctorRepository.create(doctor);
   }

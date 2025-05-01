@@ -4,6 +4,7 @@ import CreateDoctorUseCase from '../useCases/CreateDoctorUseCase';
 import { CreateDoctorValidator } from '../validations/CreateDoctorValidator';
 import { handleValidationError } from '../../shared/errors/handleValidationError';
 import { Admin } from 'typeorm';
+import AdminRepository from '../../admin/repositories/AdminRepository';
 
 export class CreateDoctorController {
   async handle(
@@ -14,17 +15,21 @@ export class CreateDoctorController {
     try {
       await CreateDoctorValidator.validate(req.body, { abortEarly: false });
 
-      const { name, email, crm, password } = req.body;
+      const { name, email, crm, password, createdByAdminId } = req.body;
 
       const doctorRepository = new DoctorRepository();
-      const createDoctorUseCase = new CreateDoctorUseCase(doctorRepository);
+      const adminRepository = new AdminRepository();
+      const createDoctorUseCase = new CreateDoctorUseCase(
+        doctorRepository,
+        adminRepository
+      );
 
       const doctor = await createDoctorUseCase.execute({
         name,
         email,
         crm,
         password,
-        created_by_admin_id: new Admin(),
+        createdByAdminId,
       });
 
       return res.status(200).json(doctor);
