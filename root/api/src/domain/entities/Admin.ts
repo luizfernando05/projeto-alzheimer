@@ -2,9 +2,11 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import Doctor from './Doctor';
 
 @Entity('admins')
 export class Admin {
@@ -19,6 +21,9 @@ export class Admin {
 
   @Column({ type: 'varchar', nullable: false })
   password: string;
+
+  @OneToMany(() => Doctor, (doctor) => doctor.created_by_admin_id)
+  doctors: Doctor;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

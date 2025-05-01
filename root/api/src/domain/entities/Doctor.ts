@@ -26,9 +26,9 @@ export class Doctor {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
-  @ManyToOne(() => Admin, { nullable: true })
+  @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'created_by_admin_id' })
-  created_by_admin_id: Admin;  
+  created_by_admin_id: Admin;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
