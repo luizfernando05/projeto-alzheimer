@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import LogoIcon from '../../Assets/LogoIcon.svg?react';
-import { Eye, EyeSlash } from '@phosphor-icons/react';
+import InputField from '../../Components/Form/InputField';
+import PasswordField from '../../Components/Form/PasswordField';
 
 export default function DoctorLogin() {
-  const [showPasword, setShowPassword] = useState(false);
-
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col items-center space-y-6 p-8 ">
@@ -21,49 +19,19 @@ export default function DoctorLogin() {
           className="flex flex-col w-full space-y-4 pr-6 pl-6 pt-8 pb-8 rounded-xl border border-gray-06 bg-gray-01"
           action=""
         >
-          <div className="flex flex-col space-y-1">
-            <label
-              className="font-roboto text-gray-12 text-sm font-normal mb-2"
-              htmlFor=""
-            >
-              Username ou E-mail
-            </label>
-            <input
-              className="rounded-sm border border-gray-06 bg-gray-02 p-3 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07"
-              type="email"
-              placeholder="exemplo@email.com"
-            />
-          </div>
+          <InputField
+            label="Username ou E-mail"
+            type="email"
+            placeholder="exemplo@email.com"
+          />
+          <PasswordField label="Senha" />
 
-          <div className="flex flex-col space-y-1">
-            <label
-              className="font-roboto text-gray-12 text-sm font-normal mb-2"
-              htmlFor=""
-            >
-              Senha
-            </label>
-
-            <div className="relative">
-              <input
-                type={showPasword ? 'text' : 'password'}
-                className="w-full rounded-sm border border-gray-06 bg-gray-02 p-3 pr-10 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07"
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPasword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-11"
-              >
-                {showPasword ? <EyeSlash size={16} /> : <Eye size={16} />}
-              </button>
-            </div>
-
-            <a
-              className="self-end font-roboto text-gray-11 text-xs font-normal hover:underline"
-              href="#"
-            >
-              Esqueci minha senha
-            </a>
-          </div>
+          <a
+            className="self-end font-roboto text-gray-11 text-xs font-normal hover:underline"
+            href="#"
+          >
+            Esqueci minha senha
+          </a>
 
           <button
             type="submit"
