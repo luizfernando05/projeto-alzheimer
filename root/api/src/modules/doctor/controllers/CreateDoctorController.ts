@@ -1,3 +1,4 @@
+import { unlink } from 'fs/promises';
 import { NextFunction, Request, Response } from 'express';
 import DoctorRepository from '../repositories/DoctorRepository';
 import CreateDoctorUseCase from '../useCases/CreateDoctorUseCase';
@@ -10,6 +11,9 @@ export class CreateDoctorController {
     res: Response,
     next: NextFunction
   ): Promise<Response | void> {
+    let crmPhotoPath: string | undefined;
+    let selfiePhotoPath: string | undefined;
+
     try {
       await CreateDoctorValidator.validate(req.body, { abortEarly: false });
 
@@ -33,19 +37,31 @@ export class CreateDoctorController {
           .json({ message: 'CRM photo and selfie are required' });
       }
 
+      crmPhotoPath = crmPhotoFile.path;
+      selfiePhotoPath = selfiePhotoFile.path;
+
       const doctor = await createDoctorUseCase.execute({
         name,
         email,
         crm,
         password,
-        crmPhoto: crmPhotoFile.path,
-        selfiePhoto: selfiePhotoFile.path,
+        crmPhoto: crmPhotoPath,
+        selfiePhoto: selfiePhotoPath,
       });
 
       return res.status(201).json(doctor);
     } catch (err) {
+      if (crmPhotoPath) {
+        await unlink(crmPhotoPath).catch(() => {});
+      }
+      if (selfiePhotoPath) {
+        await unlink(selfiePhotoPath).catch(() => {});
+      }
+
       if (handleValidationError(err, next)) return;
       next(err);
     }
   }
 }
+
+export default CreateDoctorController;

@@ -14,6 +14,12 @@ export class CreateDoctorUseCase {
       throw new AppError('Email already in use', 409);
     }
 
+    const existingCRM = await this.doctorRepository.findByCrm(data.crm);
+
+    if (existingCRM) {
+      throw new AppError('CRM already in use', 409);
+    }
+
     const hashedPassword = await hash(data.password, 10);
 
     const doctor = new Doctor();
