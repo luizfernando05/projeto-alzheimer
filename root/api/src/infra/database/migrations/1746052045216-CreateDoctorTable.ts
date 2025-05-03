@@ -7,6 +7,10 @@ import {
 
 export class CreateDoctorTable1746052045216 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
+    // await queryRunner.query(`
+    //   CREATE TYPE doctor_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED')
+    // `);
+
     await queryRunner.createTable(
       new Table({
         name: 'doctors',
@@ -37,14 +41,36 @@ export class CreateDoctorTable1746052045216 implements MigrationInterface {
             isUnique: true,
           },
           {
+            name: 'crm_photo',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'selfie_photo',
+            type: 'varchar',
+            isNullable: false,
+          },
+          {
+            name: 'status',
+            type: 'enum',
+            enum: ['PENDING', 'APPROVED', 'REJECTED'],
+            isNullable: false,
+            default: `'PENDING'`,
+          },
+          {
+            name: 'rejection_reason',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
             name: 'password',
             type: 'varchar',
             isNullable: false,
           },
           {
-            name: 'created_by_admin_id',
+            name: 'approved_by_admin',
             type: 'uuid',
-            isNullable: false,
+            isNullable: true,
           },
           {
             name: 'created_at',
@@ -64,7 +90,7 @@ export class CreateDoctorTable1746052045216 implements MigrationInterface {
     await queryRunner.createForeignKey(
       'doctors',
       new TableForeignKey({
-        columnNames: ['created_by_admin_id'],
+        columnNames: ['approved_by_admin'],
         referencedColumnNames: ['id'],
         referencedTableName: 'admins',
         onDelete: 'CASCADE',
@@ -74,5 +100,6 @@ export class CreateDoctorTable1746052045216 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.dropTable('doctors');
+    await queryRunner.query(`DROP TYPE doctor_status`);
   }
 }

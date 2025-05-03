@@ -22,7 +22,7 @@ export class Admin {
   @Column({ type: 'varchar', nullable: false })
   password: string;
 
-  @OneToMany(() => Doctor, (doctor) => doctor.createdByAdminId)
+  @OneToMany(() => Doctor, (doctor) => doctor.approvedByAdmin)
   doctors: Doctor;
 
   @CreateDateColumn({ name: 'created_at' })

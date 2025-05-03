@@ -1,25 +1,13 @@
 import { hash } from 'bcrypt';
 import { AppError } from '../../shared/errors/AppError';
 import { CreateDoctorDTO } from '../dtos/CreateDoctorDTO';
-import Doctor from '../../../domain/entities/Doctor';
+import Doctor, { DoctorStatus } from '../../../domain/entities/Doctor';
 import { IDoctorRepository } from '../interfaces/IDoctorRepository';
-import { IAdminRepository } from '../../admin/interfaces/IAdminRepository';
 
 export class CreateDoctorUseCase {
-  constructor(
-    private doctorRepository: IDoctorRepository,
-    private adminRepository: IAdminRepository
-  ) {}
+  constructor(private doctorRepository: IDoctorRepository) {}
 
   async execute(data: CreateDoctorDTO): Promise<Doctor> {
-    const existingAdmin = await this.adminRepository.findById(
-      data.createdByAdminId
-    );
-
-    if (!existingAdmin) {
-      throw new AppError('Admin not found', 409);
-    }
-
     const existingDoctor = await this.doctorRepository.findByEmail(data.email);
 
     if (existingDoctor) {
@@ -33,7 +21,9 @@ export class CreateDoctorUseCase {
     doctor.email = data.email;
     doctor.crm = data.crm;
     doctor.password = hashedPassword;
-    doctor.createdByAdminId = { id: data.createdByAdminId } as any;
+    doctor.crmPhoto = data.crmPhoto;
+    doctor.selfiePhoto = data.selfiePhoto;
+    doctor.status = DoctorStatus.PENDING;
 
     return this.doctorRepository.create(doctor);
   }

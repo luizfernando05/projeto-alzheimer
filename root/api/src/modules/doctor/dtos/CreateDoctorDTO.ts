@@ -3,5 +3,6 @@ export interface CreateDoctorDTO {
   email: string;
   crm: string;
   password: string;
-  createdByAdminId: string;
+  crmPhoto: string;
+  selfiePhoto: string;
 }

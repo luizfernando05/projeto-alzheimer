@@ -3,8 +3,6 @@ import DoctorRepository from '../repositories/DoctorRepository';
 import CreateDoctorUseCase from '../useCases/CreateDoctorUseCase';
 import { CreateDoctorValidator } from '../validations/CreateDoctorValidator';
 import { handleValidationError } from '../../shared/errors/handleValidationError';
-import { Admin } from 'typeorm';
-import AdminRepository from '../../admin/repositories/AdminRepository';
 
 export class CreateDoctorController {
   async handle(
@@ -15,24 +13,36 @@ export class CreateDoctorController {
     try {
       await CreateDoctorValidator.validate(req.body, { abortEarly: false });
 
-      const { name, email, crm, password, createdByAdminId } = req.body;
+      const { name, email, crm, password } = req.body;
 
       const doctorRepository = new DoctorRepository();
-      const adminRepository = new AdminRepository();
-      const createDoctorUseCase = new CreateDoctorUseCase(
-        doctorRepository,
-        adminRepository
-      );
+      const createDoctorUseCase = new CreateDoctorUseCase(doctorRepository);
+
+      if (!req.files || typeof req.files !== 'object') {
+        return res.status(400).json({ message: 'Files are required' });
+      }
+
+      const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+      const crmPhotoFile = files['crmPhoto']?.[0];
+      const selfiePhotoFile = files['selfiePhoto']?.[0];
+
+      if (!crmPhotoFile || !selfiePhotoFile) {
+        return res
+          .status(400)
+          .json({ message: 'CRM photo and selfie are required' });
+      }
 
       const doctor = await createDoctorUseCase.execute({
         name,
         email,
         crm,
         password,
-        createdByAdminId,
+        crmPhoto: crmPhotoFile.path,
+        selfiePhoto: selfiePhotoFile.path,
       });
 
-      return res.status(200).json(doctor);
+      return res.status(201).json(doctor);
     } catch (err) {
       if (handleValidationError(err, next)) return;
       next(err);
