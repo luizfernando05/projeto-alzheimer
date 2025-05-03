@@ -10,6 +10,10 @@ export class DoctorRepository implements IDoctorRepository {
     this.ormRepository = AppDataSource.getRepository(Doctor);
   }
 
+  findAll(): Promise<Doctor[]> {
+    return this.ormRepository.find();
+  }
+
   async create(doctor: Doctor): Promise<Doctor> {
     const createDoctor = this.ormRepository.create(doctor);
     return this.ormRepository.save(createDoctor);
