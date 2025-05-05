@@ -1,5 +1,6 @@
 import express, { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import { AppDataSource } from './config/data-source';
 import { errorMiddleware } from './modules/shared/middlewares/errorMiddleware';
 import { AppError } from './modules/shared/errors/AppError';
@@ -11,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: process.env.FRONT_URL }));
 
 app.get('/', (req, res) => {
   res.send('AlzCheck says hello!');
