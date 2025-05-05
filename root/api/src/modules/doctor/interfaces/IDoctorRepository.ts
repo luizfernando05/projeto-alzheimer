@@ -6,5 +6,7 @@ export interface IDoctorRepository {
   findById(id: string): Promise<Doctor | null>;
   findAll(): Promise<Doctor[]>;
   findByCrm(crm: string): Promise<Doctor | null>;
+  findByUsername(username: string): Promise<Doctor | null>;
+  findByCelphone(celphone: string): Promise<Doctor | null>;
   update(doctor: Doctor): Promise<Doctor>;
 }

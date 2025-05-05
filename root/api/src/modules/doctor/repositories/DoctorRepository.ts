@@ -10,7 +10,15 @@ export class DoctorRepository implements IDoctorRepository {
     this.ormRepository = AppDataSource.getRepository(Doctor);
   }
 
-  findAll(): Promise<Doctor[]> {
+  async findByUsername(username: string): Promise<Doctor | null> {
+    return this.ormRepository.findOne({ where: { username } });
+  }
+
+  async findByCelphone(celphone: string): Promise<Doctor | null> {
+    return this.ormRepository.findOne({ where: { celphone } });
+  }
+
+  async findAll(): Promise<Doctor[]> {
     return this.ormRepository.find();
   }
 
