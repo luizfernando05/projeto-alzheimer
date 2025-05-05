@@ -27,6 +27,12 @@ export class Doctor {
   email: string;
 
   @Column({ type: 'varchar', unique: true, nullable: false })
+  username: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: false })
+  celphone: string;
+
+  @Column({ type: 'varchar', unique: true, nullable: false })
   crm: string;
 
   @Column({ type: 'varchar', nullable: false })

@@ -26,6 +26,8 @@ export class CreateDoctorUseCase {
     doctor.name = data.name;
     doctor.email = data.email;
     doctor.crm = data.crm;
+    doctor.username = data.username;
+    doctor.celphone = data.celphone;
     doctor.password = hashedPassword;
     doctor.crmPhoto = data.crmPhoto;
     doctor.selfiePhoto = data.selfiePhoto;

@@ -17,7 +17,7 @@ export class CreateDoctorController {
     try {
       await CreateDoctorValidator.validate(req.body, { abortEarly: false });
 
-      const { name, email, crm, password } = req.body;
+      const { name, email, crm, password, username, celphone } = req.body;
 
       const doctorRepository = new DoctorRepository();
       const createDoctorUseCase = new CreateDoctorUseCase(doctorRepository);
@@ -44,6 +44,8 @@ export class CreateDoctorController {
         name,
         email,
         crm,
+        username,
+        celphone,
         password,
         crmPhoto: crmPhotoPath,
         selfiePhoto: selfiePhotoPath,
