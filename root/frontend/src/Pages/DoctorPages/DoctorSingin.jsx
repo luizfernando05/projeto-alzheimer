@@ -49,7 +49,7 @@ function DoctorSignin() {
       !formData.celphone ||
       !formData.password
     ) {
-      setError('Por favor, preencha todos os campos obrigatórios.');
+      setError('Por favor, preencha todos os campos.');
       return;
     }
 
