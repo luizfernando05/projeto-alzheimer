@@ -1,4 +1,5 @@
 import React from 'react';
+import { CaretDown } from '@phosphor-icons/react';
 
 function SelectField({ label, options = [], ...props }) {
   return (
@@ -6,17 +7,23 @@ function SelectField({ label, options = [], ...props }) {
       <label className="font-roboto text-gray-12 text-sm font-normal mb-2">
         {label}
       </label>
-      <select
-        className="rounded-sm border border-gray-06 bg-gray-02 p-3 pr-10 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07"
-        {...props}
-      >
-        <option value="">Selecione uma opção</option>
-        {options.map((opt) => (
-          <option key={opt.value} value={opt.value}>
-            {opt.label}
-          </option>
-        ))}
-      </select>
+      <div className="relative">
+        <select
+          className="appearance-none w-full rounded-sm border border-gray-06 bg-gray-02 p-3 pr-10 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07"
+          {...props}
+        >
+          <option value="">Selecione uma opção</option>
+          {options.map((opt) => (
+            <option key={opt.value} value={opt.value}>
+              {opt.label}
+            </option>
+          ))}
+        </select>
+        <CaretDown
+          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-1 pointer-events-none"
+          size={16}
+        ></CaretDown>
+      </div>
     </div>
   );
 }
