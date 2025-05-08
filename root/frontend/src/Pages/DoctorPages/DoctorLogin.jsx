@@ -3,6 +3,7 @@ import LogoIcon from '../../Assets/LogoIcon.svg?react';
 import SimpleFooter from '../../Components/Footer/SimpleFooter';
 import InputField from '../../Components/Form/InputField';
 import PasswordField from '../../Components/Form/PasswordField';
+import { Link } from 'react-router-dom';
 
 export default function DoctorLogin() {
   const [email, setEmail] = useState('');
@@ -86,9 +87,12 @@ export default function DoctorLogin() {
           <p className="font-roboto text-gray-12 text-sm font-normal">
             Não tem uma conta do AlzCheck?
           </p>
-          <button className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 pr-28 pl-28 bg-gray-02 hover:bg-gray-03 transition shadow-xs">
+          <Link
+            to="/singin/doctor"
+            className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 pr-28 pl-28 bg-gray-02 hover:bg-gray-03 transition shadow-xs"
+          >
             Crie uma nova conta
-          </button>
+          </Link>
         </div>
 
         <SimpleFooter />

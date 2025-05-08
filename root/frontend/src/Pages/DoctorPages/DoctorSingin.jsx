@@ -6,6 +6,7 @@ import { estadosBrasileiros } from '../../Utils/states';
 import FileUpload from '../../Components/Form/FileUpload';
 import PasswordField from '../../Components/Form/PasswordField';
 import SimpleFooter from '../../Components/Footer/SimpleFooter';
+import { Link } from 'react-router-dom';
 
 function DoctorSignin() {
   const [formData, setFormData] = useState({
@@ -206,9 +207,12 @@ function DoctorSignin() {
           <p className="font-roboto text-gray-12 text-sm font-normal">
             Já tem uma conta no AlzCheck?
           </p>
-          <button className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 bg-gray-02 hover:bg-gray-03 transition shadow-xs w-full">
+          <Link
+            to="/login/doctor"
+            className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 pr-28 pl-28 bg-gray-02 hover:bg-gray-03 transition shadow-xs"
+          >
             Entre na sua conta
-          </button>
+          </Link>
         </div>
 
         <SimpleFooter />
