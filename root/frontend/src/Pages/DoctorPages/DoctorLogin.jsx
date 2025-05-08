@@ -1,9 +1,41 @@
+import { useState } from 'react';
 import LogoIcon from '../../Assets/LogoIcon.svg?react';
 import SimpleFooter from '../../Components/Footer/SimpleFooter';
 import InputField from '../../Components/Form/InputField';
 import PasswordField from '../../Components/Form/PasswordField';
 
 export default function DoctorLogin() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+
+    try {
+      const response = await fetch('http://localhost:3001/doctor/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        localStorage.setItem('token', data.token);
+        window.location.href = '/doctor/dashboard';
+      } else {
+        setError(data.message || 'Erro ao fazer login.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Erro de conexão com o servidor.');
+    }
+  };
+
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="flex flex-col items-center space-y-6 p-8 ">
@@ -17,15 +49,21 @@ export default function DoctorLogin() {
         </div>
 
         <form
+          onSubmit={handleSubmit}
           className="flex flex-col w-full space-y-4 pr-6 pl-6 pt-8 pb-8 rounded-xl border border-gray-06 bg-gray-01"
-          action=""
         >
           <InputField
             label="Username ou E-mail"
             type="email"
             placeholder="exemplo@email.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
-          <PasswordField label="Senha" />
+          <PasswordField
+            label="Senha"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
           <a
             className="self-end font-roboto text-gray-11 text-xs font-normal hover:underline"
@@ -33,6 +71,8 @@ export default function DoctorLogin() {
           >
             Esqueci minha senha
           </a>
+
+          {error && <p className="font-roboto text-red-500 text-sm">{error}</p>}
 
           <button
             type="submit"
