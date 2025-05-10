@@ -19,7 +19,7 @@ export class UpdateDoctorController {
       const { name, email, password } = req.body;
 
       if (!id || !yup.string().uuid().isValidSync(id)) {
-        throw new AppError('Invalid ID.', 400);
+        throw new AppError('Erro de validação', 400, { id: 'ID inválido' });
       }
 
       const doctorRepository = new DoctorRepository();

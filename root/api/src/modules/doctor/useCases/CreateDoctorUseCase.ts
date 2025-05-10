@@ -11,13 +11,17 @@ export class CreateDoctorUseCase {
     const existingDoctor = await this.doctorRepository.findByEmail(data.email);
 
     if (existingDoctor) {
-      throw new AppError('Email already in use', 409);
+      throw new AppError('Erro de validação', 409, {
+        email: 'Email já está em uso',
+      });
     }
 
     const existingCRM = await this.doctorRepository.findByCrm(data.crm);
 
     if (existingCRM) {
-      throw new AppError('CRM already in use', 409);
+      throw new AppError('Erro de validação', 409, {
+        crm: 'CRM já está em uso',
+      });
     }
 
     const existingUsername = await this.doctorRepository.findByUsername(
@@ -25,7 +29,9 @@ export class CreateDoctorUseCase {
     );
 
     if (existingUsername) {
-      throw new AppError('Username already in use', 409);
+      throw new AppError('Erro de validação', 409, {
+        username: 'Usuário já está em uso',
+      });
     }
 
     const existingCelphone = await this.doctorRepository.findByCelphone(
@@ -33,7 +39,9 @@ export class CreateDoctorUseCase {
     );
 
     if (existingCelphone) {
-      throw new AppError('Celphone already in use', 409);
+      throw new AppError('Erro de validação', 409, {
+        celphone: 'Telefone já está em uso',
+      });
     }
 
     const hashedPassword = await hash(data.password, 10);

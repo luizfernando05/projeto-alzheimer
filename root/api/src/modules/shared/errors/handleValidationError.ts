@@ -7,8 +7,15 @@ export function handleValidationError(
   next: NextFunction
 ): boolean {
   if (err instanceof ValidationError) {
-    const errorMessage = err.errors.join(', ');
-    next(new AppError(errorMessage, 400));
+    const errors: Record<string, string> = {};
+
+    err.inner.forEach((error) => {
+      if (error.path && !errors[error.path]) {
+        errors[error.path] = error.message;
+      }
+    });
+
+    next(new AppError('Erro de validação', 400, errors));
     return true;
   }
 

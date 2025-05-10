@@ -5,7 +5,7 @@ function SelectField({
   label,
   options = [],
   hasError = false,
-  error = '',
+  errorMessage = '',
   ...props
 }) {
   return (
@@ -38,7 +38,7 @@ function SelectField({
       </div>
       {hasError && (
         <p className="text-xs text-red-500 mt-1">
-          {error || 'Campo obrigatório'}
+          {errorMessage || 'Campo obrigatório'}
         </p>
       )}
     </div>

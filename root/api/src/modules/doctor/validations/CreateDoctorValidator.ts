@@ -1,22 +1,22 @@
 import * as yup from 'yup';
 
 export const CreateDoctorValidator = yup.object().shape({
-  name: yup.string().required('Name is required'),
-  crm: yup.string().required('CRM is required'),
+  name: yup.string().required('Nome é obrigatório'),
+  crm: yup.string().required('CRM é obrigatório'),
   email: yup
     .string()
-    .email('Invalid email format')
-    .required('Email is required'),
+    .email('Formato de email inválido')
+    .required('Email é obrigatório'),
   password: yup
     .string()
-    .min(6, 'Password must be at least 6 characters long')
-    .required('Password is required'),
-  username: yup.string().required('Username is required'),
+    .min(6, 'A senha deve ter no mínimo 6 caracteres')
+    .required('Senha é obrigatória'),
+  username: yup.string().required('Nome de usuário é obrigatório'),
   celphone: yup
     .string()
-    .required('Cellphone is required')
+    .required('Celular é obrigatório')
     .matches(
       /^(\(\d{2}\)\s?\d{5}-\d{4})$/,
-      'Invalid format. Please enter in the format (xx)xxxxx-xxxx'
+      'Formato inválido. Use o formato (xx)xxxxx-xxxx'
     ),
 });

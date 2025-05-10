@@ -4,7 +4,7 @@ import { Eye, EyeSlash } from '@phosphor-icons/react';
 export default function PasswordField({
   label,
   hasError = false,
-  error = '',
+  errorMessage = '',
   ...props
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -36,7 +36,7 @@ export default function PasswordField({
       </div>
       {hasError && (
         <p className="text-xs text-red-500 mt-1">
-          {error || 'Campo obrigatório'}
+          {errorMessage || 'Campo obrigatório'}
         </p>
       )}
     </div>

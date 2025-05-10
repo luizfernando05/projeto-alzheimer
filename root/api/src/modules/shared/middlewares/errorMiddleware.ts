@@ -8,10 +8,16 @@ export const errorMiddleware = (
   next: NextFunction
 ): Response => {
   if (err instanceof AppError) {
-    return res.status(err.statusCode).json({
+    const response: any = {
       status: 'error',
       message: err.message,
-    });
+    };
+
+    if (err.errors) {
+      response.errors = err.errors;
+    }
+
+    return res.status(err.statusCode).json(response);
   }
 
   console.log(err);

@@ -3,7 +3,7 @@ export default function InputField({
   type = 'text',
   placeholder,
   hasError = false,
-  error = '',
+  errorMessage = '',
   ...props
 }) {
   return (
@@ -21,7 +21,7 @@ export default function InputField({
       />
       {hasError && (
         <p className="text-xs text-red-500 mt-1">
-          {error || 'Campo obrigatório'}
+          {errorMessage || 'Campo obrigatório'}
         </p>
       )}
     </div>

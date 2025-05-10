@@ -7,7 +7,7 @@ export default function FileUpload({
   formatsText = '',
   onFileChange,
   hasError = false,
-  error = '',
+  errorMessage = '',
 }) {
   const [fileName, setFileName] = useState('');
   const id = useId();
@@ -56,7 +56,7 @@ export default function FileUpload({
 
       {hasError && (
         <p className="text-xs text-red-500 mt-1">
-          {error || 'Campo obrigatório'}
+          {errorMessage || 'Campo obrigatório'}
         </p>
       )}
     </div>

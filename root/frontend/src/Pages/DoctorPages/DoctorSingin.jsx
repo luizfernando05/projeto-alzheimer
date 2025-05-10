@@ -84,9 +84,27 @@ function DoctorSignin() {
 
       if (!response.ok) {
         console.error('Erro ao cadastrar:', responseData);
-        setErrorMessage(responseData.message || 'Erro ao cadastrar.');
+
+        if (responseData.errors) {
+          setErrors(responseData.errors);
+          setErrorMessage(responseData.message || 'Erro ao cadastrar.');
+        } else {
+          setErrorMessage(responseData.message || 'Erro ao cadastrar.');
+        }
       } else {
         alert('Cadastro enviado com sucesso!');
+        setErrors({});
+        setFormData({
+          name: '',
+          email: '',
+          username: '',
+          crm: '',
+          estado: '',
+          celphone: '',
+          password: '',
+        });
+        setCrmPhoto(null);
+        setSelfiePhoto(null);
       }
     } catch (err) {
       setErrorMessage('Erro ao enviar dados: ' + err.message);
@@ -116,6 +134,7 @@ function DoctorSignin() {
             placeholder="Seu nome"
             onChange={handleInputChange}
             hasError={!!errors.name}
+            errorMessage={errors.name}
           />
 
           <InputField
@@ -125,6 +144,7 @@ function DoctorSignin() {
             placeholder="Seu telefone"
             onChange={handleInputChange}
             hasError={!!errors.celphone}
+            errorMessage={errors.celphone}
           />
 
           <InputField
@@ -134,6 +154,7 @@ function DoctorSignin() {
             placeholder="Seu usuário"
             onChange={handleInputChange}
             hasError={!!errors.username}
+            errorMessage={errors.username}
           />
 
           <InputField
@@ -143,6 +164,7 @@ function DoctorSignin() {
             placeholder="Seu email"
             onChange={handleInputChange}
             hasError={!!errors.email}
+            errorMessage={errors.email}
           />
 
           <SelectField
@@ -151,6 +173,7 @@ function DoctorSignin() {
             options={estadosBrasileiros}
             onChange={handleInputChange}
             hasError={!!errors.estado}
+            errorMessage={errors.estado}
           />
 
           <InputField
@@ -161,6 +184,7 @@ function DoctorSignin() {
             value={formData.crm}
             onChange={handleInputChange}
             hasError={!!errors.crm}
+            errorMessage={errors.crm}
           />
 
           <FileUpload
@@ -170,6 +194,7 @@ function DoctorSignin() {
             formatsText="Formatos: .jpg, .jpeg, .png, .pdf"
             onFileChange={handleCRMFile}
             hasError={!!errors.crmPhoto}
+            errorMessage={errors.crmPhoto}
           />
 
           <FileUpload
@@ -179,6 +204,7 @@ function DoctorSignin() {
             formatsText="Formatos: .jpg, .jpeg, .png"
             onFileChange={handleFaceFile}
             hasError={!!errors.selfiePhoto}
+            errorMessage={errors.selfiePhoto}
           />
 
           <PasswordField
@@ -187,6 +213,7 @@ function DoctorSignin() {
             value={formData.password}
             onChange={handleInputChange}
             hasError={!!errors.password}
+            errorMessage={errors.password}
           />
 
           {errorMessage && (

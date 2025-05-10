@@ -13,14 +13,18 @@ export class UpdateDoctorUseCase {
     const doctor = await this.doctorRepository.findById(id);
 
     if (!doctor) {
-      throw new AppError('Doctor not found', 404);
+      throw new AppError('Erro ao atualizar médico', 404, {
+        id: 'Médico não encontrado',
+      });
     }
 
     if (email && email !== doctor.email) {
       const emailInUse = await this.doctorRepository.findByEmail(email);
 
       if (emailInUse) {
-        throw new AppError('Email  already in use', 409);
+        throw new AppError('Erro de validação', 409, {
+          email: 'Email já está em uso',
+        });
       }
 
       doctor.email = email;
