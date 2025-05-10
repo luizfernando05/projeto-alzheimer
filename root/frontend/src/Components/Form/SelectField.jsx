@@ -1,7 +1,13 @@
 import React from 'react';
 import { CaretDown } from '@phosphor-icons/react';
 
-function SelectField({ label, options = [], ...props }) {
+function SelectField({
+  label,
+  options = [],
+  hasError = false,
+  error = '',
+  ...props
+}) {
   return (
     <div className="flex flex-col space-y-1">
       <label className="font-roboto text-gray-12 text-sm font-normal mb-2">
@@ -9,7 +15,13 @@ function SelectField({ label, options = [], ...props }) {
       </label>
       <div className="relative">
         <select
-          className="appearance-none w-full rounded-sm border border-gray-06 bg-gray-02 p-3 pr-10 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07"
+          className={`appearance-none w-full rounded-sm border p-3 pr-10 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07
+            ${
+              hasError
+                ? 'border-red-500 bg-red-50'
+                : 'border-gray-06 bg-gray-02'
+            }
+          `}
           {...props}
         >
           <option value="">Selecione uma opção</option>
@@ -22,8 +34,13 @@ function SelectField({ label, options = [], ...props }) {
         <CaretDown
           className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-1 pointer-events-none"
           size={16}
-        ></CaretDown>
+        />
       </div>
+      {hasError && (
+        <p className="text-xs text-red-500 mt-1">
+          {error || 'Campo obrigatório'}
+        </p>
+      )}
     </div>
   );
 }

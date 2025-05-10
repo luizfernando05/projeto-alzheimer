@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import { Eye, EyeSlash } from '@phosphor-icons/react';
 
-export default function PasswordField({ label, ...props }) {
+export default function PasswordField({
+  label,
+  hasError = false,
+  error = '',
+  ...props
+}) {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
@@ -12,7 +17,13 @@ export default function PasswordField({ label, ...props }) {
       <div className="relative">
         <input
           type={showPassword ? 'text' : 'password'}
-          className="w-full rounded-sm border border-gray-06 bg-gray-02 p-3 pr-10 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07"
+          className={`w-full rounded-sm border p-3 pr-10 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07
+            ${
+              hasError
+                ? 'border-red-500 bg-red-50'
+                : 'border-gray-06 bg-gray-02'
+            }
+          `}
           {...props}
         />
         <button
@@ -23,6 +34,11 @@ export default function PasswordField({ label, ...props }) {
           {showPassword ? <EyeSlash size={16} /> : <Eye size={16} />}
         </button>
       </div>
+      {hasError && (
+        <p className="text-xs text-red-500 mt-1">
+          {error || 'Campo obrigatório'}
+        </p>
+      )}
     </div>
   );
 }

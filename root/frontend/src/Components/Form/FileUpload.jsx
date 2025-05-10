@@ -6,6 +6,8 @@ export default function FileUpload({
   accept = '',
   formatsText = '',
   onFileChange,
+  hasError = false,
+  error = '',
 }) {
   const [fileName, setFileName] = useState('');
   const id = useId();
@@ -32,7 +34,13 @@ export default function FileUpload({
 
       <label
         htmlFor={id}
-        className="flex items-center gap-2 rounded-sm border border-gray-06 bg-gray-02 p-3 cursor-pointer hover:bg-gray-03 transition font-roboto text-gray-11 text-sm font-normal"
+        className={`flex items-center gap-2 rounded-sm border p-3 cursor-pointer transition font-roboto text-gray-11 text-sm font-normal
+          ${
+            hasError
+              ? 'border-red-500 bg-red-50 hover:bg-red-100'
+              : 'border-gray-06 bg-gray-02 hover:bg-gray-03'
+          }
+        `}
       >
         <UploadSimple size={16} />
         {fileName || formatsText}
@@ -45,6 +53,12 @@ export default function FileUpload({
         className="hidden"
         onChange={handleChange}
       />
+
+      {hasError && (
+        <p className="text-xs text-red-500 mt-1">
+          {error || 'Campo obrigatório'}
+        </p>
+      )}
     </div>
   );
 }

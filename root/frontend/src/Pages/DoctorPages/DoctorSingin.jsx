@@ -20,7 +20,8 @@ function DoctorSignin() {
   });
   const [crmPhoto, setCrmPhoto] = useState(null);
   const [selfiePhoto, setSelfiePhoto] = useState(null);
-  const [error, setError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -41,30 +42,25 @@ function DoctorSignin() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (
-      !formData.name ||
-      !formData.email ||
-      !formData.username ||
-      !formData.crm ||
-      !formData.estado ||
-      !formData.celphone ||
-      !formData.password
-    ) {
-      setError('Por favor, preencha todos os campos.');
+    const newErrors = {};
+
+    if (!formData.name) newErrors.name = 'Campo obrigatório';
+    if (!formData.email) newErrors.email = 'Campo obrigatório';
+    if (!formData.username) newErrors.username = 'Campo obrigatório';
+    if (!formData.crm) newErrors.crm = 'Campo obrigatório';
+    if (!formData.estado) newErrors.estado = 'Campo obrigatório';
+    if (!formData.celphone) newErrors.celphone = 'Campo obrigatório';
+    if (!formData.password) newErrors.password = 'Campo obrigatório';
+    if (!crmPhoto) newErrors.crmPhoto = 'Campo obrigatório';
+    if (!selfiePhoto) newErrors.selfiePhoto = 'Campo obrigatório';
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
       return;
     }
-
-    if (!crmPhoto) {
-      setError('Por favor, faça upload da foto do CRM.');
-      return;
-    }
-
-    if (!selfiePhoto) {
-      setError('Por favor, faça upload da foto do rosto.');
-      return;
-    }
-
-    setError('');
+    setErrorMessage('');
 
     const crmCombinado = `${formData.crm}-${formData.estado}`;
 
@@ -88,12 +84,12 @@ function DoctorSignin() {
 
       if (!response.ok) {
         console.error('Erro ao cadastrar:', responseData);
-        setError(responseData.message || 'Erro ao cadastrar.');
+        setErrorMessage(responseData.message || 'Erro ao cadastrar.');
       } else {
         alert('Cadastro enviado com sucesso!');
       }
     } catch (err) {
-      setError('Erro ao enviar dados: ' + err.message);
+      setErrorMessage('Erro ao enviar dados: ' + err.message);
     }
   };
 
@@ -119,6 +115,7 @@ function DoctorSignin() {
             type="text"
             placeholder="Seu nome"
             onChange={handleInputChange}
+            hasError={!!errors.name}
           />
 
           <InputField
@@ -127,6 +124,7 @@ function DoctorSignin() {
             type="text"
             placeholder="Seu telefone"
             onChange={handleInputChange}
+            hasError={!!errors.celphone}
           />
 
           <InputField
@@ -135,6 +133,7 @@ function DoctorSignin() {
             type="text"
             placeholder="Seu usuário"
             onChange={handleInputChange}
+            hasError={!!errors.username}
           />
 
           <InputField
@@ -143,6 +142,7 @@ function DoctorSignin() {
             type="text"
             placeholder="Seu email"
             onChange={handleInputChange}
+            hasError={!!errors.email}
           />
 
           <SelectField
@@ -150,6 +150,7 @@ function DoctorSignin() {
             name="estado"
             options={estadosBrasileiros}
             onChange={handleInputChange}
+            hasError={!!errors.estado}
           />
 
           <InputField
@@ -159,6 +160,7 @@ function DoctorSignin() {
             placeholder="Apenas números"
             value={formData.crm}
             onChange={handleInputChange}
+            hasError={!!errors.crm}
           />
 
           <FileUpload
@@ -167,6 +169,7 @@ function DoctorSignin() {
             accept=".jpg,.jpeg,.png,.pdf"
             formatsText="Formatos: .jpg, .jpeg, .png, .pdf"
             onFileChange={handleCRMFile}
+            hasError={!!errors.crmPhoto}
           />
 
           <FileUpload
@@ -175,6 +178,7 @@ function DoctorSignin() {
             accept=".jpg,.jpeg,.png"
             formatsText="Formatos: .jpg, .jpeg, .png"
             onFileChange={handleFaceFile}
+            hasError={!!errors.selfiePhoto}
           />
 
           <PasswordField
@@ -182,11 +186,12 @@ function DoctorSignin() {
             name="password"
             value={formData.password}
             onChange={handleInputChange}
+            hasError={!!errors.password}
           />
 
-          {error && (
+          {errorMessage && (
             <p className="font-roboto font-normal text-xs text-red-500 text-center">
-              {error}
+              {errorMessage}
             </p>
           )}
 

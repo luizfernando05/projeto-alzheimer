@@ -2,6 +2,8 @@ export default function InputField({
   label,
   type = 'text',
   placeholder,
+  hasError = false,
+  error = '',
   ...props
 }) {
   return (
@@ -10,11 +12,18 @@ export default function InputField({
         {label}
       </label>
       <input
-        className="rounded-sm border border-gray-06 bg-gray-02 p-3 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07"
+        className={`rounded-sm border p-3 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07
+          ${hasError ? 'border-red-500 bg-red-50' : 'border-gray-06 bg-gray-02'}
+        `}
         type={type}
         placeholder={placeholder}
         {...props}
       />
+      {hasError && (
+        <p className="text-xs text-red-500 mt-1">
+          {error || 'Campo obrigatório'}
+        </p>
+      )}
     </div>
   );
 }
