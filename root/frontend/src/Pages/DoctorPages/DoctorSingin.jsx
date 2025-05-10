@@ -29,6 +29,11 @@ function DoctorSignin() {
       ...prev,
       [name]: value,
     }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: '',
+    }));
   };
 
   const handleCRMFile = (file) => {
