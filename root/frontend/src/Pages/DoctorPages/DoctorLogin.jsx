@@ -9,11 +9,11 @@ import MainHeader from '../../Components/Header/MainHeader';
 export default function DoctorLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setErrors({});
 
     try {
       const response = await fetch('http://localhost:3001/doctor/login', {
@@ -30,11 +30,15 @@ export default function DoctorLogin() {
         localStorage.setItem('token', data.token);
         window.location.href = '/doctor/dashboard';
       } else {
-        setError(data.message || 'Erro ao fazer login.');
+        if (data.errors) {
+          setErrors(data.errors);
+        } else {
+          setErrors({ general: data.message || 'Erro ao fazer login.' });
+        }
       }
     } catch (err) {
       console.error(err);
-      setError('Erro de conexão com o servidor.');
+      setErrors({ general: 'Erro de conexão com o servidor.' });
     }
   };
 
@@ -61,12 +65,27 @@ export default function DoctorLogin() {
               type="email"
               placeholder="exemplo@email.com"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                if (errors.email || errors.general) {
+                  setErrors((prev) => ({ ...prev, email: '', general: '' }));
+                }
+              }}
+              hasError={!!errors.email}
+              errorMessage={errors.email}
             />
+
             <PasswordField
               label="Senha"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                if (errors.password || errors.general) {
+                  setErrors((prev) => ({ ...prev, password: '', general: '' }));
+                }
+              }}
+              hasError={!!errors.password}
+              errorMessage={errors.password}
             />
 
             <a
@@ -76,8 +95,10 @@ export default function DoctorLogin() {
               Esqueci minha senha
             </a>
 
-            {error && (
-              <p className="font-roboto text-red-500 text-sm">{error}</p>
+            {errors.general && (
+              <p className="font-roboto text-red-500 text-sm">
+                {errors.general}
+              </p>
             )}
 
             <button
