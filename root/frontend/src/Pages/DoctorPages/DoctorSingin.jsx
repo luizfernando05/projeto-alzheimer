@@ -7,6 +7,7 @@ import FileUpload from '../../Components/Form/FileUpload';
 import PasswordField from '../../Components/Form/PasswordField';
 import SimpleFooter from '../../Components/Footer/SimpleFooter';
 import { Link } from 'react-router-dom';
+import MainHeader from '../../Components/Header/MainHeader';
 
 function DoctorSignin() {
   const [formData, setFormData] = useState({
@@ -117,142 +118,145 @@ function DoctorSignin() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="flex flex-col items-center space-y-6 p-8 w-full max-w-lg">
-        <div className="mb-8">
-          <div className="flex flex-col items-center space-y-4 pb-4">
-            <LogoIcon />
+    <div>
+      <MainHeader />
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center space-y-6 p-8 w-full max-w-lg">
+          <div className="mb-8">
+            <div className="flex flex-col items-center space-y-4 pb-4">
+              <LogoIcon />
+            </div>
+            <h1 className="font-poppins text-gray-12 text-2xl font-medium text-center">
+              Crie a sua conta como médico
+            </h1>
           </div>
-          <h1 className="font-poppins text-gray-12 text-2xl font-medium text-center">
-            Crie a sua conta como médico
-          </h1>
-        </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col w-full space-y-4 pr-6 pl-6 pt-8 pb-8 rounded-xl border border-gray-06 bg-gray-01"
-        >
-          <InputField
-            label="Nome completo"
-            name="name"
-            type="text"
-            placeholder="Seu nome"
-            onChange={handleInputChange}
-            hasError={!!errors.name}
-            errorMessage={errors.name}
-          />
-
-          <InputField
-            label="Telefone"
-            name="celphone"
-            type="text"
-            placeholder="Seu telefone"
-            onChange={handleInputChange}
-            hasError={!!errors.celphone}
-            errorMessage={errors.celphone}
-          />
-
-          <InputField
-            label="Usuário"
-            name="username"
-            type="text"
-            placeholder="Seu usuário"
-            onChange={handleInputChange}
-            hasError={!!errors.username}
-            errorMessage={errors.username}
-          />
-
-          <InputField
-            label="Email"
-            name="email"
-            type="text"
-            placeholder="Seu email"
-            onChange={handleInputChange}
-            hasError={!!errors.email}
-            errorMessage={errors.email}
-          />
-
-          <SelectField
-            label="Estado"
-            name="estado"
-            options={estadosBrasileiros}
-            onChange={handleInputChange}
-            hasError={!!errors.estado}
-            errorMessage={errors.estado}
-          />
-
-          <InputField
-            label="Número do CRM"
-            name="crm"
-            type="text"
-            placeholder="Apenas números"
-            value={formData.crm}
-            onChange={handleInputChange}
-            hasError={!!errors.crm}
-            errorMessage={errors.crm}
-          />
-
-          <FileUpload
-            label="Foto do CRM"
-            name="crmPhoto"
-            accept=".jpg,.jpeg,.png,.pdf"
-            formatsText="Formatos: .jpg, .jpeg, .png, .pdf"
-            onFileChange={handleCRMFile}
-            hasError={!!errors.crmPhoto}
-            errorMessage={errors.crmPhoto}
-          />
-
-          <FileUpload
-            label="Foto do rosto"
-            name="selfiePhoto"
-            accept=".jpg,.jpeg,.png"
-            formatsText="Formatos: .jpg, .jpeg, .png"
-            onFileChange={handleFaceFile}
-            hasError={!!errors.selfiePhoto}
-            errorMessage={errors.selfiePhoto}
-          />
-
-          <PasswordField
-            label="Senha"
-            name="password"
-            value={formData.password}
-            onChange={handleInputChange}
-            hasError={!!errors.password}
-            errorMessage={errors.password}
-          />
-
-          {errorMessage && (
-            <p className="font-roboto font-normal text-xs text-red-500 text-center">
-              {errorMessage}
-            </p>
-          )}
-
-          <div className="w-full">
-            <p className="text-xs mb-0.5 text-gray-11 text-center">
-              O seu cadastro será analisado em até 15 dias úteis.
-            </p>
-            <button
-              type="submit"
-              className="bg-indigo-09 w-full text-indigo-01 rounded py-2 font-roboto text-base font-normal hover:bg-indigo-10 transition shadow-xs mt-2"
-            >
-              Solicitar Cadastro
-            </button>
-          </div>
-        </form>
-
-        <div className="flex flex-col items-center w-full pr-6 pl-6 pt-6 pb-6 rounded-xl border border-gray-06 bg-gray-01">
-          <p className="font-roboto text-gray-12 text-sm font-normal">
-            Já tem uma conta no AlzCheck?
-          </p>
-          <Link
-            to="/login/doctor"
-            className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 pr-28 pl-28 bg-gray-02 hover:bg-gray-03 transition shadow-xs"
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col w-full space-y-4 pr-6 pl-6 pt-8 pb-8 rounded-xl border border-gray-06 bg-gray-01"
           >
-            Entre na sua conta
-          </Link>
-        </div>
+            <InputField
+              label="Nome completo"
+              name="name"
+              type="text"
+              placeholder="Seu nome"
+              onChange={handleInputChange}
+              hasError={!!errors.name}
+              errorMessage={errors.name}
+            />
 
-        <SimpleFooter />
+            <InputField
+              label="Telefone"
+              name="celphone"
+              type="text"
+              placeholder="Seu telefone"
+              onChange={handleInputChange}
+              hasError={!!errors.celphone}
+              errorMessage={errors.celphone}
+            />
+
+            <InputField
+              label="Usuário"
+              name="username"
+              type="text"
+              placeholder="Seu usuário"
+              onChange={handleInputChange}
+              hasError={!!errors.username}
+              errorMessage={errors.username}
+            />
+
+            <InputField
+              label="Email"
+              name="email"
+              type="text"
+              placeholder="Seu email"
+              onChange={handleInputChange}
+              hasError={!!errors.email}
+              errorMessage={errors.email}
+            />
+
+            <SelectField
+              label="Estado"
+              name="estado"
+              options={estadosBrasileiros}
+              onChange={handleInputChange}
+              hasError={!!errors.estado}
+              errorMessage={errors.estado}
+            />
+
+            <InputField
+              label="Número do CRM"
+              name="crm"
+              type="text"
+              placeholder="Apenas números"
+              value={formData.crm}
+              onChange={handleInputChange}
+              hasError={!!errors.crm}
+              errorMessage={errors.crm}
+            />
+
+            <FileUpload
+              label="Foto do CRM"
+              name="crmPhoto"
+              accept=".jpg,.jpeg,.png,.pdf"
+              formatsText="Formatos: .jpg, .jpeg, .png, .pdf"
+              onFileChange={handleCRMFile}
+              hasError={!!errors.crmPhoto}
+              errorMessage={errors.crmPhoto}
+            />
+
+            <FileUpload
+              label="Foto do rosto"
+              name="selfiePhoto"
+              accept=".jpg,.jpeg,.png"
+              formatsText="Formatos: .jpg, .jpeg, .png"
+              onFileChange={handleFaceFile}
+              hasError={!!errors.selfiePhoto}
+              errorMessage={errors.selfiePhoto}
+            />
+
+            <PasswordField
+              label="Senha"
+              name="password"
+              value={formData.password}
+              onChange={handleInputChange}
+              hasError={!!errors.password}
+              errorMessage={errors.password}
+            />
+
+            {errorMessage && (
+              <p className="font-roboto font-normal text-xs text-red-500 text-center">
+                {errorMessage}
+              </p>
+            )}
+
+            <div className="w-full">
+              <p className="text-xs mb-0.5 text-gray-11 text-center">
+                O seu cadastro será analisado em até 15 dias úteis.
+              </p>
+              <button
+                type="submit"
+                className="bg-indigo-09 w-full text-indigo-01 rounded py-2 font-roboto text-base font-normal hover:bg-indigo-10 transition shadow-xs mt-2"
+              >
+                Solicitar Cadastro
+              </button>
+            </div>
+          </form>
+
+          <div className="flex flex-col items-center w-full pr-6 pl-6 pt-6 pb-6 rounded-xl border border-gray-06 bg-gray-01">
+            <p className="font-roboto text-gray-12 text-sm font-normal">
+              Já tem uma conta no AlzCheck?
+            </p>
+            <Link
+              to="/login/doctor"
+              className="font-roboto text-gray-12 text-sm font-normal mt-2 border border-gray-06 rounded py-2 px-4 hover:bg-gray-2 pr-28 pl-28 bg-gray-02 hover:bg-gray-03 transition shadow-xs"
+            >
+              Entre na sua conta
+            </Link>
+          </div>
+
+          <SimpleFooter />
+        </div>
       </div>
     </div>
   );
