@@ -8,6 +8,7 @@ import PasswordField from '../../Components/Form/PasswordField';
 import SimpleFooter from '../../Components/Footer/SimpleFooter';
 import { Link } from 'react-router-dom';
 import MainHeader from '../../Components/Header/MainHeader';
+import { useNavigate } from 'react-router-dom';
 
 function DoctorSignin() {
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ function DoctorSignin() {
   const [selfiePhoto, setSelfiePhoto] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -111,6 +113,7 @@ function DoctorSignin() {
         });
         setCrmPhoto(null);
         setSelfiePhoto(null);
+        navigate('/singin/doctor/confirm');
       }
     } catch (err) {
       setErrorMessage('Erro ao enviar dados: ' + err.message);
