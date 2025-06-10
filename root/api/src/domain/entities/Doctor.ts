@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Admin } from './Admin';
+import Patient from './Patient';
 
 export enum DoctorStatus {
   PENDING = 'PENDING',
@@ -53,6 +55,9 @@ export class Doctor {
   @ManyToOne(() => Admin, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'approved_by_admin' })
   approvedByAdmin?: Admin;
+
+  @OneToMany(() => Patient, (patient) => patient.createdByDoctor)
+  doctors: Patient[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

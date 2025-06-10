@@ -23,7 +23,7 @@ export class Admin {
   password: string;
 
   @OneToMany(() => Doctor, (doctor) => doctor.approvedByAdmin)
-  doctors: Doctor;
+  doctors: Doctor[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
