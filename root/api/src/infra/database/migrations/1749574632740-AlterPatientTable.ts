@@ -39,5 +39,10 @@ export class AlterPatientTable1749574632740 implements MigrationInterface {
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropColumn('patients', 'ethnicity');
+    await queryRunner.dropColumn('patients', 'educational_level');
+    await queryRunner.dropColumn('patients', 'phone_number');
+    await queryRunner.dropColumn('patients', 'selfie_photo');
+  }
 }

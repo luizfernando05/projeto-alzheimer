@@ -1,13 +1,13 @@
 import { MigrationInterface, QueryRunner, TableColumn } from 'typeorm';
 
-export class AlterMedicalDataTableWithLifestyleFactors1749575178341
+export class AlterMedicalDataTableWithMedicalHistory1749575815293
   implements MigrationInterface
 {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'smoking',
+        name: 'family_history',
         type: 'boolean',
         isNullable: true,
       })
@@ -16,8 +16,8 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'alcohol_consumption',
-        type: 'integer',
+        name: 'cardiovascular_disease',
+        type: 'boolean',
         isNullable: true,
       })
     );
@@ -25,8 +25,8 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'physical_activity',
-        type: 'integer',
+        name: 'diabetes',
+        type: 'boolean',
         isNullable: true,
       })
     );
@@ -34,8 +34,8 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'diet_quality',
-        type: 'integer',
+        name: 'depression ',
+        type: 'boolean',
         isNullable: true,
       })
     );
@@ -43,8 +43,8 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'weight',
-        type: 'decimal',
+        name: 'head_trauma',
+        type: 'boolean',
         isNullable: true,
       })
     );
@@ -52,19 +52,19 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'heigth',
-        type: 'decimal',
+        name: 'hypertension',
+        type: 'boolean',
         isNullable: true,
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropColumn('medicaldatas', 'smoking');
-    await queryRunner.dropColumn('medicaldatas', 'alcohol_consumption');
-    await queryRunner.dropColumn('medicaldatas', 'physical_activity');
-    await queryRunner.dropColumn('medicaldatas', 'diet_quality');
-    await queryRunner.dropColumn('medicaldatas', 'weight');
-    await queryRunner.dropColumn('medicaldatas', 'heigth');
+    await queryRunner.dropColumn('medicaldatas', 'family_history');
+    await queryRunner.dropColumn('medicaldatas', 'cardiovascular_disease');
+    await queryRunner.dropColumn('medicaldatas', 'diabetes');
+    await queryRunner.dropColumn('medicaldatas', 'depression');
+    await queryRunner.dropColumn('medicaldatas', 'head_trauma');
+    await queryRunner.dropColumn('medicaldatas', 'hypertension');
   }
 }
