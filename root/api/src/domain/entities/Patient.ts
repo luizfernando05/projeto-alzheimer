@@ -7,7 +7,6 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
-import { UUID } from 'typeorm/driver/mongodb/bson.typings';
 import Doctor from './Doctor';
 
 export enum PatientGender {
