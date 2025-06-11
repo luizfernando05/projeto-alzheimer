@@ -77,7 +77,7 @@ export class Patient {
   @Column({ name: 'phone_number', type: 'date', nullable: true })
   phoneNumber: string;
 
-  @Column({ name: 'selfie_phoro', type: 'text', nullable: false })
+  @Column({ name: 'selfie_phoro', type: 'text', nullable: true })
   selfiePhoto: string;
 
   @ManyToOne(() => Doctor)
