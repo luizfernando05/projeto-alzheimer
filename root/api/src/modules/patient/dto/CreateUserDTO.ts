@@ -9,4 +9,5 @@ export interface CreateUserDTO {
   ethnicity: string;
   educationLevel: string;
   selfiePhoto?: string;
+  createdByDoctor: string;
 }
