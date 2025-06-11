@@ -50,15 +50,16 @@ export class Patient {
     | 'Não declarado';
 
   @Column({
+    name: 'educational_level',
     type: 'enum',
     enum: ['Nenhum', 'Ensino Médio', 'Graduação', 'Pós Graduação'],
   })
-  educationLever: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
+  educationLevel: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
 
   @Column({ name: 'phone_number', type: 'date', nullable: true })
   phoneNumber: string;
 
-  @Column({ name: 'selfie_phoro', type: 'text', nullable: true })
+  @Column({ name: 'selfie_photo', type: 'text', nullable: true })
   selfiePhoto: string;
 
   @ManyToOne(() => Doctor)

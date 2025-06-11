@@ -26,7 +26,7 @@ export class CreatePatientUseCase {
     patient.birthDate = data.birthDate;
     patient.phoneNumber = { phoneNumber: data.phoneNumber } as any;
     patient.selfiePhoto = { selfiePhoto: data.selfiePhoto } as any;
-    patient.educationLever = data.educationLevel;
+    patient.educationLevel = data.educationLevel;
     patient.ethnicity = data.ethnicity;
     patient.gender = data.gender;
     patient.state = data.state;
