@@ -9,30 +9,6 @@ import {
 } from 'typeorm';
 import Doctor from './Doctor';
 
-export enum PatientGender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-  OTHER = 'OTHER',
-  NOT_DECLARED = 'NOT_DECLARED',
-}
-
-export enum PatientEducationLevel {
-  NONE = 'NONE',
-  HIGH_SCHOOL = 'HIGH_SCHOOL',
-  BACHERLORS = 'BACHERLORS',
-  HIGHER = 'HIGHER',
-}
-
-export enum PatientEthnicity {
-  WHITE = 'WHITE',
-  BLACK = 'BLACK',
-  BROWN = 'BROWN',
-  YWLLOW = 'YELLOW',
-  INDIGENOUS = 'INDIGENOUS',
-  OTHER = 'OTHER',
-  NOT_DECLARED = 'NOT_DECLARED',
-}
-
 @Entity('patients')
 export class Patient {
   @PrimaryGeneratedColumn('uuid')
@@ -52,27 +28,32 @@ export class Patient {
 
   @Column({
     type: 'enum',
-    enum: PatientGender,
-    default: PatientGender.NOT_DECLARED,
+    enum: ['Masculino', 'Feminino', 'Outros', 'Não declarado'],
+    default: 'Não declarado',
   })
-  gender: PatientGender;
+  gender: 'Masculino' | 'Feminino' | 'Outros' | 'Não declarado';
 
   @Column({ type: 'varchar', nullable: false })
   state: string;
 
   @Column({
     type: 'enum',
-    enum: PatientEthnicity,
-    default: PatientEthnicity.NOT_DECLARED,
+    enum: ['Branco', 'Preto', 'Amarelo', 'Indígena', 'Outro', 'Não declarado'],
+    default: 'Não declarado',
   })
-  ethnicity: PatientEthnicity;
+  ethnicity:
+    | 'Branco'
+    | 'Preto'
+    | 'Amarelo'
+    | 'Indígena'
+    | 'Outro'
+    | 'Não declarado';
 
   @Column({
     type: 'enum',
-    enum: PatientEducationLevel,
-    default: PatientEducationLevel.NONE,
+    enum: ['Nenhum', 'Ensino Médio', 'Graduação', 'Pós Graduação'],
   })
-  educationLever: PatientEducationLevel;
+  educationLever: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
 
   @Column({ name: 'phone_number', type: 'date', nullable: true })
   phoneNumber: string;
