@@ -4,6 +4,7 @@ import { CreatePatientValidator } from '../validations/CreatePatientValidator';
 import { PatientRepository } from '../repositories/PatientRepository';
 import CreatePatientUseCase from '../useCases/CreatePatientUseCase';
 import { handleValidationError } from '../../shared/errors/handleValidationError';
+import DoctorRepository from '../../doctor/repositories/DoctorRepository';
 
 export class CreatePatientController {
   async handle(
@@ -32,14 +33,18 @@ export class CreatePatientController {
       const files = req.files as
         | { [fieldname: string]: Express.Multer.File[] }
         | undefined;
-      const selfiePhotoFile = files?.['selfiephoto']?.[0];
+      const selfiePhotoFile = files?.['selfiePhoto']?.[0];
 
       if (selfiePhotoFile) {
         selfiePhotoPath = selfiePhotoFile.path;
       }
 
       const patientRepository = new PatientRepository();
-      const createPatientUseCase = new CreatePatientUseCase(patientRepository);
+      const doctorRepository = new DoctorRepository();
+      const createPatientUseCase = new CreatePatientUseCase(
+        patientRepository,
+        doctorRepository
+      );
 
       const patient = await createPatientUseCase.execute({
         name,

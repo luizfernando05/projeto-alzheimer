@@ -3,11 +3,23 @@ import Patient from '../../../domain/entities/Patient';
 import { AppError } from '../../shared/errors/AppError';
 import { IPatientRepository } from '../interfaces/IPatientRepository';
 import { CreatePatientDTO } from '../dto/CreatePatientDTO';
+import { IDoctorRepository } from '../../doctor/interfaces/IDoctorRepository';
 
 export class CreatePatientUseCase {
-  constructor(private patientRepository: IPatientRepository) {}
+  constructor(
+    private patientRepository: IPatientRepository,
+    private doctorRepository: IDoctorRepository
+  ) {}
 
   async execute(data: CreatePatientDTO): Promise<Patient> {
+    const existingDoctor = await this.doctorRepository.findById(
+      data.createdByDoctor
+    );
+
+    if (!existingDoctor) {
+      throw new AppError('Doctor not found.', 404);
+    }
+
     const existingPatient = await this.patientRepository.findByEmail(
       data.email
     );
@@ -24,14 +36,21 @@ export class CreatePatientUseCase {
     patient.name = data.name;
     patient.email = data.email;
     patient.birthDate = data.birthDate;
-    patient.phoneNumber = { phoneNumber: data.phoneNumber } as any;
-    patient.selfiePhoto = { selfiePhoto: data.selfiePhoto } as any;
+
+    if (data.phoneNumber) {
+      patient.phoneNumber = data.phoneNumber;
+    }
+
+    if (data.selfiePhoto) {
+      patient.selfiePhoto = data.selfiePhoto;
+    }
+
     patient.educationLevel = data.educationLevel;
     patient.ethnicity = data.ethnicity;
     patient.gender = data.gender;
     patient.state = data.state;
     patient.password = hashedPassword;
-    patient.createdByDoctor = { doctorId: data.createdByDoctor } as any;
+    patient.createdByDoctor = { id: data.createdByDoctor } as any;
 
     return this.patientRepository.create(patient);
   }

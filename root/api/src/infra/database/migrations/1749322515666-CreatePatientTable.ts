@@ -42,14 +42,13 @@ export class CreatePatientTable1749322515666 implements MigrationInterface {
           },
           {
             name: 'gender',
-            type: 'char',
+            type: 'varchar',
             isNullable: false,
           },
           {
             name: 'state',
             type: 'varchar',
             isNullable: false,
-            isUnique: true,
           },
 
           {

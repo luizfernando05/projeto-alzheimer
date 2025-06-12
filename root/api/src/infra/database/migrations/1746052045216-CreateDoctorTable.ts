@@ -7,9 +7,9 @@ import {
 
 export class CreateDoctorTable1746052045216 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.query(`
-      CREATE TYPE doctor_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED')
-    `);
+    // await queryRunner.query(`
+    //   CREATE TYPE doctor_status AS ENUM ('PENDING', 'APPROVED', 'REJECTED')
+    // `);
 
     await queryRunner.createTable(
       new Table({
