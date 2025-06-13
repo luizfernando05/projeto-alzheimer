@@ -16,7 +16,7 @@ function App() {
       <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
       <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
       <Route path="/doctor/patient" element={<MainModule />} />
-      <Route path="/doctor/create/patient" element={<CreatePatient />} />
+      <Route path="/doctor/patient/create" element={<CreatePatient />} />
     </Routes>
   );
 }
