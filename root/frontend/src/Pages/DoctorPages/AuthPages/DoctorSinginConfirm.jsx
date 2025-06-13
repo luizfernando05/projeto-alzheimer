@@ -1,7 +1,7 @@
 import React from 'react';
-import MainHeader from '../../Components/Header/MainHeader';
-import LogoIcon from '../../Assets/LogoIcon.svg?react';
-import SimpleFooter from '../../Components/Footer/SimpleFooter';
+import MainHeader from '../../../Components/Header/MainHeader';
+import LogoIcon from '../../../Assets/LogoIcon.svg?react';
+import SimpleFooter from '../../../Components/Footer/SimpleFooter';
 import { Link } from 'react-router-dom';
 
 function DoctorSinginConfirm() {

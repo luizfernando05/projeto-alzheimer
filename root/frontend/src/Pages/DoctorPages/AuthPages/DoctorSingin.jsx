@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import LogoIcon from '../../Assets/LogoIcon.svg?react';
-import InputField from '../../Components/Form/InputField';
-import SelectField from '../../Components/Form/SelectField';
-import { estadosBrasileiros } from '../../Utils/states';
-import FileUpload from '../../Components/Form/FileUpload';
-import PasswordField from '../../Components/Form/PasswordField';
-import SimpleFooter from '../../Components/Footer/SimpleFooter';
+import LogoIcon from '../../../Assets/LogoIcon.svg?react';
+import InputField from '../../../Components/Form/InputField';
+import SelectField from '../../../Components/Form/SelectField';
+import { estadosBrasileiros } from '../../../Utils/states';
+import FileUpload from '../../../Components/Form/FileUpload';
+import PasswordField from '../../../Components/Form/PasswordField';
+import SimpleFooter from '../../../Components/Footer/SimpleFooter';
 import { Link } from 'react-router-dom';
-import MainHeader from '../../Components/Header/MainHeader';
+import MainHeader from '../../../Components/Header/MainHeader';
 import { useNavigate } from 'react-router-dom';
 
 function DoctorSignin() {

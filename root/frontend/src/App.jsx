@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import DoctorLogin from './Pages/DoctorPages/DoctorLogin';
-import DoctorSingin from './Pages/DoctorPages/DoctorSingin';
-import DoctorSinginConfirm from './Pages/DoctorPages/DoctorSinginConfirm';
+import DoctorLogin from './Pages/DoctorPages/AuthPages/DoctorLogin';
+import DoctorSingin from './Pages/DoctorPages/AuthPages/DoctorSingin';
+import DoctorSinginConfirm from './Pages/DoctorPages/AuthPages/DoctorSinginConfirm';
 
 function App() {
   return (
