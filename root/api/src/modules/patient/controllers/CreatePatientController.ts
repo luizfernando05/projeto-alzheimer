@@ -5,6 +5,7 @@ import { PatientRepository } from '../repositories/PatientRepository';
 import CreatePatientUseCase from '../useCases/CreatePatientUseCase';
 import { handleValidationError } from '../../shared/errors/handleValidationError';
 import DoctorRepository from '../../doctor/repositories/DoctorRepository';
+import { randomBytes } from 'crypto';
 
 export class CreatePatientController {
   async handle(
@@ -18,11 +19,11 @@ export class CreatePatientController {
       await CreatePatientValidator.validate(req.body, { abortEarly: false });
 
       const createdByDoctor = req.user?.id;
+      const generatedPassword = randomBytes(8).toString('hex');
 
       const {
         name,
         email,
-        password,
         phoneNumber,
         state,
         ethnicity,
@@ -52,7 +53,7 @@ export class CreatePatientController {
         email,
         phoneNumber,
         state,
-        password,
+        password: generatedPassword,
         ethnicity,
         educationLevel,
         birthDate,
