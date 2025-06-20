@@ -17,6 +17,8 @@ export class CreatePatientController {
     try {
       await CreatePatientValidator.validate(req.body, { abortEarly: false });
 
+      const createdByDoctor = req.user?.id;
+
       const {
         name,
         email,
@@ -27,7 +29,6 @@ export class CreatePatientController {
         educationLevel,
         birthDate,
         gender,
-        createdByDoctor,
       } = req.body;
 
       const files = req.files as
