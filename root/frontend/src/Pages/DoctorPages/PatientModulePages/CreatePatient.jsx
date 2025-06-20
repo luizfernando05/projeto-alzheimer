@@ -67,12 +67,14 @@ const CreatePatient = () => {
                 label="Estado"
                 name="state"
                 options={estadosBrasileiros}
+                required
               />
               <InputField
                 label="Data de Nascimento"
                 name="birthDate"
                 type="text"
                 placeholder="DD/MM/AAAA"
+                required
               />
               <SelectField label="Gênero" name="gender" options={gender} />
             </div>

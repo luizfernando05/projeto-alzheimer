@@ -56,7 +56,7 @@ export class Patient {
   })
   educationLevel: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
 
-  @Column({ name: 'phone_number', type: 'date', nullable: true })
+  @Column({ name: 'phone_number', type: 'varchar', nullable: true })
   phoneNumber: string;
 
   @Column({ name: 'selfie_photo', type: 'text', nullable: true })

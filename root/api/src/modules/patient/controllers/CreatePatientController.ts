@@ -32,6 +32,10 @@ export class CreatePatientController {
         gender,
       } = req.body;
 
+      const parsedBirthDate = new Date(
+        birthDate.split('/').reverse().join('-')
+      );
+
       const files = req.files as
         | { [fieldname: string]: Express.Multer.File[] }
         | undefined;
@@ -56,7 +60,7 @@ export class CreatePatientController {
         password: generatedPassword,
         ethnicity,
         educationLevel,
-        birthDate,
+        birthDate: parsedBirthDate,
         gender,
         selfiePhoto: selfiePhotoPath,
         createdByDoctor,
