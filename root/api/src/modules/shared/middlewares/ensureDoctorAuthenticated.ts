@@ -9,13 +9,11 @@ export const ensureDoctorAuthenticated = async (
   res: Response,
   next: NextFunction
 ): Promise<void> => {
-  const authHeader = req.headers.authorization;
+  const token = req.cookies?.auth_token;
 
-  if (!authHeader) {
+  if (!token) {
     return next(new AppError('JWT token is missing.', 401));
   }
-
-  const [, token] = authHeader.split(' ');
 
   try {
     const decoded = verify(
