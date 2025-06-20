@@ -10,6 +10,17 @@ import DoctorProfile from '../../Assets/DoctorProfile.svg?react';
 import React from 'react';
 
 const DoctorHeader = () => {
+  const handleLogout = async () => {
+    try {
+      await fetch('http://localhost:3001/doctor/logout', {
+        method: 'POST',
+        credentials: 'include',
+      });
+      window.location.href = '/login/doctor';
+    } catch (error) {
+      console.error('Erro ao fazer logout: ', error);
+    }
+  };
   return (
     <header className="w-full h-16 px-6 flex items-center justify-between border-b border-gray-06 bg-gray-01">
       <div className="relative w-64">
@@ -47,7 +58,10 @@ const DoctorHeader = () => {
                 <User size={14} />
                 Ver Perfil
               </li>
-              <li className="flex gap-3 items-center px-4 py-2 hover:bg-red-100 hover:text-red-950 cursor-pointer">
+              <li
+                className="flex gap-3 items-center px-4 py-2 hover:bg-red-100 hover:text-red-950 cursor-pointer"
+                onClick={handleLogout}
+              >
                 <SignOut size={14} />
                 Sair
               </li>
