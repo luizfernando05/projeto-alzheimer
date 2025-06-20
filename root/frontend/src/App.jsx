@@ -5,6 +5,7 @@ import DoctorSinginConfirm from './Pages/DoctorPages/AuthPages/DoctorSinginConfi
 import DoctorDashboard from './Pages/DoctorPages/DoctorDashboard';
 import MainModule from './Pages/DoctorPages/PatientModulePages/MainModule';
 import CreatePatient from './Pages/DoctorPages/PatientModulePages/CreatePatient';
+import { ProtectedRoute } from './Components/ProtectedRoute';
 
 function App() {
   return (
@@ -14,9 +15,30 @@ function App() {
       <Route path="/login/doctor" element={<DoctorLogin />} />
       <Route path="/singin/doctor" element={<DoctorSingin />} />
       <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
-      <Route path="/doctor/dashboard" element={<DoctorDashboard />} />
-      <Route path="/doctor/patient" element={<MainModule />} />
-      <Route path="/doctor/patient/create" element={<CreatePatient />} />
+      <Route
+        path="/doctor/dashboard"
+        element={
+          <ProtectedRoute>
+            <DoctorDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/doctor/patient"
+        element={
+          <ProtectedRoute>
+            <MainModule />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/doctor/patient/create"
+        element={
+          <ProtectedRoute>
+            <CreatePatient />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 }
