@@ -29,6 +29,7 @@ const CreatePatient = () => {
           </div>
 
           <form action="" className="pt-6 pr-8 pl-8">
+            {/* Dados principais */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <InputField
                 label="Nome completo"
@@ -37,7 +38,6 @@ const CreatePatient = () => {
                 placeholder="Nome do paciente..."
                 required
               />
-
               <InputField
                 label="Email"
                 name="email"
@@ -49,10 +49,9 @@ const CreatePatient = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <SelectField label="Etnia" name="ethnicity" options={ethnicity} />
-
               <SelectField
                 label="Nível educacional"
-                name="educationalLevel"
+                name="educationLevel"
                 options={education}
               />
             </div>
@@ -60,24 +59,21 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
               <InputField
                 label="Telefone"
-                name="numberPhone"
+                name="phone"
                 type="tel"
                 placeholder="Telefone do paciente..."
               />
-
               <SelectField
                 label="Estado"
                 name="state"
                 options={estadosBrasileiros}
               />
-
               <InputField
                 label="Data de Nascimento"
                 name="birthDate"
                 type="text"
                 placeholder="DD/MM/AAAA"
               />
-
               <SelectField label="Gênero" name="gender" options={gender} />
             </div>
 
@@ -101,39 +97,34 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <SelectField
                 label="Tabagismo?"
-                name="smokinnng"
+                name="smoking"
                 options={boolean}
               />
-
               <SelectField
                 label="Consumo de álcool?"
-                name="alchool"
+                name="alcohol"
                 options={boolean}
               />
-
               <SelectField
                 label="Atividade física?"
-                name="alchool"
+                name="physicalActivity"
                 options={boolean}
               />
-
               <InputField
                 label="Peso (em kg)"
-                name="birthDate"
+                name="weight"
                 type="number"
                 required
               />
-
               <InputField
                 label="Altura (em cm)"
-                name="birthDate"
+                name="height"
                 type="number"
                 required
               />
-
               <InputField
                 label="Índice de Massa Corporal"
-                name="birthDate"
+                name="bmi"
                 type="number"
                 tooltip="Cálculo que relaciona o peso e a altura de uma pessoa para avaliar a sua composição corporal e estimar o nível de gordura."
                 required
@@ -142,17 +133,16 @@ const CreatePatient = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <InputField
-                label="Qantificação da qualidade da dieta (de 0 até 10)"
-                name="diet"
+                label="Quantificação da qualidade da dieta (de 0 até 10)"
+                name="dietQuality"
                 type="number"
                 max={10}
                 min={0}
                 placeholder="De 0 a 10..."
               />
-
               <InputField
-                label="Qantificação da qualidade do sono (de 0 até 10)"
-                name="birthDate"
+                label="Quantificação da qualidade do sono (de 0 até 10)"
+                name="sleepQuality"
                 type="number"
                 max={10}
                 min={0}
@@ -168,33 +158,32 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <SelectField
                 label="Alzheimer na família?"
-                name="smokinnng"
+                name="familyAlzheimer"
                 options={boolean}
               />
-
               <SelectField
                 label="Doença cardiovascular?"
-                name="alchool"
+                name="cardiovascularDisease"
                 options={boolean}
               />
-
-              <SelectField label="Diabetes?" name="alchool" options={boolean} />
-
+              <SelectField
+                label="Diabetes?"
+                name="diabetes"
+                options={boolean}
+              />
               <SelectField
                 label="Depressão?"
-                name="alchool"
+                name="depression"
                 options={boolean}
               />
-
               <SelectField
                 label="Traumatismo craniano?"
-                name="alchool"
+                name="headTrauma"
                 options={boolean}
               />
-
               <SelectField
                 label="Hipertensão?"
-                name="alchool"
+                name="hypertension"
                 options={boolean}
               />
             </div>
@@ -206,7 +195,7 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <InputField
                 label="Pontuação do Mini-Exame do Estado Mental (de 0 até 30)"
-                name="MEM"
+                name="miniMentalScore"
                 type="number"
                 max={30}
                 min={0}
@@ -214,10 +203,9 @@ const CreatePatient = () => {
                 tooltip="Teste simples e rápido, utilizado para rastrear déficits cognitivos, especialmente aqueles relacionados à demência. Ele avalia áreas como orientação, memória, atenção, linguagem e habilidades construtivas."
                 required
               />
-
               <InputField
                 label="Atividades Funcionais (de 0 até 10)"
-                name="birthDate"
+                name="functionalActivities"
                 type="number"
                 max={10}
                 min={0}
@@ -230,23 +218,21 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <SelectField
                 label="Queixas de problemas de memória?"
-                name="alchool"
+                name="memoryProblems"
                 tooltip="Refere-se a relatos do paciente sobre esquecimentos recorrentes."
                 options={boolean}
                 required
               />
-
               <SelectField
                 label="Queixas de problemas comportamentais?"
-                name="alchool"
+                name="behavioralProblems"
                 tooltip="Refere-se a relatos do paciente sobre mudanças comportamentais extremas."
                 options={boolean}
                 required
               />
-
               <InputField
                 label="Atividades diárias (ADL) (de 0 até 10)"
-                name="birthDate"
+                name="adl"
                 type="number"
                 max={10}
                 min={0}
@@ -263,19 +249,17 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <SelectField
                 label="Confusão?"
-                name="smokinnng"
+                name="confusion"
                 options={boolean}
               />
-
               <SelectField
                 label="Desorientação?"
-                name="alchool"
+                name="disorientation"
                 options={boolean}
               />
-
               <SelectField
                 label="Mudanças na personalidade?"
-                name="alchool"
+                name="personalityChanges"
                 options={boolean}
               />
             </div>
@@ -283,13 +267,12 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <SelectField
                 label="Dificuldade em completar tarefas?"
-                name="smokinnng"
+                name="taskDifficulty"
                 options={boolean}
               />
-
               <SelectField
                 label="Esquecimento?"
-                name="alchool"
+                name="forgetfulness"
                 options={boolean}
               />
             </div>
