@@ -143,6 +143,7 @@ function DoctorSignin() {
               name="name"
               type="text"
               placeholder="Seu nome"
+              value={formData.name}
               onChange={handleInputChange}
               hasError={!!errors.name}
               errorMessage={errors.name}
@@ -153,6 +154,7 @@ function DoctorSignin() {
               name="celphone"
               type="text"
               placeholder="Seu telefone"
+              value={formData.celphone}
               onChange={handleInputChange}
               hasError={!!errors.celphone}
               errorMessage={errors.celphone}
@@ -163,6 +165,7 @@ function DoctorSignin() {
               name="username"
               type="text"
               placeholder="Seu usuário"
+              value={formData.username}
               onChange={handleInputChange}
               hasError={!!errors.username}
               errorMessage={errors.username}
@@ -173,6 +176,7 @@ function DoctorSignin() {
               name="email"
               type="text"
               placeholder="Seu email"
+              value={formData.email}
               onChange={handleInputChange}
               hasError={!!errors.email}
               errorMessage={errors.email}
