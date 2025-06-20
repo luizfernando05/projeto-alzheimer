@@ -54,11 +54,22 @@ doctorRoutes.get(
         id: doctor.id,
         name: doctor.name,
         email: doctor.email,
+        role: 'doctor',
       });
     } catch (err) {
       next(err);
     }
   }
 );
+
+doctorRoutes.post('/logout', (req, res) => {
+  res.clearCookie('auth_token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+
+  res.status(200).json({ message: 'Logout realizado com sucesso' });
+});
 
 export { doctorRoutes };
