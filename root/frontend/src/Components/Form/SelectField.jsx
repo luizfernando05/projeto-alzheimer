@@ -1,17 +1,30 @@
 import React from 'react';
-import { CaretDown } from '@phosphor-icons/react';
+import { CaretDown, Question } from '@phosphor-icons/react';
 
 function SelectField({
   label,
   options = [],
   hasError = false,
   errorMessage = '',
+  required = false,
+  tooltip = '',
   ...props
 }) {
   return (
     <div className="flex flex-col space-y-1">
-      <label className="font-roboto text-gray-12 text-sm font-normal mb-2">
+      <label className="font-roboto text-gray-12 text-sm font-normal mb-2 flex items-center gap-1">
         {label}
+        {tooltip && (
+          <div className="relative group inline-block">
+            <span className="text-gray-11 cursor-pointer text-base leading-none">
+              <Question size={16} />
+            </span>
+            <div className="absolute z-10 hidden group-hover:block bg-gray-04/90 text-gray-12 text-xs px-3 py-2 border border-gray-06 rounded shadow-md w-64 top-full left-1/2 transform -translate-x-1/2 mt-1">
+              {tooltip}
+            </div>
+          </div>
+        )}
+        {required && <span className="text-red-500 ml-1">*</span>}
       </label>
       <div className="relative">
         <select
