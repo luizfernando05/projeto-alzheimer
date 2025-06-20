@@ -20,7 +20,14 @@ export class LoginDoctorController {
 
       const token = await loginDoctorUseCase.execute({ email, password });
 
-      return res.status(200).json({ token });
+      res.cookie('auth_token', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      return res.status(200).json({ message: 'Login realizado com sucesso' });
     } catch (err) {
       if (handleValidationError(err, next)) return;
       next(err);
