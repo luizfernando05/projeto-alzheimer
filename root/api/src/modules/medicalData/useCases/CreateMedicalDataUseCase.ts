@@ -1,4 +1,3 @@
-import { hash } from 'bcrypt';
 import MedicalData from '../../../domain/entities/MedicalData';
 import { AppError } from '../../shared/errors/AppError';
 import { IMedicalDataRepository } from '../interfaces/IMedicalDataRepository';
@@ -12,29 +11,25 @@ export class CreateMedicalDataUseCase {
   ) {}
 
   async execute(data: CreateMedicalDataDTO): Promise<MedicalData> {
-    const existingPatient = await this.patientRepository.findById(
-      data.patient_id
-    );
+    const { patientId } = data;
 
-    if (!existingPatient) {
-      throw new AppError('Patient not found.', 404);
+    const patient = await this.patientRepository.findById(patientId);
+
+    if (!patient) {
+      throw new AppError('Paciente não encontrado', 400);
+    }
+
+    const existingData =
+      await this.medicalDataRepository.findByPatientId(patientId);
+
+    if (existingData) {
+      throw new AppError('Dados médicos para este paciente já existem', 400);
     }
 
     const medicalData = new MedicalData();
-    medicalData.bmi = data.bmi;
-    medicalData.sleep_quality = data.sleep_quality;
-    medicalData.cholesterol_ldl = data.cholesterol_ldl;
-    medicalData.cholesterol_hdl = data.cholesterol_hdl;
-    medicalData.cholesterol_triglycerides = data.cholesterol_triglycerides;
-    medicalData.mmse = data.mmse;
-    medicalData.functional_assessment = data.functional_assessment;
-    medicalData.memory_complaints = data.memory_complaints;
-    medicalData.behavioral_problems = data.behavioral_problems;
-    medicalData.adl = data.adl;
-    medicalData.date_exam = data.date_exam;
-    medicalData.patientId = { id: data.patient_id } as any;
+    Object.assign(medicalData, data);
 
-    return this.medicalDataRepository.create(MedicalData);
+    return this.medicalDataRepository.create(medicalData);
   }
 }
 
