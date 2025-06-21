@@ -48,14 +48,6 @@ const CreatePatient = () => {
     e.preventDefault();
 
     const newErrors = {};
-
-    if (!formData.name) newErrors.name = 'Campo obrigatório';
-    if (!formData.email) newErrors.email = 'Campo obrigatório';
-    if (!formData.password) newErrors.password = 'Campo obrigatório';
-    if (!formData.phoneNumber) newErrors.phoneNumber = 'Campo obrigatório';
-    if (!formData.state) newErrors.state = 'Campo obrigatório';
-    if (!formData.birthDate) newErrors.birthDate = 'Campo obrigatório';
-
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
@@ -176,7 +168,6 @@ const CreatePatient = () => {
                     onChange={handleChange}
                     hasError={!!errors.phoneNumber}
                     errorMessage={errors.phoneNumber}
-                    required
                   />
                   <SelectField
                     label="Estado"
@@ -245,7 +236,8 @@ const CreatePatient = () => {
                 </div>
               </>
             )}
-
+          </form>
+          <form action="" className="pt-6 pr-8 pl-8">
             {step === 2 && (
               <>
                 <p className="font-roboto text-base text-gray-12 font-normal mb-4">
