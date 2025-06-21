@@ -34,7 +34,7 @@ export class AlterMedicalDataTableWithMedicalHistory1749575815293
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'depression ',
+        name: 'depression',
         type: 'boolean',
         isNullable: true,
       })
