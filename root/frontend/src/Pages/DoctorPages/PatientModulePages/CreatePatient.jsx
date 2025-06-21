@@ -12,7 +12,20 @@ import { education } from '../../../Utils/education';
 
 const CreatePatient = () => {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({});
+  const [errors, setErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState('');
+  const [selfiePhoto, setSelfiePhoto] = useState(null);
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phoneNumber: '',
+    birthDate: '',
+    gender: '',
+    state: '',
+    ethnicity: '',
+    educationLevel: '',
+  });
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => setStep((prev) => prev - 1);
@@ -20,7 +33,70 @@ const CreatePatient = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: '',
+    }));
   };
+
+  const handleFaceFile = (file) => {
+    setSelfiePhoto(file);
+  };
+
+  const handleSubmitPatient = async (e) => {
+    e.preventDefault();
+
+    const newErrors = {};
+
+    if (!formData.name) newErrors.name = 'Campo obrigatório';
+    if (!formData.email) newErrors.email = 'Campo obrigatório';
+    if (!formData.password) newErrors.password = 'Campo obrigatório';
+    if (!formData.phoneNumber) newErrors.phoneNumber = 'Campo obrigatório';
+    if (!formData.state) newErrors.state = 'Campo obrigatório';
+    if (!formData.birthDate) newErrors.birthDate = 'Campo obrigatório';
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    setErrorMessage('');
+
+    const form = new FormData();
+    Object.entries(formData).forEach(([key, value]) => {
+      if (value) form.append(key, value);
+    });
+    if (selfiePhoto) form.append('selfiePhoto', selfiePhoto);
+
+    try {
+      const response = await fetch('http://localhost:3001/patient/', {
+        method: 'POST',
+        credentials: 'include',
+        body: form,
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        if (result.errors) {
+          setErrors(result.errors);
+          setErrorMessage(result.message || 'Erro ao cadastrar paciente.');
+        } else {
+          setErrorMessage(result.message || 'Erro ao cadastrar paciente.');
+        }
+        return;
+      }
+
+      alert('Paciente cadastrado com sucesso!');
+    } catch (err) {
+      setErrorMessage('Erro inesperado no envio do formulário.');
+      console.error(err);
+    }
+  };
+
   return (
     <DoctorLayout>
       <section className="w-full">
@@ -41,7 +117,7 @@ const CreatePatient = () => {
             </h2>
           </div>
 
-          <form action="" className="pt-6 pr-8 pl-8">
+          <form onSubmit={handleSubmitPatient} className="pt-6 pr-8 pl-8">
             {step === 1 && (
               <>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
@@ -50,6 +126,10 @@ const CreatePatient = () => {
                     name="name"
                     type="text"
                     placeholder="Nome do paciente..."
+                    value={formData.name}
+                    onChange={handleChange}
+                    hasError={!!errors.name}
+                    errorMessage={errors.name}
                     required
                   />
                   <InputField
@@ -57,6 +137,10 @@ const CreatePatient = () => {
                     name="email"
                     type="email"
                     placeholder="Email do paciente..."
+                    value={formData.email}
+                    onChange={handleChange}
+                    hasError={!!errors.email}
+                    errorMessage={errors.email}
                     required
                   />
                 </div>
@@ -66,25 +150,42 @@ const CreatePatient = () => {
                     label="Etnia"
                     name="ethnicity"
                     options={ethnicity}
+                    value={formData.ethnicity}
+                    onChange={handleChange}
+                    hasError={!!errors.ethnicity}
+                    errorMessage={errors.ethnicity}
                   />
                   <SelectField
                     label="Nível educacional"
                     name="educationLevel"
                     options={education}
+                    value={formData.educationLevel}
+                    onChange={handleChange}
+                    hasError={!!errors.educationLevel}
+                    errorMessage={errors.educationLevel}
                   />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                   <InputField
                     label="Telefone"
-                    name="phone"
+                    name="phoneNumber"
                     type="tel"
                     placeholder="Telefone do paciente..."
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    hasError={!!errors.phoneNumber}
+                    errorMessage={errors.phoneNumber}
+                    required
                   />
                   <SelectField
                     label="Estado"
                     name="state"
                     options={estadosBrasileiros}
+                    value={formData.state}
+                    onChange={handleChange}
+                    hasError={!!errors.state}
+                    errorMessage={errors.state}
                     required
                   />
                   <InputField
@@ -92,9 +193,21 @@ const CreatePatient = () => {
                     name="birthDate"
                     type="text"
                     placeholder="DD/MM/AAAA"
+                    value={formData.birthDate}
+                    onChange={handleChange}
+                    hasError={!!errors.birthDate}
+                    errorMessage={errors.birthDate}
                     required
                   />
-                  <SelectField label="Gênero" name="gender" options={gender} />
+                  <SelectField
+                    label="Gênero"
+                    name="gender"
+                    options={gender}
+                    value={formData.gender}
+                    onChange={handleChange}
+                    hasError={!!errors.gender}
+                    errorMessage={errors.gender}
+                  />
                 </div>
 
                 <div className="grid grid-cols-1 gap-4 mb-4">
@@ -102,11 +215,22 @@ const CreatePatient = () => {
                     label="Foto do rosto"
                     name="selfiePhoto"
                     accept=".jpg,.jpeg,.png"
+                    onChange={handleFaceFile}
+                    hasError={!!errors.selfiePhoto}
+                    errorMessage={errors.selfiePhoto}
                     formatsText="Formatos: .jpg, .jpeg, .png"
                   />
                 </div>
+                {errorMessage && (
+                  <p className="font-roboto font-normal text-xs text-red-500 text-center mb-4">
+                    {errorMessage}
+                  </p>
+                )}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                  <button className="bg-indigo-09 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs">
+                  <button
+                    type="submit"
+                    className="bg-indigo-09 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs"
+                  >
                     Cadastrar apenas o paciente
                   </button>
                   <button
