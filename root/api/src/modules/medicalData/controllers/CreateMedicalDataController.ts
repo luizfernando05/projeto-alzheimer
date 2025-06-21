@@ -17,23 +17,46 @@ export class CreateMedicalDataController {
         abortEarly: false,
       });
 
-      const patient_id = req.user?.id;
-
       const {
+        patientId,
         bmi,
-        sleep_quality,
-        cholesterol_ldl,
-        cholesterol_hdl,
-        cholesterol_triglycerides,
+        sleepQuality,
+        cholesterolLdl,
+        cholesterolHdl,
+        cholesterolTriglycerides,
         mmse,
-        functional_assessment,
-        memory_complaints,
-        behavioral_problems,
+        functionalAssessment,
+        memoryComplaints,
+        behavioralProblems,
         adl,
-        date_exam,
+        dateExam,
+        somoking,
+        alcoholConsumption,
+        physicalActivity,
+        dietQuality,
+        weight,
+        height,
+        familyHistory,
+        cardiovascularDisease,
+        diabetes,
+        depression,
+        headTrauma,
+        hypertension,
+        confusion,
+        disorientation,
+        personalityChanges,
+        difficultyCompletingTasks,
+        forgetfulness,
+        systolicBP,
+        diastolicBP,
+        cholesterolTotal,
       } = req.body;
 
-      const parsedDateExam = new Date(date_exam.split('/').reverse().join('-'));
+      const parsedDateExam = new Date(
+        dateExam?.includes('/')
+          ? dateExam.split('/').reverse().join('-')
+          : dateExam
+      );
 
       const medicalDataRepository = new MedicalDataRepository();
       const patientRepository = new PatientRepository();
@@ -44,17 +67,37 @@ export class CreateMedicalDataController {
 
       const medicalData = await createMedicalDataUseCase.execute({
         bmi,
-        sleep_quality,
-        cholesterol_ldl,
-        cholesterol_hdl,
-        cholesterol_triglycerides,
+        sleepQuality,
+        cholesterolLdl,
+        cholesterolHdl,
+        cholesterolTriglycerides,
         mmse,
-        functional_assessment,
-        memory_complaints,
-        behavioral_problems,
+        functionalAssessment,
+        memoryComplaints,
+        behavioralProblems,
         adl,
-        date_exam: parsedDateExam,
-        patient_id,
+        dateExam: parsedDateExam,
+        patientId,
+        somoking,
+        alcoholConsumption,
+        physicalActivity,
+        dietQuality,
+        weight,
+        height,
+        familyHistory,
+        cardiovascularDisease,
+        diabetes,
+        depression,
+        headTrauma,
+        hypertension,
+        confusion,
+        disorientation,
+        personalityChanges,
+        difficultyCompletingTasks,
+        forgetfulness,
+        systolicBP,
+        diastolicBP,
+        cholesterolTotal,
       });
 
       return res.status(201).json(medicalData);
