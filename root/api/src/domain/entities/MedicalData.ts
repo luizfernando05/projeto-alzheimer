@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import Patient from './Patient';
 
-@Entity('medicalDatas')
+@Entity('medicaldatas')
 export class MedicalData {
   @PrimaryGeneratedColumn('uuid')
   id: string;
@@ -48,7 +48,7 @@ export class MedicalData {
   dateExam: Date;
 
   @Column({ type: 'boolean', nullable: true })
-  somoking: boolean;
+  smoking: boolean;
 
   @Column({ name: 'alcohol_consumption', type: 'integer', nullable: true })
   alcoholConsumption: number;
@@ -63,12 +63,12 @@ export class MedicalData {
   weight: number;
 
   @Column({ type: 'float', nullable: true })
-  height: number;
+  heigth: number;
 
   @Column({ name: 'family_history', type: 'boolean', nullable: true })
   familyHistory: boolean;
 
-  @Column({ name: 'familyHistory', type: 'boolean', nullable: true })
+  @Column({ name: 'cardiovascular_disease', type: 'boolean', nullable: true })
   cardiovascularDisease: boolean;
 
   @Column({ type: 'boolean', nullable: true })
