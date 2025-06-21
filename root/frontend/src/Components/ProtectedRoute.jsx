@@ -1,11 +1,12 @@
 import { useAuth } from '../Hooks/DoctorHooks/useAuth';
 import { Navigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 export function ProtectedRoute({ children }) {
   const { doctor, loading } = useAuth();
 
   if (loading) {
-    return <div>Carregando...</div>;
+    return <div className="loader"></div>;
   }
 
   if (!doctor) {
