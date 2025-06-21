@@ -146,6 +146,7 @@ const CreatePatient = () => {
                     onChange={handleChange}
                     hasError={!!errors.ethnicity}
                     errorMessage={errors.ethnicity}
+                    required
                   />
                   <SelectField
                     label="Nível educacional"
@@ -155,6 +156,7 @@ const CreatePatient = () => {
                     onChange={handleChange}
                     hasError={!!errors.educationLevel}
                     errorMessage={errors.educationLevel}
+                    required
                   />
                 </div>
 
@@ -168,6 +170,7 @@ const CreatePatient = () => {
                     onChange={handleChange}
                     hasError={!!errors.phoneNumber}
                     errorMessage={errors.phoneNumber}
+                    required
                   />
                   <SelectField
                     label="Estado"
@@ -198,6 +201,7 @@ const CreatePatient = () => {
                     onChange={handleChange}
                     hasError={!!errors.gender}
                     errorMessage={errors.gender}
+                    required
                   />
                 </div>
 
@@ -206,10 +210,10 @@ const CreatePatient = () => {
                     label="Foto do rosto"
                     name="selfiePhoto"
                     accept=".jpg,.jpeg,.png"
-                    onChange={handleFaceFile}
+                    formatsText="Formatos: .jpg, .jpeg, .png"
+                    onFileChange={handleFaceFile}
                     hasError={!!errors.selfiePhoto}
                     errorMessage={errors.selfiePhoto}
-                    formatsText="Formatos: .jpg, .jpeg, .png"
                   />
                 </div>
                 {errorMessage && (
