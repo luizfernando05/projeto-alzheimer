@@ -10,6 +10,15 @@ export class MedicalDataRepository implements IMedicalDataRepository {
     this.ormRepository = AppDataSource.getRepository(MedicalData);
   }
 
+  async findByPatientId(patientId: string): Promise<MedicalData | null> {
+    return this.ormRepository.findOne({
+      where: {
+        patientId: { id: patientId },
+      },
+      relations: ['patientId'],
+    });
+  }
+
   async create(medicalData: MedicalData): Promise<MedicalData> {
     const createMedicalData = this.ormRepository.create(medicalData);
     return this.ormRepository.save(createMedicalData);
