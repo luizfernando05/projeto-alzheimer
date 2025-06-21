@@ -15,7 +15,7 @@ export const CreatePatientValidator = yup.object().shape({
     .string()
     .required('Celular é obrigatório')
     .matches(
-      /^(\(\d{2}\)\s?\d{5}-\d{4})$/,
-      'Formato inválido. Use o formato (xx)xxxxx-xxxx'
+      /^\(\d{2}\)\s\d\s\d{4}-\d{4}$/,
+      'Formato inválido. Use o formato (xx) x xxxx-xxxx'
     ),
 });
