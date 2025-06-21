@@ -9,39 +9,35 @@ export default function InputField({
   errorMessage = '',
   required = false,
   tooltip = '',
+  value = '',
+  onChange,
   ...props
 }) {
-  const [inputValue, setInputValue] = useState('');
-
   const isPhone = label?.toLowerCase().includes('telefone');
   const isBirthDate = label?.toLowerCase().includes('data');
   const max = props.max ?? null;
   const min = props.min ?? null;
 
   const handleChange = (e) => {
-    let value = e.target.value;
+    let newValue = e.target.value;
 
     if (isPhone) {
-      value = formatPhone(value);
+      newValue = formatPhone(newValue);
     } else if (isBirthDate) {
-      value = formatDate(value);
+      newValue = formatDate(newValue);
     }
 
-    if (type === 'number' && value) {
-      const num = parseInt(value, 10);
-
-      if (max !== null && num > max) value = String(max);
-      if (min !== null && num < min) value = String(min);
+    if (type === 'number' && newValue) {
+      const num = parseInt(newValue, 10);
+      if (max !== null && num > max) newValue = String(max);
+      if (min !== null && num < min) newValue = String(min);
     }
 
-    setInputValue(value);
-
-    if (props.onChange) {
-      props.onChange({
-        ...e,
+    if (onChange) {
+      onChange({
         target: {
-          ...e.target,
-          value,
+          name: props.name,
+          value: newValue,
         },
       });
     }
@@ -65,11 +61,12 @@ export default function InputField({
       </label>
       <input
         className={`rounded-sm border p-3 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07
-          ${hasError ? 'border-red-500 bg-red-50' : 'border-gray-06 bg-gray-02'}
-        `}
+          ${
+            hasError ? 'border-red-500 bg-red-50' : 'border-gray-06 bg-gray-02'
+          }`}
         type="text"
         placeholder={placeholder}
-        value={inputValue}
+        value={value}
         onChange={handleChange}
         max={props.max}
         min={props.min}
