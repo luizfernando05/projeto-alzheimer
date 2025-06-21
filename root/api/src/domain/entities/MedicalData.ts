@@ -14,38 +14,102 @@ export class MedicalData {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column({ type: 'number', nullable: false })
+  @Column({ type: 'integer', nullable: false })
   bmi: number;
 
-  @Column({ type: 'boolean', nullable: false })
-  sleep_quality: boolean;
+  @Column({ name: 'sleep_quality', type: 'boolean', nullable: false })
+  sleepQuality: boolean;
 
-  @Column({ type: 'number', nullable: false })
-  cholesterol_ldl: number;
+  @Column({ name: 'cholesterol_ldl', type: 'float', nullable: false })
+  cholesterolLdl: number;
 
-  @Column({ type: 'number', nullable: false })
+  @Column({ name: 'cholesterol_triglycerides', type: 'float', nullable: false })
   cholesterol_hdl: number;
 
-  @Column({ type: 'number', nullable: false })
-  cholesterol_triglycerides: number;
+  @Column({ type: 'float', nullable: false })
+  cholesterolTriglycerides: number;
 
-  @Column({ type: 'number', nullable: false })
+  @Column({ type: 'integer', nullable: false })
   mmse: number;
 
-  @Column({ type: 'number', nullable: false })
-  functional_assessment: number;
+  @Column({ name: 'functional_assessment', type: 'integer', nullable: false })
+  functionalAssessment: number;
 
-  @Column({ type: 'boolean', nullable: false })
-  memory_complaints: boolean;
+  @Column({ name: 'memory_complaints', type: 'boolean', nullable: false })
+  memoryComplaints: boolean;
 
-  @Column({ type: 'boolean', nullable: false })
-  behavioral_problems: boolean;
+  @Column({ name: 'behavioral_problems', type: 'boolean', nullable: false })
+  behavioralProblems: boolean;
 
-  @Column({ type: 'number', nullable: false })
+  @Column({ type: 'integer', nullable: false })
   adl: number;
 
-  @Column({ type: 'date', nullable: false })
-  date_exam: Date;
+  @Column({ name: 'date_exam', type: 'date', nullable: false })
+  dateExam: Date;
+
+  @Column({ type: 'boolean', nullable: true })
+  somoking: boolean;
+
+  @Column({ name: 'alcohol_consumption', type: 'integer', nullable: true })
+  alcoholConsumption: number;
+
+  @Column({ name: 'physical_activity', type: 'integer', nullable: true })
+  physicalActivity: number;
+
+  @Column({ name: 'diet_quality', type: 'integer', nullable: true })
+  dietQuality: number;
+
+  @Column({ type: 'float', nullable: true })
+  weight: number;
+
+  @Column({ type: 'float', nullable: true })
+  height: number;
+
+  @Column({ name: 'family_history', type: 'boolean', nullable: true })
+  familyHistory: boolean;
+
+  @Column({ name: 'familyHistory', type: 'boolean', nullable: true })
+  cardiovascularDisease: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  diabetes: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  depression: boolean;
+
+  @Column({ name: 'head_trauma', type: 'boolean', nullable: true })
+  headTrauma: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  hypertension: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  confusion: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  disorientation: boolean;
+
+  @Column({ name: 'personality_changes', type: 'boolean', nullable: true })
+  personalityChanges: boolean;
+
+  @Column({
+    name: 'difficulty_completing_tasks',
+    type: 'boolean',
+    nullable: true,
+  })
+  difficultyCompletingTasks: boolean;
+
+  @Column({ type: 'boolean', nullable: true })
+  forgetfulness: boolean;
+
+  @Column({ type: 'float', nullable: true })
+  systolicBP: number;
+
+  @Column({ name: 'DiastolicBP', type: 'float', nullable: true })
+  diastolicBP: number;
+
+  @Column({ name: 'cholesterol_total', type: 'float', nullable: true })
+  cholesterolTotal: number;
 
   @ManyToOne(() => Patient)
   @JoinColumn({ name: 'patient_id' })
