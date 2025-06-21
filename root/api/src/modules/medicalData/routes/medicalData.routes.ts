@@ -5,14 +5,8 @@ import CreateMedicalDataController from '../controllers/CreateMedicalDataControl
 const medicalDataRoutes = Router();
 const createMedicalDataController = new CreateMedicalDataController();
 
-medicalDataRoutes.post(
-  '/',
-
-  ensureDoctorAuthenticated,
-
-  (req, res, next) => {
-    createMedicalDataController.handle(req, res, next);
-  }
-);
+medicalDataRoutes.post('/', ensureDoctorAuthenticated, (req, res, next) => {
+  createMedicalDataController.handle(req, res, next);
+});
 
 export { medicalDataRoutes };
