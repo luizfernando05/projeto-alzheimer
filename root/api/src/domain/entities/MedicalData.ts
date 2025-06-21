@@ -23,10 +23,10 @@ export class MedicalData {
   @Column({ name: 'cholesterol_ldl', type: 'float', nullable: false })
   cholesterolLdl: number;
 
-  @Column({ name: 'cholesterol_triglycerides', type: 'float', nullable: false })
-  cholesterol_hdl: number;
+  @Column({ name: 'cholesterol_hdl', type: 'float', nullable: false })
+  cholesterolHdl: number;
 
-  @Column({ type: 'float', nullable: false })
+  @Column({ name: 'cholesterol_triglycerides', type: 'float', nullable: false })
   cholesterolTriglycerides: number;
 
   @Column({ type: 'integer', nullable: false })
