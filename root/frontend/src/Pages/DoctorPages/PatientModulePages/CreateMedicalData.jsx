@@ -87,10 +87,15 @@ const CreateMedicalData = () => {
 
     setErrorMessage('');
 
+    const cleanFormData = Object.fromEntries(
+      Object.entries(formData)
+        .filter(([_, value]) => value !== '' && value !== undefined)
+        .map(([key, value]) => [key, key === 'bmi' ? parseFloat(value) : value])
+    );
+
     const body = {
-      ...formData,
-      patientId: patientId,
-      bmi: parseFloat(formData.bmi),
+      ...cleanFormData,
+      patientId,
     };
 
     try {
