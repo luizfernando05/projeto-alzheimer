@@ -8,8 +8,11 @@ import { estadosBrasileiros } from '../../../Utils/states';
 import { ethnicity } from '../../../Utils/ethnicity';
 import { gender } from '../../../Utils/gender';
 import { education } from '../../../Utils/education';
+import { useNavigate } from 'react-router-dom';
 
 const CreatePatient = () => {
+  const navigate = useNavigate();
+
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [selfiePhoto, setSelfiePhoto] = useState(null);
@@ -77,7 +80,8 @@ const CreatePatient = () => {
         return;
       }
 
-      alert('Paciente cadastrado com sucesso!');
+      const patientId = result.id;
+      navigate(`/patients/${patientId}/medical-data`);
     } catch (err) {
       setErrorMessage('Erro inesperado no envio do formulário.');
       console.error(err);

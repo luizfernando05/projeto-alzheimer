@@ -33,7 +33,7 @@ function App() {
         }
       />
       <Route
-        path="/doctor/patient/data"
+        path="/patients/:patientId/medical-data"
         element={
           <ProtectedRoute>
             <CreateMedicalData />
