@@ -11,7 +11,7 @@ export interface CreateMedicalDataDTO {
   adl: number;
   dateExam: Date;
   patientId: string;
-  somoking?: boolean;
+  smoking?: boolean;
   alcoholConsumption?: number;
   physicalActivity?: number;
   dietQuality?: number;
