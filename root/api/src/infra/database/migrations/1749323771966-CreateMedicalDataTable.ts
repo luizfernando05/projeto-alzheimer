@@ -26,7 +26,7 @@ export class CreateMedicalDataTable1749323771966 implements MigrationInterface {
           },
           {
             name: 'sleep_quality',
-            type: 'boolean',
+            type: 'integer',
             isNullable: false,
           },
           {

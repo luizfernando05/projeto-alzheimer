@@ -17,7 +17,7 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
       'medicaldatas',
       new TableColumn({
         name: 'alcohol_consumption',
-        type: 'integer',
+        type: 'boolean',
         isNullable: true,
       })
     );
