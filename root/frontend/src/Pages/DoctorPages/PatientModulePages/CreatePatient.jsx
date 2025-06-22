@@ -9,6 +9,7 @@ import { ethnicity } from '../../../Utils/ethnicity';
 import { gender } from '../../../Utils/gender';
 import { education } from '../../../Utils/education';
 import { useNavigate } from 'react-router-dom';
+import SuccessToast from '../../../Components/Form/SuccessToast';
 
 const CreatePatient = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const CreatePatient = () => {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [selfiePhoto, setSelfiePhoto] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -81,7 +84,8 @@ const CreatePatient = () => {
       }
 
       const patientId = result.id;
-      navigate(`/patients/${patientId}/medical-data`);
+      setShowToast(true);
+      setTimeout(() => navigate(`/patients/${patientId}/medical-data`), 4000);
     } catch (err) {
       setErrorMessage('Erro inesperado no envio do formulário.');
       console.error(err);
@@ -91,6 +95,12 @@ const CreatePatient = () => {
   return (
     <DoctorLayout>
       <section className="w-full">
+        {showToast && (
+          <SuccessToast
+            message="Dados médicos cadastrados com sucesso!"
+            onClose={() => setShowToast(false)}
+          />
+        )}
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex gap-6 pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
             <button className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03">

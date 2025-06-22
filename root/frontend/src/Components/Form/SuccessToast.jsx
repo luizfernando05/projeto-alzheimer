@@ -1,7 +1,7 @@
 import { CheckCircle } from '@phosphor-icons/react';
 import React, { useEffect, useState } from 'react';
 
-const SucessToast = ({ message = 'Sucesso!', duration = 4000, onClose }) => {
+const SuccessToast = ({ message = 'Sucesso!', duration = 4000, onClose }) => {
   const [progress, setProgress] = useState(100);
 
   useEffect(() => {
@@ -38,4 +38,4 @@ const SucessToast = ({ message = 'Sucesso!', duration = 4000, onClose }) => {
   );
 };
 
-export default SucessToast;
+export default SuccessToast;
