@@ -5,12 +5,14 @@ import InputField from '../../../Components/Form/InputField';
 import { boolean } from '../../../Utils/boolean';
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useNavigate, useParams } from 'react-router-dom';
+import SuccessToast from '../../../Components/Form/SuccessToast';
 
 const CreateMedicalData = () => {
   const { patientId } = useParams();
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [showToast, setShowToast] = useState(false);
 
   const [formData, setFormData] = useState({
     smoking: '',
@@ -113,8 +115,8 @@ const CreateMedicalData = () => {
         return;
       }
 
-      alert('Dados médicos cadastrados com sucesso!');
-      navigate('/doctor/dashboard');
+      setShowToast(true);
+      setTimeout(() => navigate('/doctor/dashboard'), 4000);
     } catch (error) {
       setErrorMessage('Erro inesperado no envio do formulário.');
       console.error(error);
@@ -124,6 +126,12 @@ const CreateMedicalData = () => {
   return (
     <DoctorLayout>
       <section className="w-full">
+        {showToast && (
+          <SuccessToast
+            message="Dados médicos cadastrados com sucesso!"
+            onClose={() => setShowToast(false)}
+          />
+        )}
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex gap-6 pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
             <button className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03">

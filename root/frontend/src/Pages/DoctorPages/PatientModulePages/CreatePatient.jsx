@@ -97,7 +97,7 @@ const CreatePatient = () => {
       <section className="w-full">
         {showToast && (
           <SuccessToast
-            message="Dados médicos cadastrados com sucesso!"
+            message="Paciente cadastrado com sucesso!"
             onClose={() => setShowToast(false)}
           />
         )}
