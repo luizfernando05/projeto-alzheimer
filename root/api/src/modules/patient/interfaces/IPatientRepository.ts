@@ -8,4 +8,5 @@ export interface IPatientRepository {
   findByCelphone(phoneNumber: string): Promise<Patient | null>;
   update(patient: Patient): Promise<Patient>;
   findByDoctorId(doctorId: string): Promise<Patient[]>;
+  countByDoctorId(doctorId: string): Promise<number>;
 }

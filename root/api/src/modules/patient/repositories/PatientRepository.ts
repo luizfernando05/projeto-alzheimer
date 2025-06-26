@@ -10,6 +10,12 @@ export class PatientRepository implements IPatientRepository {
     this.ormRepository = AppDataSource.getRepository(Patient);
   }
 
+  async countByDoctorId(doctorId: string): Promise<number> {
+    return this.ormRepository.count({
+      where: { createdByDoctor: { id: doctorId } },
+    });
+  }
+
   async findByDoctorId(doctorId: string): Promise<Patient[]> {
     return this.ormRepository.find({
       where: { createdByDoctor: { id: doctorId } },
