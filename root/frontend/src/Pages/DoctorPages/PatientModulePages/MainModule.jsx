@@ -2,6 +2,14 @@ import React, { use, useEffect, useState } from 'react';
 import axios from 'axios';
 import DoctorLayout from '../DoctorLayout';
 import {
+  LineChart,
+  Line,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
+import {
   HeadCircuit,
   ListNumbers,
   Microscope,
@@ -18,6 +26,7 @@ const MainModule = () => {
   const [totalPatients, setTotalPatients] = useState(0);
   const [growth, setGrowth] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [weeklyData, setWeeklyData] = useState([]);
 
   useEffect(() => {
     const fetchPatientCount = async () => {
@@ -36,6 +45,22 @@ const MainModule = () => {
       } finally {
         setLoading(false);
       }
+
+      const fetchWeeklyData = async () => {
+        try {
+          const response = await axios.get(
+            'http://localhost:3001/patient/last-7-days',
+            {
+              withCredentials: true,
+            }
+          );
+          setWeeklyData(response.data);
+        } catch (error) {
+          console.error('Erro ao buscar dados semanais:', error);
+        }
+      };
+
+      fetchWeeklyData();
     };
 
     fetchPatientCount();
@@ -103,39 +128,118 @@ const MainModule = () => {
                     Total de Pacientes
                   </h2>
                 </div>
-                <div className="pt-4 pb-5 pr-6 pl-6">
-                  <div className="flex gap-4">
-                    <h2 className="text-xl font-roboto font-normal text-gray-12">
-                      {loading ? '...' : totalPatients.toLocaleString('pt-br')}
-                    </h2>
+                <div className="pt-4 pb-5 pr-6 pl-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <div className="flex gap-4">
+                      <h2 className="text-xl font-roboto font-normal text-gray-12">
+                        {loading
+                          ? '...'
+                          : totalPatients.toLocaleString('pt-br')}
+                      </h2>
+                      {!loading && growth && (
+                        <span
+                          className={`font-roboto text-xs font-medium border border-gray-06 p-1 rounded-sm ${
+                            growth.percentage >= 0
+                              ? 'text-green-600'
+                              : 'text-red-600'
+                          } flex items-center gap-3`}
+                        >
+                          {growth.percentage >= 0 ? (
+                            <TrendUp size={12} />
+                          ) : (
+                            <TrendDown size={12} />
+                          )}
+                          {Math.abs(growth.percentage).toFixed(2)}%
+                        </span>
+                      )}
+                    </div>
                     {!loading && growth && (
-                      <span
-                        className={`font-roboto text-xs font-medium border border-gray-06 p-1 rounded-sm ${
-                          growth.percentage >= 0
-                            ? 'text-green-600'
-                            : 'text-red-600'
-                        } flex items-center gap-3`}
-                      >
-                        {growth.percentage >= 0 ? (
-                          <TrendUp size={12} />
-                        ) : (
-                          <TrendDown size={12} />
-                        )}
-                        {Math.abs(growth.percentage).toFixed(2)}%
-                      </span>
+                      <p className="font-roboto text-xs text-gray-11 mt-3">
+                        O número de entrada de pacientes{' '}
+                        {growth.percentage >= 0 ? 'aumentou' : 'diminuiu'} nos
+                        últimos 7 dias.
+                      </p>
+                    )}
+
+                    <p className="text-xs text-gray-10 mt-2">
+                      Atualizado em {new Date().toLocaleDateString('pt-BR')}
+                    </p>
+                  </div>
+                  <div>
+                    {!loading && weeklyData.length > 0 && (
+                      <div className="w-full h-28">
+                        <ResponsiveContainer width="100%" height="100%">
+                          <LineChart
+                            data={weeklyData}
+                            margin={{ top: 10, right: 10, left: 0, bottom: 0 }}
+                          >
+                            <Line
+                              type="monotone"
+                              dataKey="count"
+                              stroke={
+                                growth.percentage >= 0 ? '#30A46C' : '#E5484D'
+                              }
+                              strokeWidth={2}
+                              dot={{ r: 2 }}
+                              activeDot={{ r: 4 }}
+                            />
+                            <text
+                              x="50%"
+                              y="10"
+                              textAnchor="middle"
+                              dominantBaseline="central"
+                              className="text-xs"
+                              fill="##646464"
+                            >
+                              Entradas nos últimos 7 dias
+                            </text>
+
+                            <defs>
+                              <linearGradient
+                                id="colorCount"
+                                x1="0"
+                                y1="0"
+                                x2="0"
+                                y2="1"
+                              >
+                                <stop
+                                  offset="0%"
+                                  stopColor="#16a34a"
+                                  stopOpacity={0.8}
+                                />
+                                <stop
+                                  offset="100%"
+                                  stopColor="#16a34a"
+                                  stopOpacity={0}
+                                />
+                              </linearGradient>
+                            </defs>
+
+                            <Tooltip
+                              contentStyle={{
+                                fontSize: '12px',
+                                backgroundColor: 'white',
+                                borderColor: '#d1d5db',
+                              }}
+                              labelStyle={{ color: '#4b5563' }}
+                              formatter={(value) => [
+                                `${value} pacientes`,
+                                'Total',
+                              ]}
+                              labelFormatter={(label) => `Data: ${label}`}
+                            />
+
+                            <XAxis
+                              dataKey="date"
+                              tick={{ fontSize: 10 }}
+                              stroke="#d1d5db"
+                            />
+                            <YAxis hide />
+                          </LineChart>
+                        </ResponsiveContainer>
+                      </div>
                     )}
                   </div>
-                  {!loading && growth && (
-                    <p className="font-roboto text-xs text-gray-11 mt-3">
-                      O número de entrada de pacientes{' '}
-                      {growth.percentage >= 0 ? 'aumentou' : 'diminuiu'} nos
-                      últimos 7 dias.
-                    </p>
-                  )}
-
-                  <p className="text-xs text-gray-10 mt-2">
-                    Atualizado em {new Date().toLocaleDateString('pt-BR')}
-                  </p>
                 </div>
               </div>
             </div>
