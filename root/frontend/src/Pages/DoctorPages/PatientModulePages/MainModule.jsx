@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { use, useEffect, useState } from 'react';
+import axios from 'axios';
 import DoctorLayout from '../DoctorLayout';
 import {
   HeadCircuit,
@@ -12,6 +13,29 @@ import {
 } from '@phosphor-icons/react';
 
 const MainModule = () => {
+  const [totalPatients, setTotalPatients] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchPatientCount = async () => {
+      try {
+        const response = await axios.get(
+          'http://localhost:3001/patient/count',
+          {
+            withCredentials: true,
+          }
+        );
+        setTotalPatients(response.data.total);
+      } catch (error) {
+        console.error('Erro ao buscar total de pacientes:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatientCount();
+  }, []);
+
   return (
     <DoctorLayout>
       <section className="w-full">
@@ -72,6 +96,11 @@ const MainModule = () => {
                       <Users size={16} />
                     </div>
                     Total de Pacientes
+                  </h2>
+                </div>
+                <div className="bg-gray-02 pt-4 pb-5 pr-6 pl-6">
+                  <h2 className="text-xl font-roboto font-normal text-gray-12">
+                    {loading ? '...' : totalPatients.toLocaleString('pt-br')}
                   </h2>
                 </div>
               </div>

@@ -13,6 +13,7 @@
     "@phosphor-icons/react": "^2.1.7",
     "@radix-ui/colors": "^3.0.0",
     "@tailwindcss/vite": "^4.1.5",
+    "axios": "^1.10.0",
     "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
