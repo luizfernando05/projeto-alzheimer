@@ -14,4 +14,7 @@ export interface IPatientRepository {
     start: Date,
     end: Date
   ): Promise<number>;
+  getCountByDateLast7Days(
+    doctorId: string
+  ): Promise<{ date: string; count: number }[]>;
 }
