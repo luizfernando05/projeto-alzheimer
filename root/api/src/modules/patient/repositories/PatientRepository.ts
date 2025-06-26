@@ -1,4 +1,4 @@
-import { Repository } from 'typeorm';
+import { Between, Repository } from 'typeorm';
 import { AppDataSource } from '../../../config/data-source';
 import Patient from '../../../domain/entities/Patient';
 import { IPatientRepository } from '../interfaces/IPatientRepository';
@@ -10,9 +10,16 @@ export class PatientRepository implements IPatientRepository {
     this.ormRepository = AppDataSource.getRepository(Patient);
   }
 
-  async countByDoctorId(doctorId: string): Promise<number> {
+  async countByDoctorId(
+    doctorId: string,
+    start: Date,
+    end: Date
+  ): Promise<number> {
     return this.ormRepository.count({
-      where: { createdByDoctor: { id: doctorId } },
+      where: {
+        createdByDoctor: { id: doctorId },
+        createdAt: Between(start, end),
+      },
     });
   }
 
