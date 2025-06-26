@@ -9,6 +9,12 @@ export class PatientRepository implements IPatientRepository {
   constructor() {
     this.ormRepository = AppDataSource.getRepository(Patient);
   }
+  findByDoctorId(doctorId: string): Promise<Patient[]> {
+    return this.ormRepository.find({
+      where: { createdByDoctor: { id: doctorId } },
+      relations: ['createdByDoctor'],
+    });
+  }
 
   async create(patient: Patient): Promise<Patient> {
     const createPatient = this.ormRepository.create(patient);

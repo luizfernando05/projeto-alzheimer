@@ -7,4 +7,5 @@ export interface IPatientRepository {
   findAll(): Promise<Patient[]>;
   findByCelphone(phoneNumber: string): Promise<Patient | null>;
   update(patient: Patient): Promise<Patient>;
+  findByDoctorId(doctorId: string): Promise<Patient[]>;
 }
