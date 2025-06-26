@@ -123,7 +123,7 @@ const MainModule = () => {
                   </div>
                   {!loading && growth && (
                     <p className="font-roboto text-xs text-gray-11 mt-3">
-                      O número de pacientes{' '}
+                      O número de entrada de pacientes{' '}
                       {growth.percentage >= 0 ? 'aumentou' : 'diminuiu'} nos
                       últimos 7 dias.
                     </p>
