@@ -4,11 +4,13 @@ import CreatePatientController from '../controllers/CreatePatientController';
 import { ensureDoctorAuthenticated } from '../../shared/middlewares/ensureDoctorAuthenticated';
 import { ListPatientsByDoctorController } from '../controllers/ListPatientsByDoctorController';
 import { CountPatientsByDoctorController } from '../controllers/CountPatientsByDoctorController';
+import { GetPatientSummaryController } from '../controllers/GetPatientSummaryController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
 const listPatientsByDoctorController = new ListPatientsByDoctorController();
 const countPatientsByDoctorController = new CountPatientsByDoctorController();
+const getPatientSummaryController = new GetPatientSummaryController();
 
 patientRoutes.post(
   '/',
@@ -29,6 +31,10 @@ patientRoutes.get(
 
 patientRoutes.get('/count', ensureDoctorAuthenticated, (req, res, next) => {
   countPatientsByDoctorController.handle(req, res, next);
+});
+
+patientRoutes.get('/summary', ensureDoctorAuthenticated, (req, res, next) => {
+  getPatientSummaryController.handle(req, res, next);
 });
 
 export { patientRoutes };
