@@ -114,9 +114,13 @@ const MainModule = () => {
                           growth.percentage >= 0
                             ? 'text-green-600'
                             : 'text-red-600'
-                        } flex items-center gap-1`}
+                        } flex items-center gap-3`}
                       >
-                        {growth.percentage >= 0 ? <TrendUp /> : <TrendDown />}
+                        {growth.percentage >= 0 ? (
+                          <TrendUp size={12} />
+                        ) : (
+                          <TrendDown size={12} />
+                        )}
                         {Math.abs(growth.percentage).toFixed(2)}%
                       </span>
                     )}
@@ -128,6 +132,10 @@ const MainModule = () => {
                       últimos 7 dias.
                     </p>
                   )}
+
+                  <p className="text-xs text-gray-10 mt-2">
+                    Atualizado em {new Date().toLocaleDateString('pt-BR')}
+                  </p>
                 </div>
               </div>
             </div>
