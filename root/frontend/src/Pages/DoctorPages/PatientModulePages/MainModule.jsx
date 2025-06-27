@@ -4,6 +4,7 @@ import DoctorLayout from '../DoctorLayout';
 import { UsersFour } from '@phosphor-icons/react';
 import PatientOptionsPanel from '../../../Components/Patient/PatientOptionsPanel';
 import PatientSummaryCard from '../../../Components/Patient/PatientSummaryCard';
+import PatientSimplifiedList from '../../../Components/Patient/PatientSimplifiedList';
 
 const MainModule = () => {
   const [totalPatients, setTotalPatients] = useState(0);
@@ -62,6 +63,9 @@ const MainModule = () => {
                 growth={growth}
                 weeklyData={weeklyData}
               />
+            </div>
+            <div className="pb-6">
+              <PatientSimplifiedList />
             </div>
           </div>
         </div>
