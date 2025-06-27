@@ -45,14 +45,14 @@ const PatientSimplifiedList = () => {
         </h2>
       </div>
       <div className="overflow-x-auto">
-        <table className="min-w-full text-sm text-gray-11 font-roboto font-normal">
+        <table className="min-w-full mt-4 text-sm text-gray-11 font-roboto font-normal">
           <thead>
             <tr className="text-left">
-              <th className="py-3 px-6">Nome</th>
-              <th className="py-3 px-6">Data de cadastro</th>
-              <th className="py-3 px-6">Idade</th>
-              <th className="py-3 px-6">Nascimento</th>
-              <th className="py-3 px-6">Diagnóstico</th>
+              <th className="py-3 px-6 font-normal">Nome</th>
+              <th className="py-3 px-6 font-normal">Data de cadastro</th>
+              <th className="py-3 px-6 font-normal">Idade</th>
+              <th className="py-3 px-6 font-normal">Nascimento</th>
+              <th className="py-3 px-6 font-normal">Diagnóstico</th>
             </tr>
           </thead>
           <tbody>
