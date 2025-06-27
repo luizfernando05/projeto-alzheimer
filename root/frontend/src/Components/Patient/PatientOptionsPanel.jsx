@@ -1,4 +1,5 @@
 import {
+  Gear,
   HeadCircuit,
   ListNumbers,
   Microscope,
@@ -9,7 +10,10 @@ import {
 
 const PatientOptionsPanel = () => (
   <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
-    <div className="flex gap-6 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+    <div className="flex gap-3 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+      <div className="border border-gray-06 p-1 rounded-sm">
+        <Gear size={16} />
+      </div>
       <h2 className="text-base font-poppins font-normal text-gray-12">
         Opções
       </h2>

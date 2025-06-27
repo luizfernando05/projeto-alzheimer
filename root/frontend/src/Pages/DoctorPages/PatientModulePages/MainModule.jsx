@@ -46,7 +46,7 @@ const MainModule = () => {
       <section className="w-full">
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex gap-6 pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
-            <div className="bg-gray-02 pr-2 pl-2 pt-1 pb-1 border border-gray-06 rounded-sm text-gray-11">
+            <div className="bg-gray-02 pr-2 pl-2 pt-1 pb-1 border border-gray-06 rounded-sm text-gray-12">
               <UsersFour size={16} />
             </div>
             <h2 className="text-xl font-poppins font-normal text-gray-12">
