@@ -38,7 +38,7 @@ const PatientSimplifiedList = () => {
   }, []);
 
   return (
-    <div className="bg-gray-02 rounded-lg shadow border border-gray-06 overflow-hidden">
+    <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
       <div className="pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
         <h2 className="text-base font-poppins font-normal text-gray-12">
           Lista de pacientes
@@ -55,7 +55,7 @@ const PatientSimplifiedList = () => {
               <th className="py-3 px-6 font-normal">Diagnóstico</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-gray-12 font-roboto">
             {patients.map((patient) => {
               const imageUrl = patient.selfiePhoto
                 ? `http://localhost:3001/${patient.selfiePhoto.replace(
@@ -77,7 +77,14 @@ const PatientSimplifiedList = () => {
                         <User size={32} color="#1F2D5C" />
                       </div>
                     )}
-                    {patient.name}
+                    <div className="flex flex-col">
+                      <span className="text-gray-12 text-sm">
+                        {patient.name}
+                      </span>
+                      <span className="text-gray-11 text-xs">
+                        #{patient.id.slice(0, 8)}
+                      </span>
+                    </div>
                   </td>
                   <td className="py-3 px-6">
                     {format(new Date(patient.createdAt), 'dd/MM/yyyy', {
