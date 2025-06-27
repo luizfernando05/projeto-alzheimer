@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { User } from '@phosphor-icons/react';
+import { ListNumbers, User } from '@phosphor-icons/react';
 
 const calculateAge = (birthDate) => {
   const birth = new Date(birthDate);
@@ -39,7 +39,10 @@ const PatientSimplifiedList = () => {
 
   return (
     <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
-      <div className="pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+      <div className="pt-5 pb-5 pr-6 pl-6 border-b border-gray-06 flex items-center gap-3">
+        <div className="border border-gray-06 p-1 rounded-sm">
+          <ListNumbers size={16} />
+        </div>
         <h2 className="text-base font-poppins font-normal text-gray-12">
           Lista de pacientes
         </h2>
