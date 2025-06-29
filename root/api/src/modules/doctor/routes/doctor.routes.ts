@@ -8,12 +8,14 @@ import ListDoctorController from '../controllers/ListDoctorController';
 import { ensureDoctorAuthenticated } from '../../shared/middlewares/ensureDoctorAuthenticated';
 import DoctorRepository from '../repositories/DoctorRepository';
 import { AppError } from '../../shared/errors/AppError';
+import GetDoctorController from '../controllers/GetDoctorController';
 
 const doctorRoutes = Router();
 const createDoctorController = new CreateDoctorController();
 const loginDoctorController = new LoginDoctorController();
 const updateDoctorController = new UpdateDoctorController();
 const listDoctorController = new ListDoctorController();
+const getDoctorController = new GetDoctorController();
 
 doctorRoutes.post(
   '/',
@@ -36,6 +38,10 @@ doctorRoutes.put('/:id', (req, res, next) => {
 
 doctorRoutes.get('/list', (req, res, next) => {
   listDoctorController.handle(req, res, next);
+});
+
+doctorRoutes.get('/get/data', (req, res, next) => {
+  getDoctorController.hanlde(req, res, next);
 });
 
 doctorRoutes.get(
