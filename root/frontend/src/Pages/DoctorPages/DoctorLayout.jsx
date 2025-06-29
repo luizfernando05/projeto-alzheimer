@@ -2,9 +2,15 @@ import React, { useRef } from 'react';
 import DoctorHeader from '../../Components/Header/DoctorHeader';
 import DoctorQuickMenu from '../../Components/QuickMenu/DoctorQuickMenu';
 import DoctorSidebar from '../../Components/Sidebar/DoctorSidebar';
+import BlockMobilePage from './BlockMobilePage';
+import { isMobile } from 'react-device-detect';
 
 const DoctorLayout = ({ children }) => {
   const mainRef = useRef(null);
+
+  if (isMobile) {
+    return <BlockMobilePage />;
+  }
 
   return (
     <div className="flex h-screen w-screen">
