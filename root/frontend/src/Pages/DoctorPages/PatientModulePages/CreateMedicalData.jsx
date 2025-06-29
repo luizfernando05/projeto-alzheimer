@@ -13,6 +13,7 @@ const CreateMedicalData = () => {
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [formData, setFormData] = useState({
     smoking: '',
@@ -99,7 +100,7 @@ const CreateMedicalData = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3001/data/', {
+      const response = await fetch(`${apiUrl}/data/`, {
         method: 'POST',
         credentials: 'include',
         headers: {

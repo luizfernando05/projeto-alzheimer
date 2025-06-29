@@ -25,6 +25,7 @@ function DoctorSignin() {
   const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -83,7 +84,7 @@ function DoctorSignin() {
     if (selfiePhoto) data.append('selfiePhoto', selfiePhoto);
 
     try {
-      const response = await fetch('http://localhost:3001/doctor/', {
+      const response = await fetch(`${apiUrl}/doctor/`, {
         method: 'POST',
         body: data,
       });

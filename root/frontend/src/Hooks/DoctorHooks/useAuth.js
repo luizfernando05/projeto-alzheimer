@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 export function useAuth() {
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch('http://localhost:3001/doctor/profile', {
+    fetch(`${apiUrl}/doctor/profile`, {
       credentials: 'include',
     })
       .then(async (res) => {

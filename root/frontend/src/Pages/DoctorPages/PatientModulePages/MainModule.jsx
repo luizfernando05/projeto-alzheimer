@@ -11,25 +11,20 @@ const MainModule = () => {
   const [growth, setGrowth] = useState(null);
   const [loading, setLoading] = useState(true);
   const [weeklyData, setWeeklyData] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const summary = await axios.get(
-          'http://localhost:3001/patient/summary',
-          {
-            withCredentials: true,
-          }
-        );
+        const summary = await axios.get(`${apiUrl}/patient/summary`, {
+          withCredentials: true,
+        });
         setTotalPatients(summary.data.total);
         setGrowth(summary.data.growth);
 
-        const weekly = await axios.get(
-          'http://localhost:3001/patient/last-7-days',
-          {
-            withCredentials: true,
-          }
-        );
+        const weekly = await axios.get(`${apiUrl}/patient/last-7-days`, {
+          withCredentials: true,
+        });
         setWeeklyData(weekly.data);
       } catch (error) {
         console.error('Erro ao buscar dados:', error);

@@ -13,11 +13,11 @@ import SuccessToast from '../../../Components/Form/SuccessToast';
 
 const CreatePatient = () => {
   const navigate = useNavigate();
-
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [selfiePhoto, setSelfiePhoto] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const [formData, setFormData] = useState({
     name: '',
@@ -65,7 +65,7 @@ const CreatePatient = () => {
     if (selfiePhoto) form.append('selfiePhoto', selfiePhoto);
 
     try {
-      const response = await fetch('http://localhost:3001/patient/', {
+      const response = await fetch(`${apiUrl}/patient/`, {
         method: 'POST',
         credentials: 'include',
         body: form,
