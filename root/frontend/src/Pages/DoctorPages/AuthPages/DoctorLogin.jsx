@@ -5,8 +5,11 @@ import InputField from '../../../Components/Form/InputField';
 import PasswordField from '../../../Components/Form/PasswordField';
 import { Link } from 'react-router-dom';
 import MainHeader from '../../../Components/Header/MainHeader';
+import { useRedirectIfAuthenticated } from '../../../Hooks/DoctorHooks/useRedirectIfAuthenticated';
 
 export default function DoctorLogin() {
+  useRedirectIfAuthenticated();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
