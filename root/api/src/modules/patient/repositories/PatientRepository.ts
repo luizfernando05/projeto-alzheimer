@@ -70,6 +70,7 @@ export class PatientRepository implements IPatientRepository {
     return this.ormRepository.find({
       where: { createdByDoctor: { id: doctorId } },
       relations: ['createdByDoctor'],
+      order: { createdAt: 'DESC' },
     });
   }
 
