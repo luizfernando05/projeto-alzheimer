@@ -7,6 +7,7 @@ import MainModule from './Pages/DoctorPages/PatientModulePages/MainModule';
 import CreatePatient from './Pages/DoctorPages/PatientModulePages/CreatePatient';
 import { ProtectedRoute } from './Components/ProtectedRoute';
 import CreateMedicalData from './Pages/DoctorPages/PatientModulePages/CreateMedicalData';
+import DoctorProfile from './Pages/DoctorPages/DoctorProfile';
 
 function App() {
   return (
@@ -37,6 +38,14 @@ function App() {
         element={
           <ProtectedRoute>
             <CreateMedicalData />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/doctor/profile"
+        element={
+          <ProtectedRoute>
+            <DoctorProfile />
           </ProtectedRoute>
         }
       />

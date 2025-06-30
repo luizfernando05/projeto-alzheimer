@@ -8,8 +8,11 @@ import {
 } from '@phosphor-icons/react';
 import DoctorProfile from '../../Assets/DoctorProfile.svg?react';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const DoctorHeader = () => {
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     try {
       await fetch('http://localhost:3001/doctor/logout', {
@@ -54,7 +57,10 @@ const DoctorHeader = () => {
           <DoctorProfile size={24} />
           <div className="absolute right-0 mt-2 w-40 bg-gray-02/70 shadow-lg border border-gray-06 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
             <ul className="flex flex-col font-roboto text-sm text-gray-11">
-              <li className="flex gap-3 items-center px-4 py-2 hover:bg-gray-04 hover:text-gray-12 cursor-pointer">
+              <li
+                className="flex gap-3 items-center px-4 py-2 hover:bg-gray-04 hover:text-gray-12 cursor-pointer"
+                onClick={() => navigate('/doctor/profile')}
+              >
                 <User size={14} />
                 Ver Perfil
               </li>
