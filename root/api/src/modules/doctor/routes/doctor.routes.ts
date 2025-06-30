@@ -40,7 +40,7 @@ doctorRoutes.get('/list', (req, res, next) => {
   listDoctorController.handle(req, res, next);
 });
 
-doctorRoutes.get('/get/data', (req, res, next) => {
+doctorRoutes.get('/get/data', ensureDoctorAuthenticated, (req, res, next) => {
   getDoctorController.hanlde(req, res, next);
 });
 
