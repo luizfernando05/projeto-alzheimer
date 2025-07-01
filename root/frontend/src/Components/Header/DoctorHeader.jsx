@@ -6,16 +6,34 @@ import {
   Wind,
   SignOut,
 } from '@phosphor-icons/react';
-import DoctorProfile from '../../Assets/DoctorProfile.svg?react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const DoctorHeader = () => {
   const navigate = useNavigate();
+  const [doctor, setDoctor] = useState(null);
+
+  useEffect(() => {
+    const fetchDoctor = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/doctor/get/data`, {
+          credentials: 'include',
+        });
+
+        const data = await response.json();
+        setDoctor(data);
+      } catch (error) {
+        console.error('Erro ao buscar dados do médico:', error);
+      }
+    };
+
+    fetchDoctor();
+  }, []);
 
   const handleLogout = async () => {
     try {
-      await fetch('http://localhost:3001/doctor/logout', {
+      await fetch(`${apiUrl}/doctor/logout`, {
         method: 'POST',
         credentials: 'include',
       });
@@ -54,7 +72,17 @@ const DoctorHeader = () => {
           <Gear size={24} />
         </button>
         <button className="border border-indigo-09 rounded-full p-1 hover:border-indigo-12 transition relative group cursor-pointer">
-          <DoctorProfile size={24} />
+          {doctor?.selfiePhoto ? (
+            <img
+              src={`${apiUrl}/${doctor.selfiePhoto.replace(/\\/g, '/')}`}
+              alt="Foto do médico"
+              className="w-6 h-6 rounded-full object-cover"
+            />
+          ) : (
+            <div className="w-6 h-6 rounded-full bg-gray-05 flex items-center justify-center text-xs text-gray-01">
+              ?
+            </div>
+          )}
           <div className="absolute right-0 mt-2 w-40 bg-gray-02/70 shadow-lg border border-gray-06 rounded-md opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition-opacity duration-200 z-50">
             <ul className="flex flex-col font-roboto text-sm text-gray-11">
               <li
