@@ -23,16 +23,6 @@ const WeeklyPatientChart = ({ data, color }) => {
             dot={{ r: 2 }}
             activeDot={{ r: 4 }}
           />
-          <text
-            x="50%"
-            y="10"
-            textAnchor="middle"
-            dominantBaseline="central"
-            className="text-xs"
-            fill="#646464"
-          >
-            Entradas nos últimos 7 dias
-          </text>
           <defs>
             <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor={color} stopOpacity={0.8} />
