@@ -60,7 +60,7 @@ const DoctorHeader = () => {
         <input
           type="text"
           placeholder="Pesquisar"
-          className="w-full h-10 pl-10 pr-4 font-roboto text-sm border border-gray-05 rounded-lg bg-gray-01 focus:outline-none focus:ring-1 focus:ring-gray-05"
+          className="w-full h-10 pl-10 text-gray-12 pr-4 font-roboto text-sm border border-gray-05 rounded-lg bg-gray-01 focus:outline-none focus:ring-1 focus:ring-gray-05"
         />
       </div>
 
