@@ -40,7 +40,7 @@ const PatientSimplifiedList = () => {
   return (
     <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
       <div className="pt-5 pb-5 pr-6 pl-6 border-b border-gray-06 flex items-center gap-3">
-        <div className="border border-gray-06 p-1 rounded-sm">
+        <div className="border border-gray-06 p-1 rounded-sm text-gray-12">
           <ListNumbers size={16} />
         </div>
         <h2 className="text-base font-poppins font-normal text-gray-12">
