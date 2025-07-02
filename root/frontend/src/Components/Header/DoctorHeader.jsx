@@ -5,6 +5,8 @@ import {
   User,
   Wind,
   SignOut,
+  Sun,
+  Moon,
 } from '@phosphor-icons/react';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -13,8 +15,14 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const DoctorHeader = () => {
   const navigate = useNavigate();
   const [doctor, setDoctor] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const isDark = savedTheme === 'dark';
+    document.documentElement.classList.toggle('dark', isDark);
+    setDarkMode(isDark);
+
     const fetchDoctor = async () => {
       try {
         const response = await fetch(`${apiUrl}/doctor/get/data`, {
@@ -70,6 +78,16 @@ const DoctorHeader = () => {
         </button>
         <button className="hover:text-gray-12 transition">
           <Gear size={24} />
+        </button>
+        <button
+          onClick={() => {
+            const isDark = document.documentElement.classList.toggle('dark');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            setDarkMode(isDark);
+          }}
+          className="hover:text-gray-12 transition"
+        >
+          {darkMode ? <Sun size={24} /> : <Moon size={24} />}
         </button>
         <button className="border border-indigo-09 rounded-full p-1 hover:border-indigo-12 transition relative group cursor-pointer">
           {doctor?.selfiePhoto ? (

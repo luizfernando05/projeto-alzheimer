@@ -30,7 +30,7 @@ const DoctorProfile = () => {
   const handleCancel = () => [setForm(doctor)];
 
   const handleSubmit = (e) => {
-    e.preventeDefault();
+    e.preventDefault();
     console.log('Enviar para api');
   };
 

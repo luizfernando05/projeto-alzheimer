@@ -35,34 +35,6 @@
   --color-indigo-12: var(--indigo-12);
 }
 
-.dark {
-  --color-gray-01: var(--gray-dark-1);
-  --color-gray-02: var(--gray-dark-2);
-  --color-gray-03: var(--gray-dark-3);
-  --color-gray-04: var(--gray-dark-4);
-  --color-gray-05: var(--gray-dark-5);
-  --color-gray-06: var(--gray-dark-6);
-  --color-gray-07: var(--gray-dark-7);
-  --color-gray-08: var(--gray-dark-8);
-  --color-gray-09: var(--gray-dark-9);
-  --color-gray-10: var(--gray-dark-10);
-  --color-gray-11: var(--gray-dark-11);
-  --color-gray-12: var(--gray-dark-12);
-
-  --color-indigo-01: var(--indigo-dark-1);
-  --color-indigo-02: var(--indigo-dark-2);
-  --color-indigo-03: var(--indigo-dark-3);
-  --color-indigo-04: var(--indigo-dark-4);
-  --color-indigo-05: var(--indigo-dark-5);
-  --color-indigo-06: var(--indigo-dark-6);
-  --color-indigo-07: var(--indigo-dark-7);
-  --color-indigo-08: var(--indigo-dark-8);
-  --color-indigo-09: var(--indigo-dark-9);
-  --color-indigo-10: var(--indigo-dark-10);
-  --color-indigo-11: var(--indigo-dark-11);
-  --color-indigo-12: var(--indigo-dark-12);
-}
-
 body {
   background-color: var(--gray-2);
 }
