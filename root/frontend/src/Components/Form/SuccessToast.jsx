@@ -25,13 +25,13 @@ const SuccessToast = ({ message = 'Sucesso!', duration = 4000, onClose }) => {
   }, [duration, onClose]);
 
   return (
-    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] md:w-[400px] bg-gray-02/70 border border-gray-06 text-green-800 rounded-lg shadow-md overflow-hidden animate-slide-down">
+    <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 w-[90%] md:w-[400px] bg-gray-02/70 border border-gray-06 text-green-09 rounded-lg shadow-md overflow-hidden animate-slide-down">
       <div className="flex items-center gap-3 px-4 py-3">
-        <CheckCircle size={24} className="text-green-600" />
+        <CheckCircle size={24} className="text-green-09" />
         <span className="text-sm font-medium">{message}</span>
       </div>
       <div
-        className="h-1 bg-green-500 transition-all duration-100 ease-linear"
+        className="h-1 bg-green-09 transition-all duration-100 ease-linear"
         style={{ width: `${progress}%` }}
       />
     </div>
