@@ -76,8 +76,8 @@ const PatientSimplifiedList = () => {
                         className="w-10 h-10 object-cover border border-indigo-09 rounded-sm"
                       />
                     ) : (
-                      <div className="w-10 h-10 flex items-center justify-center bg-gray-03 border border-indigo-09 rounded-sm">
-                        <User size={32} color="#1F2D5C" />
+                      <div className="w-10 h-10 flex items-center justify-center bg-gray-03 border border-indigo-09 rounded-sm text-indigo-11">
+                        <User size={32} />
                       </div>
                     )}
                     <div className="flex flex-col">
