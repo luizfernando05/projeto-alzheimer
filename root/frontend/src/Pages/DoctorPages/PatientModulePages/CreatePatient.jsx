@@ -221,7 +221,7 @@ const CreatePatient = () => {
               />
             </div>
             {errorMessage && (
-              <p className="font-roboto font-normal text-xs text-red-500 text-center mb-4">
+              <p className="font-roboto font-normal text-xs text-red-09 text-center mb-4">
                 {errorMessage}
               </p>
             )}
@@ -232,7 +232,7 @@ const CreatePatient = () => {
               >
                 Cadastrar paciente
               </button>
-              <button className="bg-red-50 text-red-600 border border-red-400 px-6 py-2 rounded-md hover:bg-red-100 shadow-xs">
+              <button className="bg-red-03 text-red-12 border border-red-06 px-6 py-2 rounded-md hover:bg-red-04 shadow-xs">
                 Cancelar
               </button>
             </div>
