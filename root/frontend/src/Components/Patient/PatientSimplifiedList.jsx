@@ -17,16 +17,14 @@ const calculateAge = (birthDate) => {
 
 const PatientSimplifiedList = () => {
   const [patients, setPatients] = useState([]);
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await axios.get(
-          'http://localhost:3001/patient/doctors/list',
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${apiUrl}/patient/doctors/list`, {
+          withCredentials: true,
+        });
         const top10 = response.data.slice(0, 10);
         setPatients(top10);
       } catch (error) {
