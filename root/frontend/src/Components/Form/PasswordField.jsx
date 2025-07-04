@@ -19,9 +19,7 @@ export default function PasswordField({
           type={showPassword ? 'text' : 'password'}
           className={`w-full rounded-sm border p-3 pr-10 font-roboto text-gray-12 text-sm font-normal focus:outline-indigo-07
             ${
-              hasError
-                ? 'border-red-500 bg-red-50'
-                : 'border-gray-06 bg-gray-02'
+              hasError ? 'border-red-09 bg-red-03' : 'border-gray-06 bg-gray-02'
             }
           `}
           {...props}
@@ -35,7 +33,7 @@ export default function PasswordField({
         </button>
       </div>
       {hasError && (
-        <p className="text-xs text-red-500 mt-1">
+        <p className="text-xs text-red-09 mt-1">
           {errorMessage || 'Campo obrigatório'}
         </p>
       )}

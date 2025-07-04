@@ -37,7 +37,7 @@ export default function FileUpload({
         className={`flex items-center gap-2 rounded-sm border p-3 cursor-pointer transition font-roboto text-gray-11 text-sm font-normal
           ${
             hasError
-              ? 'border-red-500 bg-red-50 hover:bg-red-100'
+              ? 'border-red-09 bg-red-03 hover:bg-red-04'
               : 'border-gray-06 bg-gray-02 hover:bg-gray-03'
           }
         `}
@@ -55,7 +55,7 @@ export default function FileUpload({
       />
 
       {hasError && (
-        <p className="text-xs text-red-500 mt-1">
+        <p className="text-xs text-red-09 mt-1">
           {errorMessage || 'Campo obrigatório'}
         </p>
       )}

@@ -57,12 +57,12 @@ export default function InputField({
             </div>
           </div>
         )}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-09 ml-1">*</span>}
       </label>
       <input
         className={`rounded-sm border p-3 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07
           ${
-            hasError ? 'border-red-500 bg-red-50' : 'border-gray-06 bg-gray-02'
+            hasError ? 'border-red-09 bg-red-03' : 'border-gray-06 bg-gray-02'
           }`}
         type="text"
         placeholder={placeholder}
@@ -73,7 +73,7 @@ export default function InputField({
         {...props}
       />
       {hasError && (
-        <p className="text-xs text-red-500 mt-1">
+        <p className="text-xs text-red-09 mt-1">
           {errorMessage || 'Campo obrigatório'}
         </p>
       )}

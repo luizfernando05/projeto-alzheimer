@@ -24,15 +24,13 @@ function SelectField({
             </div>
           </div>
         )}
-        {required && <span className="text-red-500 ml-1">*</span>}
+        {required && <span className="text-red-09 ml-1">*</span>}
       </label>
       <div className="relative">
         <select
           className={`appearance-none w-full rounded-sm border p-3 pr-10 font-roboto text-gray-11 text-sm font-normal focus:outline-indigo-07
             ${
-              hasError
-                ? 'border-red-500 bg-red-50'
-                : 'border-gray-06 bg-gray-02'
+              hasError ? 'border-red-09 bg-red-03' : 'border-gray-06 bg-gray-02'
             }
           `}
           {...props}
@@ -50,7 +48,7 @@ function SelectField({
         />
       </div>
       {hasError && (
-        <p className="text-xs text-red-500 mt-1">
+        <p className="text-xs text-red-09 mt-1">
           {errorMessage || 'Campo obrigatório'}
         </p>
       )}
