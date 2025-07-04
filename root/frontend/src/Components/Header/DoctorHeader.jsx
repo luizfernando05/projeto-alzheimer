@@ -111,7 +111,7 @@ const DoctorHeader = () => {
                 Ver Perfil
               </li>
               <li
-                className="flex gap-3 items-center px-4 py-2 hover:bg-red-100 hover:text-red-950 cursor-pointer"
+                className="flex gap-3 items-center px-4 py-2 hover:bg-red-03 hover:text-red-11 cursor-pointer"
                 onClick={handleLogout}
               >
                 <SignOut size={14} />
