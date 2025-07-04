@@ -23,7 +23,7 @@ const PatientSummaryCard = ({ loading, totalPatients, growth, weeklyData }) => {
             {!loading && growth && (
               <span
                 className={`font-roboto text-xs font-medium border border-gray-06 p-1 rounded-sm ${
-                  growth.percentage >= 0 ? 'text-green-600' : 'text-red-600'
+                  growth.percentage >= 0 ? 'text-green-09' : 'text-red-09'
                 } flex items-center gap-3`}
               >
                 {growth.percentage >= 0 ? (
