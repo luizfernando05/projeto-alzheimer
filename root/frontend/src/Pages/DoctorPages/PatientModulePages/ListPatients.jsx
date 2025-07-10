@@ -8,11 +8,13 @@ import {
   Funnel,
   MagnifyingGlass,
   User,
+  Sparkle,
+  PencilSimple,
+  Trash,
 } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import { ArrowRight } from '@phosphor-icons/react/dist/ssr';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -192,6 +194,7 @@ const ListPatients = () => {
                 <th className="py-3 font-normal">Idade</th>
                 <th className="py-3 font-normal">Nascimento</th>
                 <th className="py-3 font-normal">Diagnóstico</th>
+                <th className="py-3 font-normal">Ações</th>
               </tr>
             </thead>
             <tbody className="text-gray-12">
@@ -233,6 +236,28 @@ const ListPatients = () => {
                       })}
                     </td>
                     <td className="py-3">—</td> {/* predição futura */}
+                    <td className="py-3">
+                      <div className="flex items-center gap-4 pl-2">
+                        <button
+                          onClick={() => alert('Favoritar')}
+                          className="text-indigo-10 hover:text-indigo-11"
+                        >
+                          <Sparkle size={20} weight="regular" />
+                        </button>
+                        <button
+                          onClick={() => navigate(`/patients/${p.id}/edit`)}
+                          className="text-gray-12 hover:text-gray-11"
+                        >
+                          <PencilSimple size={20} weight="regular" />
+                        </button>
+                        <button
+                          onClick={() => alert('Excluir paciente')}
+                          className="text-red-09 hover:text-red-12"
+                        >
+                          <Trash size={20} weight="regular" />
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}
