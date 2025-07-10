@@ -145,7 +145,7 @@ export class PatientRepository implements IPatientRepository {
 
       const age = Math.floor(
         (Date.now() - new Date(patient.birthDate).getTime()) /
-          (100 * 60 * 60 * 24 * 365.25)
+          (1000 * 60 * 60 * 24 * 365.25)
       );
 
       return (!minAge || age >= minAge) && (!maxAge || age <= maxAge);
