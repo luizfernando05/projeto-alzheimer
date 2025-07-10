@@ -17,10 +17,9 @@ export class ListPatientsByDoctorWithFiltersController {
       }
 
       const filters = {
-        page: parseInt(req.query.page as string) || 5,
+        page: parseInt(req.query.page as string) || 1,
         limit: parseInt(req.query.limit as string) || 10,
         gender: req.query.gender as string,
-        prediction: req.query.prediction as string,
         minAge: req.query.minAge
           ? parseInt(req.query.minAge as string)
           : undefined,
@@ -34,16 +33,17 @@ export class ListPatientsByDoctorWithFiltersController {
       };
 
       const patientRepository = new PatientRepository();
-      const listPatientsByDoctorWithFiltersUseCase =
+      const listPatientsByDoctorUseCase =
         new ListPatientsByDoctorWithFiltersUseCase(patientRepository);
-      const result = await listPatientsByDoctorWithFiltersUseCase.execute(
+
+      const result = await listPatientsByDoctorUseCase.execute(
         doctorId,
         filters
       );
 
       return res.status(200).json(result);
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 }

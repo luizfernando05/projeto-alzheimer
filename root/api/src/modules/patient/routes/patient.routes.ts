@@ -6,6 +6,7 @@ import { ListPatientsByDoctorController } from '../controllers/ListPatientsByDoc
 import { CountPatientsByDoctorController } from '../controllers/CountPatientsByDoctorController';
 import { GetPatientSummaryController } from '../controllers/GetPatientSummaryController';
 import GetPatientsByLast7DaysController from '../controllers/GetPatientsByLast7DaysController';
+import ListPatientsByDoctorWithFiltersController from '../controllers/ListPatientsByDoctorWithFiltersController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -13,6 +14,8 @@ const listPatientsByDoctorController = new ListPatientsByDoctorController();
 const countPatientsByDoctorController = new CountPatientsByDoctorController();
 const getPatientSummaryController = new GetPatientSummaryController();
 const getPatientsByLast7DaysController = new GetPatientsByLast7DaysController();
+const listPatientsByDoctorWithFiltersController =
+  new ListPatientsByDoctorWithFiltersController();
 
 patientRoutes.post(
   '/',
@@ -28,6 +31,14 @@ patientRoutes.get(
   ensureDoctorAuthenticated,
   (req, res, next) => {
     listPatientsByDoctorController.hanlde(req, res, next);
+  }
+);
+
+patientRoutes.get(
+  '/doctors/list/filters',
+  ensureDoctorAuthenticated,
+  (req, res, next) => {
+    listPatientsByDoctorWithFiltersController.handle(req, res, next);
   }
 );
 
