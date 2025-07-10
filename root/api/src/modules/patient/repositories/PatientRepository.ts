@@ -1,8 +1,13 @@
-import { Between, Repository } from 'typeorm';
+import {
+  Between,
+  FindOptionsWhere,
+  MoreThanOrEqual,
+  Repository,
+} from 'typeorm';
 import { AppDataSource } from '../../../config/data-source';
 import Patient from '../../../domain/entities/Patient';
 import { IPatientRepository } from '../interfaces/IPatientRepository';
-import { startOfDay, subDays, addDays } from 'date-fns';
+import { startOfDay, subDays, addDays, min } from 'date-fns';
 
 export class PatientRepository implements IPatientRepository {
   private ormRepository: Repository<Patient>;
@@ -97,5 +102,55 @@ export class PatientRepository implements IPatientRepository {
 
   async update(patient: Patient): Promise<Patient> {
     return this.ormRepository.save(patient);
+  }
+
+  async findByDoctorWithFilters(
+    doctorId: string,
+    {
+      page = 1,
+      limit = 10,
+      gender,
+      minAge,
+      maxAge,
+      startDate,
+      endDate,
+      sortBy = 'createdAt',
+      sortOrder = 'DESC',
+    }: any
+  ): Promise<{ data: Patient[]; total: number }> {
+    const skip = (page - 1) * limit;
+    const where: FindOptionsWhere<Patient> = {
+      createdByDoctor: { id: doctorId },
+    };
+
+    if (gender) where.gender = gender;
+
+    if (startDate && endDate) {
+      where.createdAt = Between(new Date(startDate), new Date(endDate));
+    } else if (startDate) {
+      where.createdAt = MoreThanOrEqual(new Date(startDate));
+    } else if (endDate) {
+      where.createdAt = MoreThanOrEqual(new Date(endDate));
+    }
+
+    const [data, total] = await this.ormRepository.findAndCount({
+      where,
+      order: { [sortBy]: sortOrder },
+      skip,
+      take: limit,
+    });
+
+    const filtered = data.filter((patient) => {
+      if (!patient.birthDate) return true;
+
+      const age = Math.floor(
+        (Date.now() - new Date(patient.birthDate).getTime()) /
+          (100 * 60 * 60 * 24 * 365.25)
+      );
+
+      return (!minAge || age >= minAge) && (!maxAge || age <= maxAge);
+    });
+
+    return { data: filtered, total };
   }
 }

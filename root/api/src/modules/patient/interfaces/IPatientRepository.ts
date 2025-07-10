@@ -9,6 +9,20 @@ export interface IPatientRepository {
   update(patient: Patient): Promise<Patient>;
   findByDoctorId(doctorId: string): Promise<Patient[]>;
   countByDoctorId(doctorId: string): Promise<number>;
+  findByDoctorWithFilters(
+    doctorId: string,
+    filters: {
+      page?: number;
+      limit?: number;
+      gender?: string;
+      minAge?: number;
+      maxAge?: number;
+      startDate?: string;
+      endDate?: string;
+      sortBy?: 'createdAt';
+      sortOrder?: 'ASC' | 'DESC';
+    }
+  ): Promise<{ data: Patient[]; total: number }>;
   countCreatedBetweenDates(
     doctorId: string,
     start: Date,
