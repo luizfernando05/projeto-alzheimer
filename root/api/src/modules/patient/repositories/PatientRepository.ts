@@ -154,3 +154,5 @@ export class PatientRepository implements IPatientRepository {
     return { data: filtered, total };
   }
 }
+
+export default PatientRepository;
