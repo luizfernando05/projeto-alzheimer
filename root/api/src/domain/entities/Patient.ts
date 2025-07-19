@@ -4,10 +4,12 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import Doctor from './Doctor';
+import MedicalData from './MedicalData';
 
 @Entity('patients')
 export class Patient {
@@ -65,6 +67,9 @@ export class Patient {
   @ManyToOne(() => Doctor)
   @JoinColumn({ name: 'created_by_doctor_id' })
   createdByDoctor: Doctor;
+
+  @OneToMany(() => MedicalData, (md) => md.patientId)
+  medicalData: MedicalData[];
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

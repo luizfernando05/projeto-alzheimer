@@ -1,3 +1,4 @@
+import MedicalData from '../../../domain/entities/MedicalData';
 import Patient from '../../../domain/entities/Patient';
 
 export interface IPatientRepository {
@@ -9,6 +10,7 @@ export interface IPatientRepository {
   update(patient: Patient): Promise<Patient>;
   findByDoctorId(doctorId: string): Promise<Patient[]>;
   countByDoctorId(doctorId: string): Promise<number>;
+
   findByDoctorWithFilters(
     doctorId: string,
     filters: {
@@ -32,4 +34,9 @@ export interface IPatientRepository {
   getCountByDateLast7Days(
     doctorId: string
   ): Promise<{ date: string; count: number }[]>;
+
+  findByIdAndDoctor(
+    patientId: string,
+    doctorId: string
+  ): Promise<Patient | null>;
 }

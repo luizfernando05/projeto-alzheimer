@@ -8,6 +8,7 @@ import { GetPatientSummaryController } from '../controllers/GetPatientSummaryCon
 import GetPatientsByLast7DaysController from '../controllers/GetPatientsByLast7DaysController';
 import ListPatientsByDoctorWithFiltersController from '../controllers/ListPatientsByDoctorWithFiltersController';
 import UpdatePatientController from '../controllers/UpdatePatientController';
+import { GetPatientDetailsController } from '../controllers/GetPatientDetailsController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -18,6 +19,7 @@ const getPatientsByLast7DaysController = new GetPatientsByLast7DaysController();
 const listPatientsByDoctorWithFiltersController =
   new ListPatientsByDoctorWithFiltersController();
 const updatePatientController = new UpdatePatientController();
+const getPatientDetailsController = new GetPatientDetailsController();
 
 patientRoutes.post(
   '/',
@@ -25,6 +27,14 @@ patientRoutes.post(
   upload.fields([{ name: 'selfiePhoto', maxCount: 1 }]),
   (req, res, next) => {
     createPatientController.handle(req, res, next);
+  }
+);
+
+patientRoutes.get(
+  '/:patientId',
+  ensureDoctorAuthenticated,
+  (req, res, next) => {
+    getPatientDetailsController.handle(req, res, next);
   }
 );
 
