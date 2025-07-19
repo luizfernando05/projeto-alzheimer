@@ -110,6 +110,7 @@ export class PatientRepository implements IPatientRepository {
       page = 1,
       limit = 10,
       gender,
+      name,
       minAge,
       maxAge,
       startDate,
@@ -124,6 +125,7 @@ export class PatientRepository implements IPatientRepository {
     };
 
     if (gender) where.gender = gender;
+    if (name) where.name = name;
 
     if (startDate && endDate) {
       where.createdAt = Between(new Date(startDate), new Date(endDate));

@@ -20,6 +20,7 @@ export class ListPatientsByDoctorWithFiltersController {
         page: parseInt(req.query.page as string) || 1,
         limit: parseInt(req.query.limit as string) || 10,
         gender: req.query.gender as string,
+        name: req.query.name as string,
         minAge: req.query.minAge
           ? parseInt(req.query.minAge as string)
           : undefined,
