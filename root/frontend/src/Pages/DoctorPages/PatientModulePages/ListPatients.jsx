@@ -39,7 +39,7 @@ const ListPatients = () => {
     maxAge: '',
     gender: '',
     prediction: '',
-    sort: 'desc',
+    sortOrder: 'DESC',
   });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -103,7 +103,10 @@ const ListPatients = () => {
             />
             <input
               type="text"
+              name="name"
               placeholder="Pesquisar"
+              value={filters.name}
+              onChange={handleChange}
               className="w-full h-10 pl-10 text-gray-11 pr-4 font-roboto text-sm border border-gray-05 rounded-lg bg-gray-01 focus:outline-none focus:ring-1 focus:ring-gray-05"
             />
           </div>
@@ -170,13 +173,13 @@ const ListPatients = () => {
             </div>
             <div className="relative w-52">
               <select
-                name="sort"
-                value={filters.sort}
+                name="sortOrder"
+                value={filters.sortOrder}
                 onChange={handleChange}
                 className="w-full h-full appearance-none border border-gray-05 bg-gray-01 rounded-lg pr-4 pl-4 font-roboto text-sm text-gray-11 focus:outline-none focus:ring-1 focus:ring-gray-05"
               >
-                <option value="desc">Mais recentes</option>
-                <option value="asc">Mais antigos</option>
+                <option value="DESC">Mais recentes</option>
+                <option value="ASC">Mais antigos</option>
               </select>
               <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-11">
                 <CaretDown size={16} />
