@@ -10,6 +10,7 @@ import CreateMedicalData from './Pages/DoctorPages/PatientModulePages/CreateMedi
 import DoctorProfile from './Pages/DoctorPages/DoctorProfile';
 import PredictPage from './Pages/DoctorPages/PredictionModulePages/PredictPage';
 import ListPatients from './Pages/DoctorPages/PatientModulePages/ListPatients';
+import EditPatient from './Pages/DoctorPages/PatientModulePages/EditPatient';
 
 function App() {
   return (
@@ -64,6 +65,14 @@ function App() {
         element={
           <ProtectedRoute>
             <PredictPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/doctor/patient/edit/:patientId"
+        element={
+          <ProtectedRoute>
+            <EditPatient />
           </ProtectedRoute>
         }
       />

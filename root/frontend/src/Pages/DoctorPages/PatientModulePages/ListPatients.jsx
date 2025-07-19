@@ -248,7 +248,9 @@ const ListPatients = () => {
                           <Sparkle size={20} weight="regular" />
                         </button>
                         <button
-                          onClick={() => navigate(`/patient/edit/${p.id}`)}
+                          onClick={() =>
+                            navigate(`/doctor/patient/edit/${p.id}`)
+                          }
                           className="text-gray-12 hover:text-gray-11"
                         >
                           <PencilSimple size={20} weight="regular" />
