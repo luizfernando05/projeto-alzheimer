@@ -31,18 +31,6 @@ patientRoutes.post(
 );
 
 patientRoutes.get(
-  '/:patientId',
-  ensureDoctorAuthenticated,
-  (req, res, next) => {
-    getPatientDetailsController.handle(req, res, next);
-  }
-);
-
-patientRoutes.put('/:id', (req, res, next) => {
-  updatePatientController.handle(req, res, next);
-});
-
-patientRoutes.get(
   '/doctors/list',
   ensureDoctorAuthenticated,
   (req, res, next) => {
@@ -73,5 +61,17 @@ patientRoutes.get(
     getPatientsByLast7DaysController.handle(req, res, next);
   }
 );
+
+patientRoutes.get(
+  '/:patientId',
+  ensureDoctorAuthenticated,
+  (req, res, next) => {
+    getPatientDetailsController.handle(req, res, next);
+  }
+);
+
+patientRoutes.put('/:id', (req, res, next) => {
+  updatePatientController.handle(req, res, next);
+});
 
 export { patientRoutes };
