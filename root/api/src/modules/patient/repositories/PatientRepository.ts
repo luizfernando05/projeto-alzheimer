@@ -1,6 +1,7 @@
 import {
   Between,
   FindOptionsWhere,
+  ILike,
   MoreThanOrEqual,
   Repository,
 } from 'typeorm';
@@ -125,7 +126,7 @@ export class PatientRepository implements IPatientRepository {
     };
 
     if (gender) where.gender = gender;
-    if (name) where.name = name;
+    if (name) where.name = ILike(`%${name}%`);
 
     if (startDate && endDate) {
       where.createdAt = Between(new Date(startDate), new Date(endDate));
