@@ -104,7 +104,7 @@ const ListPatients = () => {
             <input
               type="text"
               name="name"
-              placeholder="Pesquisar"
+              placeholder="Pesquisar por nome"
               value={filters.name}
               onChange={handleChange}
               className="w-full h-10 pl-10 text-gray-11 pr-4 font-roboto text-sm border border-gray-05 rounded-lg bg-gray-01 focus:outline-none focus:ring-1 focus:ring-gray-05"
@@ -118,7 +118,7 @@ const ListPatients = () => {
               <Funnel size={16} />
             </div>
             <div className="w-px h-full bg-gray-06" />
-            <div className="flex items-center px-1">Filtrar</div>
+            <div className="flex items-center px-1">Inserir filtros</div>
           </button>
         </div>
 
