@@ -9,6 +9,7 @@ import { estadosBrasileiros } from '../../../Utils/states';
 import { ethnicity } from '../../../Utils/ethnicity';
 import { gender } from '../../../Utils/gender';
 import { education } from '../../../Utils/education';
+import SuccessToast from '../../../Components/Form/SuccessToast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -17,6 +18,7 @@ const EditPatient = () => {
   const navigate = useNavigate();
 
   const [patientData, setPatientData] = useState(null);
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -59,8 +61,8 @@ const EditPatient = () => {
         withCredentials: true,
       });
 
-      alert('Paciente atualizado com sucesso!');
-      navigate(-1);
+      setShowToast(true);
+      setTimeout(4000);
     } catch (error) {
       console.error('Erro ao atualizar paciente:', error);
       alert('Erro ao atualizar paciente.');
@@ -124,6 +126,12 @@ const EditPatient = () => {
   return (
     <DoctorLayout>
       <section className="w-full">
+        {showToast && (
+          <SuccessToast
+            message="Paciente atualizado com sucesso!"
+            onClose={() => setShowToast(false)}
+          />
+        )}
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex place-content-between pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
             <div className="flex gap-6">
