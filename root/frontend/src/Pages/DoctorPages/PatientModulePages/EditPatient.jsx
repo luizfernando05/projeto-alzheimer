@@ -116,6 +116,12 @@ const EditPatient = () => {
     );
   }
 
+  const mapBooleanToSimNao = (value) => {
+    if (value === true || value === 'true') return 'Sim';
+    if (value === false || value === 'false') return 'Não';
+    return value ?? '';
+  };
+
   return (
     <DoctorLayout>
       <section className="w-full">
@@ -240,26 +246,34 @@ const EditPatient = () => {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <SelectField
+              <InputField
                 label="Tabagismo?"
                 name="smoking"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.smoking || ''}
+                value={mapBooleanToSimNao(
+                  patientData.medicalData?.[0]?.smoking
+                )}
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Consumo de álcool?"
                 name="alcoholConsumption"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.alcoholConsumption || ''}
+                value={mapBooleanToSimNao(
+                  patientData.medicalData?.[0]?.alcoholConsumption
+                )}
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Atividade física?"
                 name="physicalActivity"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.physicalActivity || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.physicalActivity
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
               <InputField
                 label="Peso (em kg)"
@@ -267,6 +281,7 @@ const EditPatient = () => {
                 type="number"
                 value={patientData.medicalData?.[0]?.weight || ''}
                 onChange={handleInputChange}
+                disabled
               />
               <InputField
                 label="Altura (em cm)"
@@ -274,6 +289,7 @@ const EditPatient = () => {
                 type="number"
                 value={patientData.medicalData?.[0]?.height || ''}
                 onChange={handleInputChange}
+                disabled
               />
               <InputField
                 label="Índice de Massa Corporal (IMC)"
@@ -295,6 +311,7 @@ const EditPatient = () => {
                 placeholder="De 0 a 10..."
                 value={patientData.medicalData?.[0]?.dietQuality || ''}
                 onChange={handleInputChange}
+                disabled
               />
               <InputField
                 label="Quantificação da qualidade do sono (de 0 até 10)"
@@ -305,6 +322,7 @@ const EditPatient = () => {
                 placeholder="De 0 a 10..."
                 value={patientData.medicalData?.[0]?.sleepQuality || ''}
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
@@ -313,49 +331,70 @@ const EditPatient = () => {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <SelectField
+              <InputField
                 label="Alzheimer na família?"
                 name="familyHistory"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.familyHistory || ''}
-                onChange={handleInputChange}
-              />
-              <SelectField
-                label="Doença cardiovascular?"
-                name="cardiovascularDisease"
-                options={boolean}
                 value={
-                  patientData.medicalData?.[0]?.cardiovascularDisease || ''
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.familyHistory
+                  ) || ''
                 }
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
+                label="Doença cardiovascular?"
+                name="cardiovascularDisease"
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.cardiovascularDisease
+                  ) || ''
+                }
+                onChange={handleInputChange}
+                disabled
+              />
+              <InputField
                 label="Diabetes?"
                 name="diabetes"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.diabetes || ''}
+                value={
+                  mapBooleanToSimNao(patientData.medicalData?.[0]?.diabetes) ||
+                  ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Depressão?"
                 name="depression"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.depression || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.depression
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Traumatismo craniano?"
                 name="headTrauma"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.headTrauma || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.headTrauma
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Hipertensão?"
                 name="hypertension"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.hypertension || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.hypertension
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
@@ -374,6 +413,7 @@ const EditPatient = () => {
                 tooltip="Teste simples e rápido, utilizado para rastrear déficits cognitivos, especialmente aqueles relacionados à demência. Ele avalia áreas como orientação, memória, atenção, linguagem e habilidades construtivas."
                 value={patientData.medicalData?.[0]?.mmse || ''}
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -386,25 +426,34 @@ const EditPatient = () => {
                 tooltip="Exercícios aeróbicos como caminhada e natação, atividades de estimulação cognitiva como jogos de memória e quebra-cabeças, e atividades cotidianas adaptadas, como escovar os dentes e pentear o cabelo."
                 value={patientData.medicalData?.[0]?.functionalAssessment || ''}
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <SelectField
+              <InputField
                 label="Queixas de problemas de memória?"
                 name="memoryComplaints"
                 tooltip="Refere-se a relatos do paciente sobre esquecimentos recorrentes."
-                options={boolean}
-                value={patientData.medicalData?.[0]?.memoryComplaints || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.memoryComplaints
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
-              <SelectField
+              <InputField
                 label="Queixas de problemas comportamentais?"
                 name="behavioralProblems"
                 tooltip="Refere-se a relatos do paciente sobre mudanças comportamentais extremas."
-                options={boolean}
-                value={patientData.medicalData?.[0]?.behavioralProblems || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.behavioralProblems
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
               <InputField
                 label="Atividades diárias (ADL) (de 0 até 10)"
@@ -416,6 +465,7 @@ const EditPatient = () => {
                 tooltip="Tarefas básicas que as pessoas realizam diariamente para cuidar de si mesmas e manter sua independência."
                 value={patientData.medicalData?.[0]?.adl || ''}
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
@@ -424,48 +474,65 @@ const EditPatient = () => {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <SelectField
+              <InputField
                 label="Confusão?"
                 name="confusion"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.confusion || ''}
+                value={
+                  mapBooleanToSimNao(patientData.medicalData?.[0]?.confusion) ||
+                  ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
 
-              <SelectField
+              <InputField
                 label="Desorientação?"
                 name="disorientation"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.disorientation || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.disorientation
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
 
-              <SelectField
+              <InputField
                 label="Mudanças na personalidade?"
                 name="personalityChanges"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.personalityChanges || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.personalityChanges
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              <SelectField
+              <InputField
                 label="Dificuldade em completar tarefas?"
                 name="difficultyCompletingTasks"
-                options={boolean}
                 value={
-                  patientData.medicalData?.[0]?.difficultyCompletingTasks || ''
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.difficultyCompletingTasks
+                  ) || ''
                 }
                 onChange={handleInputChange}
+                disabled
               />
 
-              <SelectField
+              <InputField
                 label="Esquecimento?"
                 name="forgetfulness"
-                options={boolean}
-                value={patientData.medicalData?.[0]?.forgetfulness || ''}
+                value={
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[0]?.forgetfulness
+                  ) || ''
+                }
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
@@ -481,6 +548,7 @@ const EditPatient = () => {
                 tooltip="Soma de todas as frações de colesterol no sangue, incluindo o colesterol LDL (ruim), HDL (bom) e VLDL."
                 value={patientData.medicalData?.[0]?.cholesterolTotal || ''}
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -490,6 +558,7 @@ const EditPatient = () => {
                 tooltip="O colesterol LDL (lipoproteína de baixa densidade) é uma das lipoproteínas responsáveis por transportar o colesterol pelo corpo."
                 value={patientData.medicalData?.[0]?.cholesterolLdl || ''}
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -499,6 +568,7 @@ const EditPatient = () => {
                 tooltip="HDL significa lipoproteína de alta densidade. É uma partícula que transporta colesterol do sangue e tecidos para o fígado, onde é processado e excretado."
                 value={patientData.medicalData?.[0]?.cholesterolHdl || ''}
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -510,6 +580,7 @@ const EditPatient = () => {
                   patientData.medicalData?.[0]?.cholesterolTriglycerides || ''
                 }
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -519,6 +590,7 @@ const EditPatient = () => {
                 tooltip="Pressão do sangue nas artérias no momento em que o coração se contrai para bombear o sangue para o corpo."
                 value={patientData.medicalData?.[0]?.systolicBP || ''}
                 onChange={handleInputChange}
+                disabled
               />
 
               <InputField
@@ -528,6 +600,7 @@ const EditPatient = () => {
                 tooltip="Pressão do sangue nas artérias quando o coração está relaxado entre os batimentos cardíacos."
                 value={patientData.medicalData?.[0]?.diastolicBP || ''}
                 onChange={handleInputChange}
+                disabled
               />
             </div>
 
@@ -538,6 +611,7 @@ const EditPatient = () => {
                 type="date"
                 value={patientData.medicalData?.[0]?.dateExam || ''}
                 onChange={handleInputChange}
+                disabled
               />
             </div>
           </form>
