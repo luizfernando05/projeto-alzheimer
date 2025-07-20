@@ -24,7 +24,7 @@ export class UpdatePatientController {
         phoneNumber,
         email,
         password,
-        educationalLevel,
+        educationLevel,
         ethnicity,
       } = req.body;
 
@@ -44,7 +44,7 @@ export class UpdatePatientController {
         phoneNumber,
         email,
         password,
-        educationalLevel,
+        educationLevel,
         ethnicity,
       });
 

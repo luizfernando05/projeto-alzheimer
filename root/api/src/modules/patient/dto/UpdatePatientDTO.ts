@@ -7,7 +7,7 @@ export interface UpdatePatientDTO {
   phoneNumber?: string;
   email?: string;
   password?: string;
-  educationalLevel: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
+  educationLevel: 'Nenhum' | 'Ensino Médio' | 'Graduação' | 'Pós Graduação';
   ethnicity:
     | 'Branco'
     | 'Preto'

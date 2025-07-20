@@ -17,7 +17,7 @@ export class UpdatePatientUseCase {
       phoneNumber,
       email,
       password,
-      educationalLevel,
+      educationLevel,
       ethnicity,
     } = data;
 
@@ -45,7 +45,7 @@ export class UpdatePatientUseCase {
     if (gender) patient.gender = gender;
     if (state) patient.state = state;
     if (phoneNumber) patient.phoneNumber = phoneNumber;
-    if (educationalLevel) patient.educationLevel = educationalLevel;
+    if (educationLevel) patient.educationLevel = educationLevel;
     if (ethnicity) patient.ethnicity = ethnicity;
 
     if (password) {

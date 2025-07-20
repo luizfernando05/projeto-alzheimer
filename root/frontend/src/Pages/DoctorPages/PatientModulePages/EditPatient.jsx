@@ -42,6 +42,32 @@ const EditPatient = () => {
     }));
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const updatedPatient = {
+        name: patientData.name,
+        email: patientData.email,
+        phoneNumber: patientData.phoneNumber,
+        birthDate: patientData.birthDate,
+        gender: patientData.gender,
+        state: patientData.state,
+        ethnicity: patientData.ethnicity,
+        educationLevel: patientData.educationLevel,
+      };
+
+      await axios.put(`${apiUrl}/patient/${patientId}`, updatedPatient, {
+        withCredentials: true,
+      });
+
+      alert('Paciente atualizado com sucesso!');
+      navigate(-1);
+    } catch (error) {
+      console.error('Erro ao atualizar paciente:', error);
+      alert('Erro ao atualizar paciente.');
+    }
+  };
+
   useEffect(() => {
     if (patientData?.weight && patientData?.height) {
       const heightInMeters = patientData.height / 100;
@@ -86,7 +112,7 @@ const EditPatient = () => {
             </h2>
           </div>
 
-          <form className="pt-6 pr-8 pl-8">
+          <form className="pt-6 pr-8 pl-8" onSubmit={handleSubmit}>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
               <InputField
                 label="Nome completo"
@@ -140,12 +166,10 @@ const EditPatient = () => {
               />
 
               <InputField
-                label="Data de Nascimento"
+                label="Nascimento"
                 name="birthDate"
-                type="text"
-                value={new Date(patientData.birthDate).toLocaleDateString(
-                  'pt-BR'
-                )}
+                type="date"
+                value={patientData.birthDate}
                 onChange={handleInputChange}
               />
 
@@ -158,6 +182,19 @@ const EditPatient = () => {
               />
             </div>
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              <button
+                type="submit"
+                className="bg-gray-03 border border-gray-06 text-gray-12 px-6 py-2 rounded-md hover:bg-gray-04 shadow-xs"
+              >
+                Atualizar paciente
+              </button>
+              <button className="bg-red-03 text-red-12 border border-red-06 px-6 py-2 rounded-md hover:bg-red-04 shadow-xs">
+                Cancelar
+              </button>
+            </div>
+          </form>
+          <form className="pt-6 pr-8 pl-8 border-t border-gray-06">
             <p className="font-roboto text-base text-gray-12 font-normal mb-4">
               Exame pré-laboratorial
             </p>
