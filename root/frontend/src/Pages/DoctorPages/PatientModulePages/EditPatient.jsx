@@ -9,7 +9,6 @@ import { estadosBrasileiros } from '../../../Utils/states';
 import { ethnicity } from '../../../Utils/ethnicity';
 import { gender } from '../../../Utils/gender';
 import { education } from '../../../Utils/education';
-import { boolean } from '../../../Utils/boolean';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
