@@ -18,86 +18,222 @@ export const generatePatientPdf = (
 
   doc.pipe(res);
 
-  // Cabeçalho
-  doc.fontSize(20).text(`Relatório do Paciente`, { align: 'center' });
-  doc.moveDown();
+  const pageWidth =
+    doc.page.width - doc.page.margins.left - doc.page.margins.right;
+  const labelWidth = 180;
+  const valueX = doc.page.margins.left + labelWidth + 10;
+  const lineHeight = 20;
 
-  // Dados pessoais
-  doc.fontSize(14).text(`Nome: ${patient.name}`);
-  doc.text(`Email: ${patient.email}`);
-  doc.text(`Nascimento: ${patient.birthDate}`);
-  doc.text(`Gênero: ${patient.gender}`);
-  doc.text(`Estado: ${patient.state}`);
-  doc.text(`Etnia: ${patient.ethnicity}`);
-  doc.text(`Escolaridade: ${patient.educationLevel}`);
-  doc.text(`Telefone: ${patient.phoneNumber}`);
-  doc.moveDown();
-
-  // Dados médicos
-  doc.fontSize(16).text(`Dados Médicos`, { underline: true });
-  doc.moveDown();
-
-  const add = (label: string, value: any) => {
-    doc.text(
-      `${label}: ${value !== null && value !== undefined ? value : 'N/A'}`
-    );
+  // Helper para desenhar label e valor alinhados em uma linha
+  const drawLabelValue = (label: string, value: any, y: number) => {
+    doc
+      .font('Helvetica-Bold')
+      .fontSize(12)
+      .fillColor('#333')
+      .text(label, doc.page.margins.left, y, { width: labelWidth });
+    doc
+      .font('Helvetica')
+      .fontSize(12)
+      .fillColor('#000')
+      .text(
+        value !== null && value !== undefined ? String(value) : 'N/A',
+        valueX,
+        y
+      );
   };
 
-  add('Data do exame', medicalData.dateExam);
-  add('IMC', medicalData.bmi);
-  add('Peso (kg)', medicalData.weight);
-  add('Altura (cm)', medicalData.height);
-  add('Qualidade do sono', medicalData.sleepQuality ? 'Boa' : 'Ruim');
-  add('Qualidade da dieta (0–10)', medicalData.dietQuality);
-  add('LDL', medicalData.cholesterolLdl);
-  add('HDL', medicalData.cholesterolHdl);
-  add('Triglicerídeos', medicalData.cholesterolTriglycerides);
-  add('Colesterol total', medicalData.cholesterolTotal);
-  add('Pressão sistólica', medicalData.systolicBP);
-  add('Pressão diastólica', medicalData.diastolicBP);
-  add('Exercício físico?', medicalData.physicalActivity ? 'Sim' : 'Não');
-  add('Tabagismo?', medicalData.smoking ? 'Sim' : 'Não');
-  add('Consumo de álcool?', medicalData.alcoholConsumption ? 'Sim' : 'Não');
-  doc.moveDown();
+  // Linha separadora horizontal
+  const drawSeparator = (y: number) => {
+    doc
+      .strokeColor('#AAAAAA')
+      .lineWidth(1)
+      .moveTo(doc.page.margins.left, y)
+      .lineTo(doc.page.width - doc.page.margins.right, y)
+      .stroke();
+  };
 
-  doc.fontSize(16).text(`Histórico Médico`, { underline: true });
-  doc.moveDown();
-  add('Alzheimer na família?', medicalData.familyHistory ? 'Sim' : 'Não');
-  add(
-    'Doença cardiovascular?',
-    medicalData.cardiovascularDisease ? 'Sim' : 'Não'
-  );
-  add('Diabetes?', medicalData.diabetes ? 'Sim' : 'Não');
-  add('Depressão?', medicalData.depression ? 'Sim' : 'Não');
-  add('Traumatismo craniano?', medicalData.headTrauma ? 'Sim' : 'Não');
-  add('Hipertensão?', medicalData.hypertension ? 'Sim' : 'Não');
-  doc.moveDown();
+  // Cabeçalho
+  doc
+    .fontSize(24)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Relatório do Paciente', { align: 'center' });
+  doc.moveDown(1.5);
 
-  doc.fontSize(16).text(`Funções Cognitivas`, { underline: true });
-  doc.moveDown();
-  add('MMSE (0–30)', medicalData.mmse);
-  add('Atividades funcionais (0–10)', medicalData.functionalAssessment);
-  add('Queixas de memória?', medicalData.memoryComplaints ? 'Sim' : 'Não');
-  add(
-    'Problemas comportamentais?',
-    medicalData.behavioralProblems ? 'Sim' : 'Não'
-  );
-  add('ADL (0–10)', medicalData.adl);
-  doc.moveDown();
+  // Dados pessoais
+  doc
+    .fontSize(18)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Dados Pessoais');
+  doc.moveDown(0.5);
 
-  doc.fontSize(16).text(`Sintomas Cognitivos`, { underline: true });
-  doc.moveDown();
-  add('Confusão?', medicalData.confusion ? 'Sim' : 'Não');
-  add('Desorientação?', medicalData.disorientation ? 'Sim' : 'Não');
-  add(
-    'Mudanças de personalidade?',
-    medicalData.personalityChanges ? 'Sim' : 'Não'
+  let y = doc.y;
+  drawLabelValue('Nome:', patient.name, y);
+  y += lineHeight;
+  drawLabelValue('Email:', patient.email, y);
+  y += lineHeight;
+  drawLabelValue('Nascimento:', patient.birthDate, y);
+  y += lineHeight;
+  drawLabelValue('Gênero:', patient.gender, y);
+  y += lineHeight;
+  drawLabelValue('Estado:', patient.state, y);
+  y += lineHeight;
+  drawLabelValue('Etnia:', patient.ethnicity, y);
+  y += lineHeight;
+  drawLabelValue('Escolaridade:', patient.educationLevel, y);
+  y += lineHeight;
+  drawLabelValue('Telefone:', patient.phoneNumber, y);
+
+  y += lineHeight * 1.5;
+  drawSeparator(y);
+  y += lineHeight;
+
+  // Dados médicos
+  doc
+    .fontSize(18)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Dados Médicos');
+  doc.moveDown(0.5);
+  y = doc.y;
+
+  // Para dados médicos, vamos usar duas colunas para economizar espaço
+  const halfPageWidth = (pageWidth - 20) / 2;
+
+  const drawMedicalData = (label: string, value: any, index: number) => {
+    const col = index % 2;
+    const row = Math.floor(index / 2);
+    const x = doc.page.margins.left + col * (halfPageWidth + 20);
+    const posY = y + row * lineHeight;
+    doc
+      .font('Helvetica-Bold')
+      .fontSize(12)
+      .fillColor('#333')
+      .text(label, x, posY, { width: 120 });
+    doc
+      .font('Helvetica')
+      .fontSize(12)
+      .fillColor('#000')
+      .text(
+        value !== null && value !== undefined ? String(value) : 'N/A',
+        x + 130,
+        posY
+      );
+  };
+
+  const medicalItems = [
+    ['Data do exame', medicalData.dateExam],
+    ['IMC', medicalData.bmi],
+    ['Peso (kg)', medicalData.weight],
+    ['Altura (cm)', medicalData.height],
+    ['Qualidade do sono', medicalData.sleepQuality ? 'Boa' : 'Ruim'],
+    ['Qualidade da dieta (0–10)', medicalData.dietQuality],
+    ['LDL', medicalData.cholesterolLdl],
+    ['HDL', medicalData.cholesterolHdl],
+    ['Triglicerídeos', medicalData.cholesterolTriglycerides],
+    [
+      'Colesterol total',
+      medicalData.cholesterolTotal || medicalData.cholesterolTotal,
+    ],
+    ['Pressão sistólica', medicalData.systolicBP],
+    ['Pressão diastólica', medicalData.diastolicBP],
+    ['Exercício físico?', medicalData.physicalActivity ? 'Sim' : 'Não'],
+    ['Tabagismo?', medicalData.smoking ? 'Sim' : 'Não'],
+    ['Consumo de álcool?', medicalData.alcoholConsumption ? 'Sim' : 'Não'],
+  ];
+
+  medicalItems.forEach(([label, value], i) =>
+    drawMedicalData(label as string, value, i)
   );
-  add(
-    'Dificuldade para completar tarefas?',
-    medicalData.difficultyCompletingTasks ? 'Sim' : 'Não'
-  );
-  add('Esquecimento?', medicalData.forgetfulness ? 'Sim' : 'Não');
+  y += Math.ceil(medicalItems.length / 2) * lineHeight + lineHeight;
+
+  drawSeparator(y);
+  y += lineHeight;
+
+  // Histórico Médico
+  doc
+    .fontSize(18)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Histórico Médico');
+  doc.moveDown(0.5);
+  y = doc.y;
+
+  const medicalHistory = [
+    ['Alzheimer na família?', medicalData.familyHistory ? 'Sim' : 'Não'],
+    [
+      'Doença cardiovascular?',
+      medicalData.cardiovascularDisease ? 'Sim' : 'Não',
+    ],
+    ['Diabetes?', medicalData.diabetes ? 'Sim' : 'Não'],
+    ['Depressão?', medicalData.depression ? 'Sim' : 'Não'],
+    ['Traumatismo craniano?', medicalData.headTrauma ? 'Sim' : 'Não'],
+    ['Hipertensão?', medicalData.hypertension ? 'Sim' : 'Não'],
+  ];
+
+  medicalHistory.forEach(([label, value], i) => {
+    drawLabelValue(label, value, y + i * lineHeight);
+  });
+
+  y += medicalHistory.length * lineHeight + lineHeight;
+  drawSeparator(y);
+  y += lineHeight;
+
+  // Funções Cognitivas
+  doc
+    .fontSize(18)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Funções Cognitivas');
+  doc.moveDown(0.5);
+  y = doc.y;
+
+  const cognitiveFunctions = [
+    ['MMSE (0–30)', medicalData.mmse],
+    ['Atividades funcionais (0–10)', medicalData.functionalAssessment],
+    ['Queixas de memória?', medicalData.memoryComplaints ? 'Sim' : 'Não'],
+    [
+      'Problemas comportamentais?',
+      medicalData.behavioralProblems ? 'Sim' : 'Não',
+    ],
+    ['ADL (0–10)', medicalData.adl],
+  ];
+
+  cognitiveFunctions.forEach(([label, value], i) => {
+    drawLabelValue(label as string, value, y + i * lineHeight);
+  });
+
+  y += cognitiveFunctions.length * lineHeight + lineHeight;
+  drawSeparator(y);
+  y += lineHeight;
+
+  // Sintomas Cognitivos
+  doc
+    .fontSize(18)
+    .fillColor('#0B3D91')
+    .font('Helvetica-Bold')
+    .text('Sintomas Cognitivos');
+  doc.moveDown(0.5);
+  y = doc.y;
+
+  const cognitiveSymptoms = [
+    ['Confusão?', medicalData.confusion ? 'Sim' : 'Não'],
+    ['Desorientação?', medicalData.disorientation ? 'Sim' : 'Não'],
+    [
+      'Mudanças de personalidade?',
+      medicalData.personalityChanges ? 'Sim' : 'Não',
+    ],
+    [
+      'Dificuldade para completar tarefas?',
+      medicalData.difficultyCompletingTasks ? 'Sim' : 'Não',
+    ],
+    ['Esquecimento?', medicalData.forgetfulness ? 'Sim' : 'Não'],
+  ];
+
+  cognitiveSymptoms.forEach(([label, value], i) => {
+    drawLabelValue(label as string, value, y + i * lineHeight);
+  });
 
   doc.end();
 };
