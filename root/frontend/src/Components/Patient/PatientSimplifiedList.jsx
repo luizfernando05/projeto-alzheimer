@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 import { ListNumbers, User } from '@phosphor-icons/react';
 
@@ -88,7 +88,7 @@ const PatientSimplifiedList = () => {
                     </div>
                   </td>
                   <td className="py-3 px-6">
-                    {format(new Date(patient.createdAt), 'dd/MM/yyyy', {
+                    {format(parseISO(patient.createdAt), 'dd/MM/yyyy', {
                       locale: ptBR,
                     })}
                   </td>
@@ -96,7 +96,7 @@ const PatientSimplifiedList = () => {
                     {calculateAge(patient.birthDate)} anos
                   </td>
                   <td className="py-3 px-6">
-                    {format(new Date(patient.birthDate), 'dd/MM/yyyy', {
+                    {format(parseISO(patient.birthDate), 'dd/MM/yyyy', {
                       locale: ptBR,
                     })}
                   </td>

@@ -13,7 +13,7 @@ import {
   Trash,
 } from '@phosphor-icons/react';
 import { useNavigate } from 'react-router-dom';
-import { format } from 'date-fns';
+import { format, parseISO } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
 
 const apiUrl = import.meta.env.VITE_API_URL;
@@ -228,13 +228,13 @@ const ListPatients = () => {
                       </div>
                     </td>
                     <td className="py-3">
-                      {format(new Date(p.createdAt), 'dd/MM/yyyy', {
+                      {format(parseISO(p.createdAt), 'dd/MM/yyyy', {
                         locale: ptBR,
                       })}
                     </td>
                     <td className="py-3">{calculateAge(p.birthDate)} anos</td>
                     <td className="py-3">
-                      {format(new Date(p.birthDate), 'dd/MM/yyyy', {
+                      {format(parseISO(p.birthDate), 'dd/MM/yyyy', {
                         locale: ptBR,
                       })}
                     </td>
