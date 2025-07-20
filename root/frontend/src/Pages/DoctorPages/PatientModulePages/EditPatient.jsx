@@ -199,7 +199,7 @@ const EditPatient = () => {
                 label="Altura (em cm)"
                 name="height"
                 type="number"
-                value={patientData.medicalData?.[0]?.heigth || ''}
+                value={patientData.medicalData?.[0]?.height || ''}
                 onChange={handleInputChange}
               />
               <InputField

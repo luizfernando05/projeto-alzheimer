@@ -52,7 +52,7 @@ export class AlterMedicalDataTableWithLifestyleFactors1749575178341
     await queryRunner.addColumn(
       'medicaldatas',
       new TableColumn({
-        name: 'heigth',
+        name: 'height',
         type: 'decimal',
         isNullable: true,
       })

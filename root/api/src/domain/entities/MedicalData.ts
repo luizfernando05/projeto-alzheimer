@@ -63,7 +63,7 @@ export class MedicalData {
   weight: number;
 
   @Column({ type: 'float', nullable: true })
-  heigth: number;
+  height: number;
 
   @Column({ name: 'family_history', type: 'boolean', nullable: true })
   familyHistory: boolean;
