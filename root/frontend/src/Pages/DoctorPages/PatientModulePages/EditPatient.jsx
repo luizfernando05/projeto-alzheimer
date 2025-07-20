@@ -68,6 +68,30 @@ const EditPatient = () => {
     }
   };
 
+  const handleDownloadPdf = async () => {
+    try {
+      const response = await axios.get(`${apiUrl}/patient/${patientId}/pdf`, {
+        responseType: 'blob',
+        withCredentials: true,
+      });
+
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement('a');
+      const sanitizedName = patientData.name.replace(/\s+/g, '_');
+      link.href = url;
+      link.setAttribute('download', `${sanitizedName}_relatorio.pdf`);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Erro ao gerar o PDF:', error);
+      alert('Erro ao gerar o PDF.');
+    }
+  };
+
   useEffect(() => {
     if (patientData?.weight && patientData?.height) {
       const heightInMeters = patientData.height / 100;
@@ -114,7 +138,7 @@ const EditPatient = () => {
             </div>
 
             <button
-              onClick={() => navigate(-1)}
+              onClick={handleDownloadPdf}
               className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03"
             >
               <div className="pr-2 pl-2 pt-1 pb-1 border-r border-gray-06">

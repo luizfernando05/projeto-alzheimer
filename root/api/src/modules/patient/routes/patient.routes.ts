@@ -9,6 +9,7 @@ import GetPatientsByLast7DaysController from '../controllers/GetPatientsByLast7D
 import ListPatientsByDoctorWithFiltersController from '../controllers/ListPatientsByDoctorWithFiltersController';
 import UpdatePatientController from '../controllers/UpdatePatientController';
 import { GetPatientDetailsController } from '../controllers/GetPatientDetailsController';
+import { DownloadPatientPdfController } from '../controllers/DownloadPatientPdfController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -20,6 +21,7 @@ const listPatientsByDoctorWithFiltersController =
   new ListPatientsByDoctorWithFiltersController();
 const updatePatientController = new UpdatePatientController();
 const getPatientDetailsController = new GetPatientDetailsController();
+const downloadPatientPdfController = new DownloadPatientPdfController();
 
 patientRoutes.post(
   '/',
@@ -73,5 +75,11 @@ patientRoutes.get(
 patientRoutes.put('/:id', (req, res, next) => {
   updatePatientController.handle(req, res, next);
 });
+
+patientRoutes.get(
+  '/:patientId/pdf',
+  ensureDoctorAuthenticated,
+  (req, res, next) => downloadPatientPdfController.handle(req, res, next)
+);
 
 export { patientRoutes };
