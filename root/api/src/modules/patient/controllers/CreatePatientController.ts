@@ -6,6 +6,7 @@ import CreatePatientUseCase from '../useCases/CreatePatientUseCase';
 import { handleValidationError } from '../../shared/errors/handleValidationError';
 import DoctorRepository from '../../doctor/repositories/DoctorRepository';
 import { randomBytes } from 'crypto';
+import { MailService } from '../../shared/services/MailService';
 
 export class CreatePatientController {
   async handle(
@@ -65,6 +66,13 @@ export class CreatePatientController {
         selfiePhoto: selfiePhotoPath,
         createdByDoctor,
       });
+
+      const mailService = new MailService();
+      await mailService.sendMail(
+        email,
+        'Bem-vindo ao Diagly!',
+        `Olá, ${name}!\n\nSeu cadastro foi realizado com sucesso.\nSua senha temporária é: ${generatedPassword}\n\nRecomendamos que você a altere após o primeiro acesso.`
+      );
 
       return res.status(201).json(patient);
     } catch (err) {
