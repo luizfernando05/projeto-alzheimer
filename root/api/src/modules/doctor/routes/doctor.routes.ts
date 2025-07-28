@@ -9,6 +9,7 @@ import { ensureDoctorAuthenticated } from '../../shared/middlewares/ensureDoctor
 import DoctorRepository from '../repositories/DoctorRepository';
 import { AppError } from '../../shared/errors/AppError';
 import GetDoctorController from '../controllers/GetDoctorController';
+import { UpdateDoctorStatusController } from '../controllers/UpdateDoctorStatusController';
 
 const doctorRoutes = Router();
 const createDoctorController = new CreateDoctorController();
@@ -16,6 +17,7 @@ const loginDoctorController = new LoginDoctorController();
 const updateDoctorController = new UpdateDoctorController();
 const listDoctorController = new ListDoctorController();
 const getDoctorController = new GetDoctorController();
+const updateDoctorStatusController = new UpdateDoctorStatusController();
 
 doctorRoutes.post(
   '/',
@@ -76,6 +78,10 @@ doctorRoutes.post('/logout', (req, res) => {
   });
 
   res.status(200).json({ message: 'Logout realizado com sucesso' });
+});
+
+doctorRoutes.patch('/:id/status', (req, res, next) => {
+  updateDoctorStatusController.handle(req, res, next);
 });
 
 export { doctorRoutes };
