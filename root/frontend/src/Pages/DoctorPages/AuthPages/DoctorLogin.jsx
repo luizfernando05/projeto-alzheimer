@@ -12,12 +12,17 @@ export default function DoctorLogin() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({
+    email: '',
+    password: '',
+    general: '',
+    status: '',
+  });
   const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrors({});
+    setErrors({ email: '', password: '', general: '', status: '' });
 
     try {
       const response = await fetch(`${apiUrl}/doctor/login`, {
@@ -35,7 +40,12 @@ export default function DoctorLogin() {
         window.location.href = '/doctor/dashboard';
       } else {
         if (data.errors) {
-          setErrors(data.errors);
+          setErrors({
+            email: data.errors.email || '',
+            password: data.errors.password || '',
+            status: data.errors.status || '',
+            general: data.message || 'Erro ao fazer login.',
+          });
         } else {
           setErrors({ general: data.message || 'Erro ao fazer login.' });
         }
@@ -102,6 +112,12 @@ export default function DoctorLogin() {
             {errors.general && (
               <p className="font-roboto text-red-500 text-sm">
                 {errors.general}
+              </p>
+            )}
+
+            {errors.status && (
+              <p className="font-roboto text-yellow-600 text-sm">
+                {errors.status}
               </p>
             )}
 
