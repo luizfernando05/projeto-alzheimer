@@ -16,6 +16,18 @@ export class LoginDoctorUseCase {
       });
     }
 
+    if (doctor.status && doctor.status === 'REJECTED') {
+      throw new AppError('Erro de autenticação', 401, {
+        status: 'Cadastro rejeitado pelo administrador',
+      });
+    }
+
+    if (doctor.status && doctor.status === 'PENDING') {
+      throw new AppError('Erro de autenticação', 401, {
+        status: 'Cadastro em análise pelo administrador',
+      });
+    }
+
     const passwordCheck = await compare(password, doctor.password);
 
     if (!passwordCheck) {
