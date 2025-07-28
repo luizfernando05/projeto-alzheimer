@@ -29,10 +29,10 @@ export class UpdateDoctorStatusController {
       let subject = '';
       let message = '';
 
-      if (status === 'approved') {
+      if (status === 'APPROVED') {
         subject = '[AlzCheck] Cadastro aprovado!';
         message = `Olá, Dr(a). ${doctor.name}!\n\nSeu cadastro foi aprovado com sucesso. Agora você já pode acessar o sistema normalmente.\n\nSeja bem-vindo(a) à plataforma!\n\nEquipe de Suporte`;
-      } else if (status === 'rejected') {
+      } else if (status === 'REJECTED') {
         subject = '[AlzCheck] Cadastro reprovado';
         message = `Olá, Dr(a). ${doctor.name},\n\nInfelizmente, seu cadastro foi reprovado.\nMotivo: ${rejectionReason || 'Não especificado'}\n\nCaso queira reenviar os dados ou esclarecer dúvidas, entre em contato com nosso suporte.\n\nAtenciosamente,\nEquipe de Suporte`;
       } else {
