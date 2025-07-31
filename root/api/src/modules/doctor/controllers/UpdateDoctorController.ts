@@ -15,12 +15,8 @@ export class UpdateDoctorController {
     try {
       await UpdateDoctorValidator.validate(req.body, { abortEarly: false });
 
-      const { id } = req.params;
+      const id = req.user?.id;
       const { name, email, password } = req.body;
-
-      if (!id || !yup.string().uuid().isValidSync(id)) {
-        throw new AppError('Erro de validação', 400, { id: 'ID inválido' });
-      }
 
       const doctorRepository = new DoctorRepository();
       const updateDoctorUseCase = new UpdateDoctorUseCase(doctorRepository);

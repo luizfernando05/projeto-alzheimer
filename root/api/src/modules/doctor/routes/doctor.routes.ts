@@ -34,7 +34,7 @@ doctorRoutes.post('/login', (req, res, next) => {
   loginDoctorController.handle(req, res, next);
 });
 
-doctorRoutes.put('/:id', (req, res, next) => {
+doctorRoutes.put('/update', ensureDoctorAuthenticated, (req, res, next) => {
   updateDoctorController.handle(req, res, next);
 });
 

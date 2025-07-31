@@ -8,7 +8,7 @@ export class UpdateDoctorUseCase {
   constructor(private doctorRepository: IDoctorRepository) {}
 
   async execute(data: UpdateDoctorDTO): Promise<Doctor> {
-    const { id, name, email, password } = data;
+    const { id, name, email, password, celphone } = data;
 
     const doctor = await this.doctorRepository.findById(id);
 
@@ -28,6 +28,19 @@ export class UpdateDoctorUseCase {
       }
 
       doctor.email = email;
+    }
+
+    if (celphone && celphone !== doctor.celphone) {
+      const celphoneInUse =
+        await this.doctorRepository.findByCelphone(celphone);
+
+      if (celphoneInUse) {
+        throw new AppError('Erro de validação', 409, {
+          celphone: 'Telefone já está em uso',
+        });
+      }
+
+      doctor.celphone = celphone;
     }
 
     if (name) {
