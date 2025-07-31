@@ -13,12 +13,13 @@ export class MailService {
     });
   }
 
-  async sendMail(to: string, subject: string, text: string) {
+  async sendMail(to: string, subject: string, text?: string, html?: string) {
     await this.transporter.sendMail({
-      from: `"Equipe Médica" <${process.env.MAIL_USER}>`,
+      from: `"Equipe AlzCheck" <${process.env.MAIL_USER}>`,
       to,
       subject,
       text,
+      html,
     });
   }
 }
