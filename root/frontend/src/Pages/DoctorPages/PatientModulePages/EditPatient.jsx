@@ -254,19 +254,35 @@ const EditPatient = () => {
                 <label className="block text-sm text-gray-12 mb-2">
                   Selecionar data do exame
                 </label>
-                <select
-                  className="border border-gray-06 rounded-md px-3 py-2 text-sm text-gray-12 bg-white"
-                  value={selectedExamIndex}
-                  onChange={handleExamChange}
-                >
-                  {patientData.medicalData.map((item, index) => (
-                    <option key={item.id} value={index}>
-                      {item.dateExam.split('-').reverse().join('/')}
-                    </option>
-                  ))}
-                </select>
+                <div className="flex flex-wrap gap-2">
+                  {patientData.medicalData.map((item, index) => {
+                    const formattedDate = item.dateExam
+                      .split('-')
+                      .reverse()
+                      .join('/');
+                    const isSelected = selectedExamIndex === index;
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectExamIndex(index)}
+                        className={`px-4 py-2 text-sm rounded-md border transition
+              ${
+                isSelected
+                  ? 'bg-gray-04 text-gray-12 border-gray-06'
+                  : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
+              }
+            `}
+                      >
+                        {formattedDate}
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
             )}
+
             <p className="font-roboto text-base text-gray-12 font-normal mb-4">
               Exame pré-laboratorial
             </p>
