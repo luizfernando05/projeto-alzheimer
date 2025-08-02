@@ -19,6 +19,7 @@ const EditPatient = () => {
 
   const [patientData, setPatientData] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  const [selectedExamIndex, setSelectExamIndex] = useState(0);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -41,6 +42,10 @@ const EditPatient = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleExamChange = (e) => {
+    setSelectExamIndex(parseInt(e.target.value));
   };
 
   const handleSubmit = async (e) => {
@@ -244,6 +249,24 @@ const EditPatient = () => {
             </div>
           </form>
           <form className="pt-6 pr-8 pl-8 border-t border-gray-06">
+            {patientData.medicalData?.length > 1 && (
+              <div className="mb-6">
+                <label className="block text-sm text-gray-12 mb-2">
+                  Selecionar data do exame
+                </label>
+                <select
+                  className="border border-gray-06 rounded-md px-3 py-2 text-sm text-gray-12 bg-white"
+                  value={selectedExamIndex}
+                  onChange={handleExamChange}
+                >
+                  {patientData.medicalData.map((item, index) => (
+                    <option key={item.id} value={index}>
+                      {item.dateExam.split('-').reverse().join('/')}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            )}
             <p className="font-roboto text-base text-gray-12 font-normal mb-4">
               Exame pré-laboratorial
             </p>
@@ -257,7 +280,7 @@ const EditPatient = () => {
                 label="Tabagismo?"
                 name="smoking"
                 value={mapBooleanToSimNao(
-                  patientData.medicalData?.[0]?.smoking
+                  patientData.medicalData?.[selectedExamIndex]?.smoking
                 )}
                 onChange={handleInputChange}
                 disabled
@@ -266,7 +289,8 @@ const EditPatient = () => {
                 label="Consumo de álcool?"
                 name="alcoholConsumption"
                 value={mapBooleanToSimNao(
-                  patientData.medicalData?.[0]?.alcoholConsumption
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.alcoholConsumption
                 )}
                 onChange={handleInputChange}
                 disabled
@@ -276,7 +300,8 @@ const EditPatient = () => {
                 name="physicalActivity"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.physicalActivity
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.physicalActivity
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -286,7 +311,9 @@ const EditPatient = () => {
                 label="Peso (em kg)"
                 name="weight"
                 type="number"
-                value={patientData.medicalData?.[0]?.weight || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.weight || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -294,7 +321,9 @@ const EditPatient = () => {
                 label="Altura (em cm)"
                 name="height"
                 type="number"
-                value={patientData.medicalData?.[0]?.height || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.height || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -303,7 +332,7 @@ const EditPatient = () => {
                 name="bmi"
                 type="number"
                 tooltip="Cálculo que relaciona o peso e a altura de uma pessoa para avaliar a sua composição corporal e estimar o nível de gordura."
-                value={patientData.medicalData?.[0]?.bmi || ''}
+                value={patientData.medicalData?.[selectedExamIndex]?.bmi || ''}
                 disabled
               />
             </div>
@@ -316,7 +345,10 @@ const EditPatient = () => {
                 max={10}
                 min={0}
                 placeholder="De 0 a 10..."
-                value={patientData.medicalData?.[0]?.dietQuality || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.dietQuality ||
+                  ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -327,7 +359,10 @@ const EditPatient = () => {
                 max={10}
                 min={0}
                 placeholder="De 0 a 10..."
-                value={patientData.medicalData?.[0]?.sleepQuality || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.sleepQuality ||
+                  ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -343,7 +378,7 @@ const EditPatient = () => {
                 name="familyHistory"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.familyHistory
+                    patientData.medicalData?.[selectedExamIndex]?.familyHistory
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -354,7 +389,8 @@ const EditPatient = () => {
                 name="cardiovascularDisease"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.cardiovascularDisease
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.cardiovascularDisease
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -364,8 +400,9 @@ const EditPatient = () => {
                 label="Diabetes?"
                 name="diabetes"
                 value={
-                  mapBooleanToSimNao(patientData.medicalData?.[0]?.diabetes) ||
-                  ''
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[selectedExamIndex]?.diabetes
+                  ) || ''
                 }
                 onChange={handleInputChange}
                 disabled
@@ -375,7 +412,7 @@ const EditPatient = () => {
                 name="depression"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.depression
+                    patientData.medicalData?.[selectedExamIndex]?.depression
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -386,7 +423,7 @@ const EditPatient = () => {
                 name="headTrauma"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.headTrauma
+                    patientData.medicalData?.[selectedExamIndex]?.headTrauma
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -397,7 +434,7 @@ const EditPatient = () => {
                 name="hypertension"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.hypertension
+                    patientData.medicalData?.[selectedExamIndex]?.hypertension
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -418,7 +455,7 @@ const EditPatient = () => {
                 min={0}
                 placeholder="De 0 a 30..."
                 tooltip="Teste simples e rápido, utilizado para rastrear déficits cognitivos, especialmente aqueles relacionados à demência. Ele avalia áreas como orientação, memória, atenção, linguagem e habilidades construtivas."
-                value={patientData.medicalData?.[0]?.mmse || ''}
+                value={patientData.medicalData?.[selectedExamIndex]?.mmse || ''}
                 onChange={handleInputChange}
                 disabled
               />
@@ -431,7 +468,10 @@ const EditPatient = () => {
                 min={0}
                 placeholder="De 0 a 10..."
                 tooltip="Exercícios aeróbicos como caminhada e natação, atividades de estimulação cognitiva como jogos de memória e quebra-cabeças, e atividades cotidianas adaptadas, como escovar os dentes e pentear o cabelo."
-                value={patientData.medicalData?.[0]?.functionalAssessment || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.functionalAssessment || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -444,7 +484,8 @@ const EditPatient = () => {
                 tooltip="Refere-se a relatos do paciente sobre esquecimentos recorrentes."
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.memoryComplaints
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.memoryComplaints
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -456,7 +497,8 @@ const EditPatient = () => {
                 tooltip="Refere-se a relatos do paciente sobre mudanças comportamentais extremas."
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.behavioralProblems
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.behavioralProblems
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -470,7 +512,7 @@ const EditPatient = () => {
                 min={0}
                 placeholder="De 0 a 10..."
                 tooltip="Tarefas básicas que as pessoas realizam diariamente para cuidar de si mesmas e manter sua independência."
-                value={patientData.medicalData?.[0]?.adl || ''}
+                value={patientData.medicalData?.[selectedExamIndex]?.adl || ''}
                 onChange={handleInputChange}
                 disabled
               />
@@ -485,8 +527,9 @@ const EditPatient = () => {
                 label="Confusão?"
                 name="confusion"
                 value={
-                  mapBooleanToSimNao(patientData.medicalData?.[0]?.confusion) ||
-                  ''
+                  mapBooleanToSimNao(
+                    patientData.medicalData?.[selectedExamIndex]?.confusion
+                  ) || ''
                 }
                 onChange={handleInputChange}
                 disabled
@@ -497,7 +540,7 @@ const EditPatient = () => {
                 name="disorientation"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.disorientation
+                    patientData.medicalData?.[selectedExamIndex]?.disorientation
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -509,7 +552,8 @@ const EditPatient = () => {
                 name="personalityChanges"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.personalityChanges
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.personalityChanges
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -523,7 +567,8 @@ const EditPatient = () => {
                 name="difficultyCompletingTasks"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.difficultyCompletingTasks
+                    patientData.medicalData?.[selectedExamIndex]
+                      ?.difficultyCompletingTasks
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -535,7 +580,7 @@ const EditPatient = () => {
                 name="forgetfulness"
                 value={
                   mapBooleanToSimNao(
-                    patientData.medicalData?.[0]?.forgetfulness
+                    patientData.medicalData?.[selectedExamIndex]?.forgetfulness
                   ) || ''
                 }
                 onChange={handleInputChange}
@@ -553,7 +598,10 @@ const EditPatient = () => {
                 name="cholesterolTotal"
                 type="number"
                 tooltip="Soma de todas as frações de colesterol no sangue, incluindo o colesterol LDL (ruim), HDL (bom) e VLDL."
-                value={patientData.medicalData?.[0]?.cholesterolTotal || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.cholesterolTotal || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -563,7 +611,10 @@ const EditPatient = () => {
                 name="cholesterolLdl"
                 type="number"
                 tooltip="O colesterol LDL (lipoproteína de baixa densidade) é uma das lipoproteínas responsáveis por transportar o colesterol pelo corpo."
-                value={patientData.medicalData?.[0]?.cholesterolLdl || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.cholesterolLdl || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -573,7 +624,10 @@ const EditPatient = () => {
                 name="cholesterolHdl"
                 type="number"
                 tooltip="HDL significa lipoproteína de alta densidade. É uma partícula que transporta colesterol do sangue e tecidos para o fígado, onde é processado e excretado."
-                value={patientData.medicalData?.[0]?.cholesterolHdl || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.cholesterolHdl || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -584,7 +638,8 @@ const EditPatient = () => {
                 type="number"
                 tooltip="Gordura presentes no sangue, ambos importantes para o funcionamento do corpo, mas com funções distintas e níveis elevados podem trazer riscos à saúde."
                 value={
-                  patientData.medicalData?.[0]?.cholesterolTriglycerides || ''
+                  patientData.medicalData?.[selectedExamIndex]
+                    ?.cholesterolTriglycerides || ''
                 }
                 onChange={handleInputChange}
                 disabled
@@ -595,7 +650,9 @@ const EditPatient = () => {
                 name="systolicBP"
                 type="number"
                 tooltip="Pressão do sangue nas artérias no momento em que o coração se contrai para bombear o sangue para o corpo."
-                value={patientData.medicalData?.[0]?.systolicBP || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.systolicBP || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -605,7 +662,10 @@ const EditPatient = () => {
                 name="diastolicBP"
                 type="number"
                 tooltip="Pressão do sangue nas artérias quando o coração está relaxado entre os batimentos cardíacos."
-                value={patientData.medicalData?.[0]?.diastolicBP || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.diastolicBP ||
+                  ''
+                }
                 onChange={handleInputChange}
                 disabled
               />
@@ -616,7 +676,9 @@ const EditPatient = () => {
                 label="Data do exame"
                 name="dateExam"
                 type="date"
-                value={patientData.medicalData?.[0]?.dateExam || ''}
+                value={
+                  patientData.medicalData?.[selectedExamIndex]?.dateExam || ''
+                }
                 onChange={handleInputChange}
                 disabled
               />

@@ -15,6 +15,7 @@ export class MedicalDataRepository implements IMedicalDataRepository {
       where: {
         patientId: { id: patientId },
       },
+      order: { dateExam: 'DESC' },
       relations: ['patientId'],
     });
   }
