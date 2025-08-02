@@ -19,12 +19,12 @@ export class CreateMedicalDataUseCase {
       throw new AppError('Paciente não encontrado', 400);
     }
 
-    const existingData =
-      await this.medicalDataRepository.findByPatientId(patientId);
+    // const existingData =
+    //   await this.medicalDataRepository.findByPatientId(patientId);
 
-    if (existingData) {
-      throw new AppError('Dados médicos para este paciente já existem', 400);
-    }
+    // if (existingData) {
+    //   throw new AppError('Dados médicos para este paciente já existem', 400);
+    // }
 
     const medicalData = new MedicalData();
     Object.assign(medicalData, data);
