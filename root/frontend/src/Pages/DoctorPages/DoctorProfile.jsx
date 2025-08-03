@@ -17,7 +17,7 @@ const DoctorProfile = () => {
       })
       .then((res) => {
         setDoctor(res.data);
-        setForm(res.data);
+        setForm({ ...res.data, password: '' });
       })
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
@@ -29,9 +29,20 @@ const DoctorProfile = () => {
 
   const handleCancel = () => [setForm(doctor)];
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Enviar para api');
+
+    try {
+      const response = await axios.put(`${apiUrl}/doctor/update`, form, {
+        withCredentials: true,
+      });
+
+      alert('atualizado');
+      setDoctor(response.data);
+    } catch (err) {
+      console.error('Erro ao atualizar perfil:', error);
+      alert('Erro ao atualizar perfil. Tente novamente.');
+    }
   };
 
   if (loading) return <p>Carregando...</p>;
@@ -67,29 +78,40 @@ const DoctorProfile = () => {
                   name="name"
                   type="text"
                   value={form.name}
+                  onChange={handleChange}
                 />
                 <InputField
                   label="Usuário"
-                  name="user"
+                  name="username"
                   type="text"
                   value={form.username}
+                  onChange={handleChange}
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 flex-1 mb-4">
-              <InputField label="CRM" name="crm" type="text" value={form.crm} />
+              <InputField
+                label="CRM"
+                name="crm"
+                type="text"
+                value={form.crm}
+                disabled
+              />
               <InputField
                 label="Telefone"
                 name="celphone"
                 type="text"
                 value={form.celphone}
+                onChange={handleChange}
               />
               <InputField
                 label="Senha"
                 placeholder="Atualize a sua senha"
                 name="password"
-                type="text"
+                type="password"
+                value={form.password || ''}
+                onChange={handleChange}
               />
             </div>
 
