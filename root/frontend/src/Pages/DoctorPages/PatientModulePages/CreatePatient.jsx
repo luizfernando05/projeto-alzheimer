@@ -11,13 +11,16 @@ import { education } from '../../../Utils/education';
 import { useNavigate } from 'react-router-dom';
 import SuccessToast from '../../../Components/Form/SuccessToast';
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const CreatePatient = () => {
   const navigate = useNavigate();
+
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
   const [selfiePhoto, setSelfiePhoto] = useState(null);
   const [showToast, setShowToast] = useState(false);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -47,12 +50,14 @@ const CreatePatient = () => {
 
   const handleSubmitPatient = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
 
     const newErrors = {};
     setErrors(newErrors);
 
     if (Object.keys(newErrors).length > 0) {
       setErrorMessage('Por favor, preencha todos os campos obrigatórios.');
+      setIsLoading(false);
       return;
     }
 
@@ -80,6 +85,7 @@ const CreatePatient = () => {
         } else {
           setErrorMessage(result.message || 'Erro ao cadastrar paciente.');
         }
+        setIsLoading(false);
         return;
       }
 
@@ -89,6 +95,7 @@ const CreatePatient = () => {
     } catch (err) {
       setErrorMessage('Erro inesperado no envio do formulário.');
       console.error(err);
+      setIsLoading(false);
     }
   };
 
@@ -231,9 +238,14 @@ const CreatePatient = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <button
                 type="submit"
-                className="bg-indigo-09 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs"
+                disabled={isLoading}
+                className={`${
+                  isLoading
+                    ? 'bg-indigo-07 cursor-not-allowed'
+                    : 'bg-indigo-09 hover:bg-indigo-10'
+                } text-gray-01 px-6 py-2 rounded-md shadow-xs`}
               >
-                Cadastrar paciente
+                {isLoading ? 'Cadastrando...' : 'Cadastrar paciente'}
               </button>
               <button className="bg-red-03 text-red-12 border border-red-06 px-6 py-2 rounded-md hover:bg-red-04 shadow-xs">
                 Cancelar
