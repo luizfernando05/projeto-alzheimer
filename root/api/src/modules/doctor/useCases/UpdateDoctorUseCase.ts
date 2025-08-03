@@ -31,7 +31,7 @@ export class UpdateDoctorUseCase {
     }
 
     if (username && username !== doctor.username) {
-      const emailInUse = await this.doctorRepository.findByEmail(username);
+      const emailInUse = await this.doctorRepository.findByUsername(username);
 
       if (emailInUse) {
         throw new AppError('Erro de validação', 409, {
