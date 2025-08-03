@@ -3,12 +3,18 @@ import DoctorLayout from './DoctorLayout';
 import { ArrowLeft } from '@phosphor-icons/react';
 import axios from 'axios';
 import InputField from '../../Components/Form/InputField';
+import { useNavigate } from 'react-router-dom';
+
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const DoctorProfile = () => {
+  const navigate = useNavigate();
+
   const [doctor, setDoctor] = useState(null);
   const [form, setForm] = useState({});
   const [loading, setLoading] = useState(true);
-  const apiUrl = import.meta.env.VITE_API_URL;
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     axios
@@ -19,7 +25,16 @@ const DoctorProfile = () => {
         setDoctor(res.data);
         setForm({ ...res.data, password: '' });
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        if (err.response?.data?.errors) {
+          setErrors(err.response.data.errors);
+          setErrorMessage(
+            err.response.data.message || 'Erro ao atualizar perfil.'
+          );
+        } else {
+          setErrorMessage('Erro ao atualizar perfil. Tente novamente.');
+        }
+      })
       .finally(() => setLoading(false));
   }, []);
 
@@ -27,10 +42,11 @@ const DoctorProfile = () => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleCancel = () => [setForm(doctor)];
+  const handleCancel = () => setForm({ ...doctor, password: '' });
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({});
 
     try {
       const response = await axios.put(`${apiUrl}/doctor/update`, form, {
@@ -40,8 +56,14 @@ const DoctorProfile = () => {
       alert('atualizado');
       setDoctor(response.data);
     } catch (err) {
-      console.error('Erro ao atualizar perfil:', error);
-      alert('Erro ao atualizar perfil. Tente novamente.');
+      if (err.response?.data?.errors) {
+        setErrors(err.response.data.errors);
+        setErrorMessage(
+          err.response.data.message || 'Erro ao atualizar perfil.'
+        );
+      } else {
+        setErrorMessage('Erro ao atualizar perfil. Tente novamente.');
+      }
     }
   };
 
@@ -52,7 +74,10 @@ const DoctorProfile = () => {
       <section className="w-full">
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex gap-6 pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
-            <button className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03">
+            <button
+              onClick={() => navigate(-1)}
+              className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03"
+            >
               <div className="pr-2 pl-2 pt-1 pb-1 border-r border-gray-06">
                 <ArrowLeft size={16} />
               </div>
@@ -79,6 +104,8 @@ const DoctorProfile = () => {
                   type="text"
                   value={form.name}
                   onChange={handleChange}
+                  hasError={!!errors.name}
+                  errorMessage={errors.name}
                 />
                 <InputField
                   label="Usuário"
@@ -86,6 +113,8 @@ const DoctorProfile = () => {
                   type="text"
                   value={form.username}
                   onChange={handleChange}
+                  hasError={!!errors.username}
+                  errorMessage={errors.username}
                 />
               </div>
             </div>
@@ -98,13 +127,17 @@ const DoctorProfile = () => {
                 value={form.crm}
                 disabled
               />
+
               <InputField
                 label="Telefone"
                 name="celphone"
                 type="text"
                 value={form.celphone}
                 onChange={handleChange}
+                hasError={!!errors.celphone}
+                errorMessage={errors.celphone}
               />
+
               <InputField
                 label="Senha"
                 placeholder="Atualize a sua senha"
@@ -112,6 +145,8 @@ const DoctorProfile = () => {
                 type="password"
                 value={form.password || ''}
                 onChange={handleChange}
+                hasError={!!errors.password}
+                errorMessage={errors.password}
               />
             </div>
 
@@ -131,6 +166,11 @@ const DoctorProfile = () => {
               </button>
             </div>
           </form>
+          {errorMessage && (
+            <p className="font-roboto font-normal text-xs text-red-09 text-center mb-4">
+              {errorMessage}
+            </p>
+          )}
         </div>
       </section>
     </DoctorLayout>
