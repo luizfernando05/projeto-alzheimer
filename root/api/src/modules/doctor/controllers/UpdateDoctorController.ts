@@ -16,7 +16,7 @@ export class UpdateDoctorController {
       await UpdateDoctorValidator.validate(req.body, { abortEarly: false });
 
       const id = req.user?.id;
-      const { name, email, password } = req.body;
+      const { name, email, username, password, celphone } = req.body;
 
       const doctorRepository = new DoctorRepository();
       const updateDoctorUseCase = new UpdateDoctorUseCase(doctorRepository);
@@ -24,8 +24,10 @@ export class UpdateDoctorController {
       const updateDoctor = await updateDoctorUseCase.execute({
         id,
         name,
+        username,
         email,
         password,
+        celphone,
       });
 
       return res.status(200).json(updateDoctor);
