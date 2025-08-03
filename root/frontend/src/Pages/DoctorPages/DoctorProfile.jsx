@@ -4,6 +4,7 @@ import { ArrowLeft } from '@phosphor-icons/react';
 import axios from 'axios';
 import InputField from '../../Components/Form/InputField';
 import { useNavigate } from 'react-router-dom';
+import SuccessToast from '../../Components/Form/SuccessToast';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,7 @@ const DoctorProfile = () => {
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [errors, setErrors] = useState({});
+  const [showToast, setShowToast] = useState(false);
 
   useEffect(() => {
     axios
@@ -53,8 +55,9 @@ const DoctorProfile = () => {
         withCredentials: true,
       });
 
-      alert('atualizado');
+      setShowToast(true);
       setDoctor(response.data);
+      setTimeout(4000);
     } catch (err) {
       if (err.response?.data?.errors) {
         setErrors(err.response.data.errors);
@@ -72,6 +75,12 @@ const DoctorProfile = () => {
   return (
     <DoctorLayout>
       <section className="w-full">
+        {showToast && (
+          <SuccessToast
+            message="Perfil atualizado com sucesso!"
+            onClose={() => setShowToast(false)}
+          />
+        )}
         <div className="bg-gray-01 rounded-xl shadow-sm border border-gray-06">
           <div className="flex gap-6 pt-6 pb-6 pr-8 pl-8 border-b border-gray-06">
             <button
