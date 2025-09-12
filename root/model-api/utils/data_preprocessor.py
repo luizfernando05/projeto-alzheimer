@@ -1,21 +1,16 @@
-import pandas as pd
+import numpy as np
 
 class DataPreprocessor:
     def process(self, data):
-        features = [
+        features = np.array([[
             data["mmse"],
             data["functionalAssessment"],
             data["memoryComplaints"],
             data["behavioralProblems"],
             data["adl"]
-        ]
+        ]])
 
-        return pd.DataFrame([features], columns=[
-            'MMSE', 'FunctionalAssessment', 'MemoryComplaints',
-       'BehavioralProblems', 'ADL'
-        ])
-    
-    'MMSE', 'FunctionalAssessment', 'MemoryComplaints','BehavioralProblems', 'ADL'
+        return features    
     
     
     
