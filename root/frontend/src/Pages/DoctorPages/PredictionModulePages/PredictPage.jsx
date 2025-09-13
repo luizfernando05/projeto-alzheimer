@@ -12,6 +12,9 @@ const PredictPage = () => {
   const navigate = useNavigate();
 
   const [patientData, setPatientData] = useState(null);
+  const [prediction, setPrediction] = useState(null);
+  const [advice, setAdvice] = useState('');
+  const [loadingPrediction, setLoadingPrediction] = useState(false);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -95,6 +98,46 @@ const PredictPage = () => {
     return age;
   };
 
+  const handlePredict = async () => {
+    if (!patientData || !patientData.medicalData?.length) return;
+    setLoadingPrediction(true);
+    try {
+      const lastExam =
+        patientData.medicalData[patientData.medicalData.length - 1];
+
+      const predResponse = await axios.post(
+        `${apiUrl}/predict`,
+        { medicalDataId: lastExam.id },
+        { withCredentials: true }
+      );
+
+      setPrediction(predResponse.data);
+
+      const adviceResponse = await axios.post(
+        `${apiUrl}/advice`,
+        { medicalDataId: lastExam.id },
+        { withCredentials: true }
+      );
+
+      setAdvice(adviceResponse.data.tips);
+    } catch (error) {
+      console.error('Erro ao gerar predição ou conselho:', error);
+      alert('Erro ao gerar predição ou conselho.');
+    } finally {
+      setLoadingPrediction(false);
+    }
+  };
+
+  if (!patientData) {
+    return (
+      <DoctorLayout>
+        <section className="w-full p-8">
+          <p className="text-gray-11">Carregando dados do paciente...</p>
+        </section>
+      </DoctorLayout>
+    );
+  }
+
   return (
     <DoctorLayout>
       <section className="w-full">
@@ -170,47 +213,48 @@ const PredictPage = () => {
                   Resultado
                 </h3>
                 <div className="border border-gray-06 rounded-lg bg-gray-02 font-roboto font-normal p-4">
-                  <p className="text-gray-11 text-sm">
-                    Resultado da predição:{' '}
-                    <span className="text-red-09">Positivo</span>
-                  </p>
-                  <p className="text-gray-11 text-sm">
-                    Socore de confiança:{' '}
-                    <span className="text-gray-12">93%</span>
-                  </p>
-
-                  <div className="border border-gray-06 rounded-sm bg-gray-02 font-roboto font-normal p-4 mt-3">
-                    <p className="flex gap-1 items-center text-gray-11 text-sm mb-2">
-                      <Sparkle color="#3E63DD" /> Gerado por IA
-                    </p>
-                    <p className="text-gray-11 text-sm">
-                      Com base nas informações fornecidas, nosso sistema
-                      identificou um padrão compatível com um possível quadro de
-                      Alzheimer. Essa predição foi feita a partir da análise de
-                      diversos fatores relacionados à saúde física,
-                      comportamental e cognitiva do paciente: O IMC (Índice de
-                      Massa Corporal) está fora da faixa considerada saudável, o
-                      que pode influenciar a saúde cerebral. A qualidade do sono
-                      foi avaliada como baixa, um fator frequentemente associado
-                      a alterações cognitivas. Os níveis de colesterol LDL, HDL
-                      e triglicerídeos mostraram desequilíbrios que podem afetar
-                      negativamente o funcionamento do cérebro. O desempenho no
-                      Mini Exame do Estado Mental (MMSE) indica uma possível
-                      redução nas capacidades cognitivas. A avaliação funcional
-                      mostra dificuldade na realização de tarefas do dia a dia.
-                      Foram registradas queixas frequentes de memória e
-                      alterações comportamentais, ambos sinais comuns nos
-                      estágios iniciais da doença. Além disso, foram observadas
-                      limitações nas chamadas Atividades da Vida Diária (ADL),
-                      que reforçam o indício de comprometimento funcional.
-                    </p>
-                  </div>
-
-                  <p className="text-gray-11 text-sm mt-2 flex gap-2 items-center">
-                    <Warning /> Este resultado aponta para um risco elevado, mas
-                    não constitui um diagnóstico definitivo. Confira as
-                    informações do paciente e confirme o diagnóstico.
-                  </p>
+                  {loadingPrediction ? (
+                    <p className="text-gray-11 text-sm">Gerando predição...</p>
+                  ) : prediction ? (
+                    <>
+                      <p className="text-gray-11 text-sm">
+                        Resultado da predição:{' '}
+                        <span
+                          className={
+                            prediction.result === '0'
+                              ? 'text-red-09'
+                              : 'text-green-09'
+                          }
+                        >
+                          {prediction.result === '0' ? 'Positivo' : 'Negativo'}
+                        </span>
+                      </p>
+                      <p className="text-gray-11 text-sm">
+                        Score de confiança:{' '}
+                        <span className="text-gray-12">
+                          {Math.round(prediction.confidenceScore * 100)}%
+                        </span>
+                      </p>
+                      <div className="border border-gray-06 rounded-sm bg-gray-02 font-roboto font-normal p-4 mt-3">
+                        <p className="flex gap-1 items-center text-gray-11 text-sm mb-2">
+                          <Sparkle color="#3E63DD" /> Gerado por IA
+                        </p>
+                        <p className="text-gray-11 text-sm">{advice}</p>
+                      </div>
+                      <p className="text-gray-11 text-sm mt-2 flex gap-2 items-center">
+                        <Warning /> Este resultado aponta para um risco elevado,
+                        mas não constitui um diagnóstico definitivo. Confira as
+                        informações do paciente e confirme o diagnóstico.
+                      </p>
+                    </>
+                  ) : (
+                    <button
+                      onClick={handlePredict}
+                      className="bg-indigo-09 border border-indigo-06 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs"
+                    >
+                      Gerar Predição
+                    </button>
+                  )}
                 </div>
               </div>
               <div>
