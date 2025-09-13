@@ -11,6 +11,9 @@ export class AdviceService {
 
   async generateAdvice(data: AdviceRequestDTO): Promise<AdviceResponseDTO> {
     try {
+      const diagnosisText =
+        data.prediction.result === '0' ? "Alzheimer's" : 'Non-Alzheimer’s';
+
       const response = await axios.post(
         this.apiUrl,
         {
@@ -57,7 +60,7 @@ export class AdviceService {
             - Behavioral Problems: ${data.medicalData.behavioralProblems}  
             - ADL: ${data.medicalData.adl}  
 
-            **Confirmed Diagnosis:** ${data.prediction.result} (Confidence: ${data.prediction.confidenceScore * 100}%).
+            **Confirmed Diagnosis:** ${diagnosisText} (Confidence: ${data.prediction.confidenceScore * 100}%).
 
             Now explain the diagnosis and end with one brief tip.
             `,
