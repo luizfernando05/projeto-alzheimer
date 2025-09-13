@@ -13,14 +13,15 @@ export class CreatePredictionsTable1757772267507 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'uuid',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
+            default: 'uuid_generate_v4()',
           },
           {
             name: 'medical_data_id',
-            type: 'int',
+            type: 'uuid',
             isNullable: false,
           },
           {
@@ -48,7 +49,7 @@ export class CreatePredictionsTable1757772267507 implements MigrationInterface {
       new TableForeignKey({
         columnNames: ['medical_data_id'],
         referencedColumnNames: ['id'],
-        referencedTableName: 'medical_data',
+        referencedTableName: 'medicaldatas',
         onDelete: 'CASCADE',
         onUpdate: 'CASCADE',
       })
