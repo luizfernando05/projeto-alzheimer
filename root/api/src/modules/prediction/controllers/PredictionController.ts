@@ -21,7 +21,16 @@ export class PredictionController {
 
       const prediction = await predictionUseCase.execute({ medicalDataId });
 
-      return res.status(201).json(prediction);
+      const predictionLabels: { [key: number]: string } = {
+        0: 'Negative',
+        1: 'Positive',
+      };
+
+      return res.status(201).json({
+        predictionResult:
+          predictionLabels[Number(prediction.prediction_result)] || 'Unknown',
+        confidenceScore: prediction.confidence_score,
+      });
     } catch (error: any) {
       return res.status(error.statusCode || 500).json({
         message: error.message || 'Erro ao gerar predição',
