@@ -15,14 +15,14 @@ export class PredictionRepository implements IPredictionRepository {
     return await this.repository.save(prediction);
   }
 
-  async findById(id: number): Promise<Prediction | null> {
+  async findById(id: string): Promise<Prediction | null> {
     return await this.repository.findOne({
-      where: { id },
+      where: { id: Number(id) },
       relations: ['medicalData'],
     });
   }
 
-  async findByMedicalDataId(medicalDataId: number): Promise<Prediction[]> {
+  async findByMedicalDataId(medicalDataId: string): Promise<Prediction[]> {
     return await this.repository.find({
       where: { medicalData: { id: medicalDataId.toString() } },
       relations: ['medicalData'],
@@ -36,7 +36,7 @@ export class PredictionRepository implements IPredictionRepository {
     });
   }
 
-  async delete(id: number): Promise<void> {
+  async delete(id: string): Promise<void> {
     await this.repository.delete(id);
   }
 }
