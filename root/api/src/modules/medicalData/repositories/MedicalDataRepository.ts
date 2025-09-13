@@ -26,7 +26,10 @@ export class MedicalDataRepository implements IMedicalDataRepository {
   }
 
   async findById(id: string): Promise<MedicalData | null> {
-    return this.ormRepository.findOne({ where: { id } });
+    return this.ormRepository.findOne({
+      where: { id },
+      relations: ['patientId'],
+    });
   }
 
   async findAll(): Promise<MedicalData[]> {
