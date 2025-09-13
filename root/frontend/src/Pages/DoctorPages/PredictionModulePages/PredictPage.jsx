@@ -242,9 +242,10 @@ const PredictPage = () => {
                         <p className="text-gray-11 text-sm">{advice}</p>
                       </div>
                       <p className="text-gray-11 text-sm mt-2 flex gap-2 items-center">
-                        <Warning /> Este resultado aponta para um risco elevado,
-                        mas não constitui um diagnóstico definitivo. Confira as
-                        informações do paciente e confirme o diagnóstico.
+                        <Warning />
+                        {prediction.result === '0'
+                          ? 'Este resultado aponta para um risco elevado de Alzheimer, mas não constitui um diagnóstico definitivo. Confira as informações do paciente e confirme o diagnóstico.'
+                          : 'Este resultado indica baixo risco para Alzheimer. Mesmo assim, continue acompanhando o paciente e incentive hábitos saudáveis.'}
                       </p>
                     </>
                   ) : (
