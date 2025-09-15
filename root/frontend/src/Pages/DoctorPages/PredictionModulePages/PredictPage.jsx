@@ -200,11 +200,10 @@ const PredictPage = () => {
                   Predição
                 </h3>
                 <p className="font-roboto text-sm font-normal text-gray-12">
-                  Foram consideradas as seguintes características para essa
-                  predição: Índice de Massa Corporal, Qualidade do Sono,
-                  Colesterol ILDL, Colesterol IHDL, Colesterol Triglicerídeos,
-                  Mini-Exame do Estado Mental, Tarefas Diárias, Problemas de
-                  Memória, Problemas de Comportamento e Avaliação Funcional.
+                  São consideradas as seguintes características para essa
+                  predição: Mini-Exame do Estado Mental, Tarefas Diárias,
+                  Problemas de Memória, Problemas de Comportamento e Avaliação
+                  Funcional.
                 </p>
               </div>
 
@@ -251,8 +250,9 @@ const PredictPage = () => {
                   ) : (
                     <button
                       onClick={handlePredict}
-                      className="bg-indigo-09 border border-indigo-06 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs"
+                      className="animated-gradient border border-indigo-06 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs transition-colors duration-300 flex gap-2 items-center cursor-pointer"
                     >
+                      <Sparkle size={24} />
                       Gerar Predição
                     </button>
                   )}
