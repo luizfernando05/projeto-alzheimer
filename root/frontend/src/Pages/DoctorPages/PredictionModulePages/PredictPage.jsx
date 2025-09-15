@@ -15,6 +15,7 @@ const PredictPage = () => {
   const [prediction, setPrediction] = useState(null);
   const [advice, setAdvice] = useState('');
   const [loadingPrediction, setLoadingPrediction] = useState(false);
+  const [selectedExamIndex, setSelectedExamIndex] = useState(0);
 
   useEffect(() => {
     const fetchPatient = async () => {
@@ -79,6 +80,10 @@ const PredictPage = () => {
     );
   }
 
+  const handleSelectExam = (index) => {
+    setSelectedExamIndex(index);
+  };
+
   const mapBooleanToSimNao = (value) => {
     if (value === true || value === 'true') return 'Sim';
     if (value === false || value === 'false') return 'Não';
@@ -102,12 +107,11 @@ const PredictPage = () => {
     if (!patientData || !patientData.medicalData?.length) return;
     setLoadingPrediction(true);
     try {
-      const lastExam =
-        patientData.medicalData[patientData.medicalData.length - 1];
+      const selectedExam = patientData.medicalData[selectedExamIndex];
 
       const predResponse = await axios.post(
         `${apiUrl}/predict`,
-        { medicalDataId: lastExam.id },
+        { medicalDataId: selectedExam.id },
         { withCredentials: true }
       );
 
@@ -115,7 +119,7 @@ const PredictPage = () => {
 
       const adviceResponse = await axios.post(
         `${apiUrl}/advice`,
-        { medicalDataId: lastExam.id },
+        { medicalDataId: selectedExam.id },
         { withCredentials: true }
       );
 
@@ -137,6 +141,8 @@ const PredictPage = () => {
       </DoctorLayout>
     );
   }
+
+  const selectedExam = patientData.medicalData[selectedExamIndex];
 
   return (
     <DoctorLayout>
@@ -259,6 +265,39 @@ const PredictPage = () => {
                 </div>
               </div>
               <div>
+                {patientData.medicalData?.length > 1 && (
+                  <div className="mb-4">
+                    <label className="block text-sm text-gray-12 mb-2">
+                      Selecionar data do exame
+                    </label>
+                    <div className="flex flex-wrap gap-2">
+                      {patientData.medicalData.map((item, index) => {
+                        const formattedDate = item.dateExam
+                          .split('-')
+                          .reverse()
+                          .join('/');
+                        const isSelected = selectedExamIndex === index;
+
+                        return (
+                          <button
+                            key={item.id}
+                            type="button"
+                            onClick={() => handleSelectExam(index)}
+                            className={`px-4 py-2 text-sm rounded-md border transition
+                          ${
+                            isSelected
+                              ? 'bg-indigo-09 text-gray-01 border-indigo-06'
+                              : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
+                          }
+                        `}
+                          >
+                            {formattedDate}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 <h3 className="font-roboto text-base font-normal text-gray-12">
                   Características do paciente
                 </h3>
@@ -274,7 +313,7 @@ const PredictPage = () => {
                         <>
                           <InputField
                             label="Data do exame"
-                            value={lastExam.dateExam
+                            value={selectedExam.dateExam
                               ?.split('-')
                               .reverse()
                               .join('/')}
@@ -282,166 +321,174 @@ const PredictPage = () => {
                           />
                           <InputField
                             label="Peso (kg)"
-                            value={lastExam.weight}
+                            value={selectedExam.weight}
                             readOnly
                           />
                           <InputField
                             label="Altura (cm)"
-                            value={lastExam.height}
+                            value={selectedExam.height}
                             readOnly
                           />
                           <InputField
                             label="IMC"
-                            value={lastExam.bmi}
+                            value={selectedExam.bmi}
                             readOnly
                           />
                           <InputField
                             label="Qualidade da dieta"
-                            value={lastExam.dietQuality}
+                            value={selectedExam.dietQuality}
                             readOnly
                           />
                           <InputField
                             label="Qualidade do sono"
-                            value={lastExam.sleepQuality}
+                            value={selectedExam.sleepQuality}
                             readOnly
                           />
                           <InputField
                             label="Tabagismo"
-                            value={mapBooleanToSimNao(lastExam.smoking)}
+                            value={mapBooleanToSimNao(selectedExam.smoking)}
                             readOnly
                           />
                           <InputField
                             label="Álcool"
                             value={mapBooleanToSimNao(
-                              lastExam.alcoholConsumption
+                              selectedExam.alcoholConsumption
                             )}
                             readOnly
                           />
                           <InputField
                             label="Atividade física"
                             value={mapBooleanToSimNao(
-                              lastExam.physicalActivity
+                              selectedExam.physicalActivity
                             )}
                             readOnly
                           />
                           <InputField
                             label="Alzheimer na família"
-                            value={mapBooleanToSimNao(lastExam.familyHistory)}
+                            value={mapBooleanToSimNao(
+                              selectedExam.familyHistory
+                            )}
                             readOnly
                           />
                           <InputField
                             label="Doença cardiovascular"
                             value={mapBooleanToSimNao(
-                              lastExam.cardiovascularDisease
+                              selectedExam.cardiovascularDisease
                             )}
                             readOnly
                           />
                           <InputField
                             label="Diabetes"
-                            value={mapBooleanToSimNao(lastExam.diabetes)}
+                            value={mapBooleanToSimNao(selectedExam.diabetes)}
                             readOnly
                           />
                           <InputField
                             label="Depressão"
-                            value={mapBooleanToSimNao(lastExam.depression)}
+                            value={mapBooleanToSimNao(selectedExam.depression)}
                             readOnly
                           />
                           <InputField
                             label="Traumatismo craniano"
-                            value={mapBooleanToSimNao(lastExam.headTrauma)}
+                            value={mapBooleanToSimNao(selectedExam.headTrauma)}
                             readOnly
                           />
                           <InputField
                             label="Hipertensão"
-                            value={mapBooleanToSimNao(lastExam.hypertension)}
+                            value={mapBooleanToSimNao(
+                              selectedExam.hypertension
+                            )}
                             readOnly
                           />
                           <InputField
                             label="Mini-Exame do Estado Mental (MMSE)"
-                            value={lastExam.mmse}
+                            value={selectedExam.mmse}
                             readOnly
                           />
                           <InputField
                             label="Atividades Funcionais"
-                            value={lastExam.functionalAssessment}
+                            value={selectedExam.functionalAssessment}
                             readOnly
                           />
                           <InputField
                             label="Problemas de memória"
                             value={mapBooleanToSimNao(
-                              lastExam.memoryComplaints
+                              selectedExam.memoryComplaints
                             )}
                             readOnly
                           />
                           <InputField
                             label="Problemas comportamentais"
                             value={mapBooleanToSimNao(
-                              lastExam.behavioralProblems
+                              selectedExam.behavioralProblems
                             )}
                             readOnly
                           />
                           <InputField
                             label="Atividades diárias (ADL)"
-                            value={lastExam.adl}
+                            value={selectedExam.adl}
                             readOnly
                           />
                           <InputField
                             label="Confusão"
-                            value={mapBooleanToSimNao(lastExam.confusion)}
+                            value={mapBooleanToSimNao(selectedExam.confusion)}
                             readOnly
                           />
                           <InputField
                             label="Desorientação"
-                            value={mapBooleanToSimNao(lastExam.disorientation)}
+                            value={mapBooleanToSimNao(
+                              selectedExam.disorientation
+                            )}
                             readOnly
                           />
                           <InputField
                             label="Mudanças na personalidade"
                             value={mapBooleanToSimNao(
-                              lastExam.personalityChanges
+                              selectedExam.personalityChanges
                             )}
                             readOnly
                           />
                           <InputField
                             label="Dificuldade em completar tarefas"
                             value={mapBooleanToSimNao(
-                              lastExam.difficultyCompletingTasks
+                              selectedExam.difficultyCompletingTasks
                             )}
                             readOnly
                           />
                           <InputField
                             label="Esquecimento"
-                            value={mapBooleanToSimNao(lastExam.forgetfulness)}
+                            value={mapBooleanToSimNao(
+                              selectedExam.forgetfulness
+                            )}
                             readOnly
                           />
                           <InputField
                             label="Colesterol Total"
-                            value={lastExam.cholesterolTotal}
+                            value={selectedExam.cholesterolTotal}
                             readOnly
                           />
                           <InputField
                             label="Colesterol LDL"
-                            value={lastExam.cholesterolLdl}
+                            value={selectedExam.cholesterolLdl}
                             readOnly
                           />
                           <InputField
                             label="Colesterol HDL"
-                            value={lastExam.cholesterolHdl}
+                            value={selectedExam.cholesterolHdl}
                             readOnly
                           />
                           <InputField
                             label="Triglicerídeos"
-                            value={lastExam.cholesterolTriglycerides}
+                            value={selectedExam.cholesterolTriglycerides}
                             readOnly
                           />
                           <InputField
                             label="Pressão sistólica"
-                            value={lastExam.systolicBP}
+                            value={selectedExam.systolicBP}
                             readOnly
                           />
                           <InputField
                             label="Pressão diastólica"
-                            value={lastExam.diastolicBP}
+                            value={selectedExam.diastolicBP}
                             readOnly
                           />
                         </>
