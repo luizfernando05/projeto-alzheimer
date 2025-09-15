@@ -219,7 +219,16 @@ const PredictPage = () => {
                 </h3>
                 <div className="border border-gray-06 rounded-lg bg-gray-02 font-roboto font-normal p-4">
                   {loadingPrediction ? (
-                    <p className="text-gray-11 text-sm">Gerando predição...</p>
+                    <div className="flex flex-col items-center gap-2 py-4">
+                      <div className="flex gap-1">
+                        <span className="dot-animate bg-indigo-09"></span>
+                        <span className="dot-animate bg-indigo-09 animation-delay-200"></span>
+                        <span className="dot-animate bg-indigo-09 animation-delay-400"></span>
+                      </div>
+                      <p className="text-gray-11 text-sm">
+                        Gerando predição...
+                      </p>
+                    </div>
                   ) : prediction ? (
                     <>
                       <p className="text-gray-11 text-sm">
@@ -265,39 +274,6 @@ const PredictPage = () => {
                 </div>
               </div>
               <div>
-                {patientData.medicalData?.length > 1 && (
-                  <div className="mb-4">
-                    <label className="block text-sm text-gray-12 mb-2">
-                      Selecionar data do exame
-                    </label>
-                    <div className="flex flex-wrap gap-2">
-                      {patientData.medicalData.map((item, index) => {
-                        const formattedDate = item.dateExam
-                          .split('-')
-                          .reverse()
-                          .join('/');
-                        const isSelected = selectedExamIndex === index;
-
-                        return (
-                          <button
-                            key={item.id}
-                            type="button"
-                            onClick={() => handleSelectExam(index)}
-                            className={`px-4 py-2 text-sm rounded-md border transition
-                          ${
-                            isSelected
-                              ? 'bg-indigo-09 text-gray-01 border-indigo-06'
-                              : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
-                          }
-                        `}
-                          >
-                            {formattedDate}
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-                )}
                 <h3 className="font-roboto text-base font-normal text-gray-12">
                   Características do paciente
                 </h3>

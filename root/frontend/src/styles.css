@@ -117,3 +117,33 @@ input[type='password']::-ms-clear {
     background-position: 0% 50%;
   }
 }
+
+.dot-animate {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  opacity: 0.6;
+  animation: dotPulse 1s infinite;
+  background-color: #3e63dd;
+  margin: 0 2px;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
+}
+.animation-delay-400 {
+  animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+  }
+}
