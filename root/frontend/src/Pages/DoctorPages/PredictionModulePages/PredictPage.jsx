@@ -4,6 +4,7 @@ import InputField from '../../../Components/Form/InputField';
 import { ArrowLeft, FilePdf, Sparkle, Warning } from '@phosphor-icons/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import translate from 'translate';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -123,7 +124,11 @@ const PredictPage = () => {
         { withCredentials: true }
       );
 
-      setAdvice(adviceResponse.data.tips);
+      // Traduzir para pt-br
+      const advicePtBr = await translate(adviceResponse.data.tips, {
+        to: 'pt',
+      });
+      setAdvice(advicePtBr);
     } catch (error) {
       console.error('Erro ao gerar predição ou conselho:', error);
       alert('Erro ao gerar predição ou conselho.');
