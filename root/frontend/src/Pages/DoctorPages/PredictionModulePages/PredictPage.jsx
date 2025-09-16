@@ -484,6 +484,40 @@ const PredictPage = () => {
               </div>
             </div>
 
+            {patientData.medicalData?.length > 1 && (
+              <div className="mb-6">
+                <label className="block text-sm text-gray-12 mb-2">
+                  Selecionar data do exame
+                </label>
+                <div className="flex flex-wrap gap-2">
+                  {patientData.medicalData.map((item, index) => {
+                    const formattedDate = item.dateExam
+                      .split('-')
+                      .reverse()
+                      .join('/');
+                    const isSelected = selectedExamIndex === index;
+
+                    return (
+                      <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => setSelectedExamIndex(index)}
+                        className={`px-4 py-2 text-sm rounded-md border transition
+                          ${
+                            isSelected
+                              ? 'bg-gray-04 text-gray-12 border-gray-06'
+                              : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
+                          }
+                        `}
+                      >
+                        {formattedDate}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
               <button
                 type="submit"
