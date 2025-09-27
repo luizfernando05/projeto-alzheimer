@@ -4,8 +4,8 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   GenderIntersex,
-  GenderFemale,
   GenderMale,
+  GenderFemale,
 } from '@phosphor-icons/react';
 
 const GenderStatsCard = () => {
@@ -32,16 +32,36 @@ const GenderStatsCard = () => {
 
   if (loading) {
     return (
-      <div className="p-4 rounded-2xl bg-gray-01">
-        <p className="text-sm text-gray-06">Carregando...</p>
+      <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
+        <div className="flex gap-6 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+          <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3">
+            <div className="border border-gray-06 p-1 rounded-sm">
+              <GenderIntersex size={16} />
+            </div>
+            Positivos por gênero
+          </h2>
+        </div>
+        <div className="pt-4 pb-5 pr-6 pl-6">
+          <p className="text-sm text-gray-11">Carregando...</p>
+        </div>
       </div>
     );
   }
 
   if (!stats) {
     return (
-      <div className="p-4 rounded-2xl bg-gray-01">
-        <p className="text-sm text-red-500">Erro ao carregar dados.</p>
+      <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
+        <div className="flex gap-6 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+          <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3">
+            <div className="border border-gray-06 p-1 rounded-sm">
+              <GenderIntersex size={16} />
+            </div>
+            Positivos por gênero
+          </h2>
+        </div>
+        <div className="pt-4 pb-5 pr-6 pl-6">
+          <p className="text-sm text-red-09">Erro ao carregar dados.</p>
+        </div>
       </div>
     );
   }
@@ -53,15 +73,11 @@ const GenderStatsCard = () => {
 
     return (
       <span
-        className={`flex items-center text-xs font-medium ${
-          positive
-            ? 'text-green-600'
-            : neutral
-            ? 'text-gray-500'
-            : 'text-red-600'
-        }`}
+        className={`font-roboto text-xs font-medium border border-gray-06 p-1 rounded-sm ${
+          positive ? 'text-green-09' : neutral ? 'text-gray-11' : 'text-red-09'
+        } flex items-center gap-1`}
       >
-        {!neutral && <Icon size={14} className="mr-1" />}
+        {!neutral && <Icon size={12} />}
         {neutral ? '0%' : `${positive ? '+' : ''}${growth}%`}
       </span>
     );
@@ -83,36 +99,50 @@ const GenderStatsCard = () => {
   }
 
   return (
-    <div className="pt-5 pb-5 pr-6 pl-6 rounded-lg bg-gray-01 border border-gray-06">
-      <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3 mb-2">
-        <div className="border border-gray-06 p-1 rounded-sm">
-          <GenderIntersex size={16} />
-        </div>
-        Positivos por gênero
-      </h2>
-
-      <div className="flex flex-col gap-2 text-base font-roboto font-light">
-        <div className="flex justify-between items-center">
-          <span className="flex items-center gap-1">
-            <GenderFemale /> Feminino:
-            <span className="ml-1">
-              {stats.female?.count?.toLocaleString() ?? 0}
-            </span>
-          </span>
-          {renderGrowth(stats.female?.growth ?? 0)}
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="flex items-center gap-1">
-            <GenderMale /> Masculino:
-            <span className="ml-1">
-              {stats.male?.count?.toLocaleString() ?? 0}
-            </span>
-          </span>
-          {renderGrowth(stats.male?.growth ?? 0)}
-        </div>
+    <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
+      <div className="flex gap-6 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+        <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3">
+          <div className="border border-gray-06 p-1 rounded-sm">
+            <GenderIntersex size={16} />
+          </div>
+          Positivos por gênero
+        </h2>
       </div>
 
-      <p className="mt-3 text-xs text-gray-11">{footerText}</p>
+      <div className="pt-4 pb-5 pr-6 pl-6">
+        <div className="flex flex-col gap-4">
+          {/* Feminino */}
+          <div className="flex justify-between items-center">
+            <div className="flex gap-4">
+              <h3 className="text-xl font-roboto font-normal text-gray-12">
+                {stats.female?.count?.toLocaleString('pt-BR') ?? 0}
+              </h3>
+              {renderGrowth(stats.female?.growth ?? 0)}
+            </div>
+            <span className="font-roboto text-sm text-gray-11 flex gap-1 items-center">
+              <GenderFemale /> Feminino
+            </span>
+          </div>
+
+          {/* Masculino */}
+          <div className="flex justify-between items-center">
+            <div className="flex gap-4">
+              <h3 className="text-xl font-roboto font-normal text-gray-12">
+                {stats.male?.count?.toLocaleString('pt-BR') ?? 0}
+              </h3>
+              {renderGrowth(stats.male?.growth ?? 0)}
+            </div>
+            <span className="font-roboto text-sm text-gray-11 flex gap-1 items-center">
+              <GenderMale /> Masculino
+            </span>
+          </div>
+        </div>
+
+        <p className="font-roboto text-xs text-gray-11 mt-3">{footerText}</p>
+        <p className="text-xs text-gray-10 mt-2">
+          Atualizado em {new Date().toLocaleDateString('pt-BR')}
+        </p>
+      </div>
     </div>
   );
 };
