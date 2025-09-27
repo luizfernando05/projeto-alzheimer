@@ -129,6 +129,8 @@ const PredictPage = () => {
         to: 'pt',
       });
       setAdvice(advicePtBr);
+
+      console.log(predResponse);
     } catch (error) {
       console.error('Erro ao gerar predição ou conselho:', error);
       alert('Erro ao gerar predição ou conselho.');
@@ -240,12 +242,14 @@ const PredictPage = () => {
                         Resultado da predição:{' '}
                         <span
                           className={
-                            prediction.result === '0'
+                            prediction.predictionResult === 'positive'
                               ? 'text-red-09'
                               : 'text-green-09'
                           }
                         >
-                          {prediction.result === '0' ? 'Positivo' : 'Negativo'}
+                          {prediction.predictionResult === 'positive'
+                            ? 'Positivo'
+                            : 'Negativo'}
                         </span>
                       </p>
                       <p className="text-gray-11 text-sm">
@@ -517,18 +521,6 @@ const PredictPage = () => {
                 </div>
               </div>
             )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              <button
-                type="submit"
-                className="bg-indigo-09 border border-indigo-06 text-gray-01 px-6 py-2 rounded-md hover:bg-indigo-10 shadow-xs"
-              >
-                Confirmar Diagnóstico
-              </button>
-              <button className="bg-red-03 text-red-12 border border-red-06 px-6 py-2 rounded-md hover:bg-red-04 shadow-xs">
-                Descartar Diagnóstico
-              </button>
-            </div>
           </div>
         </div>
       </section>
