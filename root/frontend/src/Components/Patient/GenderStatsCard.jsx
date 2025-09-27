@@ -111,26 +111,24 @@ const GenderStatsCard = () => {
 
       <div className="pt-4 pb-5 pr-6 pl-6">
         <div className="flex flex-col gap-4">
-          {/* Feminino */}
           <div className="flex justify-between items-center">
             <div className="flex gap-4">
               <h3 className="text-xl font-roboto font-normal text-gray-12">
-                {stats.female?.count?.toLocaleString('pt-BR') ?? 0}
+                {stats.female?.total ?? 0}
               </h3>
-              {renderGrowth(stats.female?.growth ?? 0)}
+              {renderGrowth(stats.female?.variation ?? 0)}
             </div>
             <span className="font-roboto text-sm text-gray-11 flex gap-1 items-center">
               <GenderFemale /> Feminino
             </span>
           </div>
 
-          {/* Masculino */}
           <div className="flex justify-between items-center">
             <div className="flex gap-4">
               <h3 className="text-xl font-roboto font-normal text-gray-12">
-                {stats.male?.count?.toLocaleString('pt-BR') ?? 0}
+                {stats.male?.total ?? 0}
               </h3>
-              {renderGrowth(stats.male?.growth ?? 0)}
+              {renderGrowth(stats.male?.variation ?? 0)}
             </div>
             <span className="font-roboto text-sm text-gray-11 flex gap-1 items-center">
               <GenderMale /> Masculino
@@ -138,7 +136,11 @@ const GenderStatsCard = () => {
           </div>
         </div>
 
-        <p className="font-roboto text-xs text-gray-11 mt-3">{footerText}</p>
+        <p className="font-roboto text-xs text-gray-11 mt-3">
+          {stats.male.variation === 0 && stats.female.variation === 0
+            ? 'O número de positivos se manteve estável nos últimos 7 dias.'
+            : 'O número de positivos teve variações nos últimos 7 dias.'}
+        </p>
         <p className="text-xs text-gray-10 mt-2">
           Atualizado em {new Date().toLocaleDateString('pt-BR')}
         </p>
