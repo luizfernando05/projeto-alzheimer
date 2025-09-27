@@ -19,8 +19,8 @@ export class MedicalData {
   @Column({ type: 'integer', nullable: false })
   bmi: number;
 
-  @Column({ name: 'sleep_quality', type: 'boolean', nullable: false })
-  sleepQuality: boolean;
+  @Column({ name: 'sleep_quality', type: 'integer', nullable: false })
+  sleepQuality: number;
 
   @Column({ name: 'cholesterol_ldl', type: 'float', nullable: false })
   cholesterolLdl: number;
