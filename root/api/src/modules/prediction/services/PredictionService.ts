@@ -1,16 +1,25 @@
 import axios from 'axios';
 import { AppError } from '../../shared/errors/AppError';
+import { PredictionResult } from '../types/PredictionTypes';
 
 export class PredictionService {
   private baseUrl = 'http://localhost:5000';
 
-  async getPrediction(
-    inputData: any
-  ): Promise<{ prediction_result: string; confidence_score: number }> {
+  async getPrediction(inputData: any): Promise<{
+    prediction_result: PredictionResult;
+    confidence_score: number;
+  }> {
     try {
       const response = await axios.post(`${this.baseUrl}/predict`, inputData);
+
+      // Convert numeric result to string enum
+      const predictionResult =
+        response.data.prediction_result === 1
+          ? PredictionResult.POSITIVE
+          : PredictionResult.NEGATIVE;
+
       return {
-        prediction_result: response.data.prediction_result,
+        prediction_result: predictionResult,
         confidence_score: response.data.confidence_score,
       };
     } catch (error) {

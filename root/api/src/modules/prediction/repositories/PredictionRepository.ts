@@ -17,7 +17,7 @@ export class PredictionRepository implements IPredictionRepository {
 
   async findById(id: string): Promise<Prediction | null> {
     return await this.repository.findOne({
-      where: { id: Number(id) },
+      where: { id: id },
       relations: ['medicalData'],
     });
   }

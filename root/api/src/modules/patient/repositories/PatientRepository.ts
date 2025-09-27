@@ -11,6 +11,7 @@ import { IPatientRepository } from '../interfaces/IPatientRepository';
 import { startOfDay, subDays, addDays, min } from 'date-fns';
 import { GenderStatsDTO } from '../dto/GenderStatsDTO';
 import { Prediction } from '../../../domain/entities/Prediction';
+import { PredictionResult } from '../../prediction/types/PredictionTypes';
 
 export class PatientRepository implements IPatientRepository {
   private ormRepository: Repository<Patient>;
@@ -28,7 +29,7 @@ export class PatientRepository implements IPatientRepository {
 
     const femaleTotal = await this.predictRepository.count({
       where: {
-        prediction_result: 'Positive',
+        prediction_result: PredictionResult.POSITIVE,
         medicalData: {
           patientId: { gender: 'Feminino', createdByDoctor: { id: doctorId } },
         },
@@ -37,7 +38,7 @@ export class PatientRepository implements IPatientRepository {
 
     const maleTotal = await this.predictRepository.count({
       where: {
-        prediction_result: 'Positive',
+        prediction_result: PredictionResult.POSITIVE,
         medicalData: {
           patientId: { gender: 'Masculino', createdByDoctor: { id: doctorId } },
         },
@@ -46,7 +47,7 @@ export class PatientRepository implements IPatientRepository {
 
     const femaleLastWeek = await this.predictRepository.count({
       where: {
-        prediction_result: 'Positive',
+        prediction_result: PredictionResult.POSITIVE,
         created_at: Between(lastWeek, today),
         medicalData: {
           patientId: { gender: 'Feminino', createdByDoctor: { id: doctorId } },
@@ -56,7 +57,7 @@ export class PatientRepository implements IPatientRepository {
 
     const maleLastWeek = await this.predictRepository.count({
       where: {
-        prediction_result: 'Positive',
+        prediction_result: PredictionResult.POSITIVE,
         created_at: Between(lastWeek, today),
         medicalData: {
           patientId: { gender: 'Masculino', createdByDoctor: { id: doctorId } },

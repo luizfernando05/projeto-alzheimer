@@ -21,14 +21,8 @@ export class PredictionController {
 
       const prediction = await predictionUseCase.execute({ medicalDataId });
 
-      const predictionLabels: { [key: number]: string } = {
-        0: 'Negative',
-        1: 'Positive',
-      };
-
       return res.status(201).json({
-        predictionResult:
-          predictionLabels[Number(prediction.prediction_result)] || 'Unknown',
+        predictionResult: prediction.prediction_result,
         confidenceScore: prediction.confidence_score,
       });
     } catch (error: any) {

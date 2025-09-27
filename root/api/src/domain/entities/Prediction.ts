@@ -7,16 +7,17 @@ import {
   JoinColumn,
 } from 'typeorm';
 import { MedicalData } from './MedicalData';
+import { PredictionResult } from '../../modules/prediction/types/PredictionTypes';
 
 @Entity('predictions')
 export class Prediction {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column({ type: 'varchar' })
-  prediction_result: string;
+  @Column({ name: 'prediction_result', type: 'varchar' })
+  prediction_result: PredictionResult;
 
-  @Column({ type: 'float' })
+  @Column({ name: 'confidence_score', type: 'float' })
   confidence_score: number;
 
   @CreateDateColumn({ name: 'created_at' })
