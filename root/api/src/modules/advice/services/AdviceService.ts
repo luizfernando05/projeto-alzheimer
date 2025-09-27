@@ -6,19 +6,18 @@ export class AdviceService {
   private apiUrl: string;
 
   constructor() {
-    this.apiUrl = 'https://api.cohere.ai/v1/generate';
+    this.apiUrl = 'https://api.cohere.ai/v1/chat';
   }
 
   async generateAdvice(data: AdviceRequestDTO): Promise<AdviceResponseDTO> {
     try {
       const diagnosisText =
-        data.prediction.result === '0' ? "Alzheimer's" : 'Non-Alzheimer’s';
+        data.prediction.result === '0' ? "Alzheimer's" : "Non-Alzheimer's";
 
       const response = await axios.post(
         this.apiUrl,
         {
-          model: 'command-r-plus-08-2024',
-          prompt: `
+          message: `
             You are a healthcare and cognitive specialist. Your task is to provide a clear, non-technical explanation of the patient's Alzheimer's diagnosis based on the provided data, followed by one simple, practical tip for managing their daily life.
 
             **Important Guidelines:**
@@ -40,7 +39,7 @@ export class AdviceService {
             Tip: Establish a structured daily routine with reminders to reduce confusion and anxiety.
 
             **Example 2:**
-            Diagnosis: Non-Alzheimer’s  
+            Diagnosis: Non-Alzheimer's  
             Confidence: 89.7%  
             MMSE: 28 | ADL: Independent | Behavioral Problems: None  
             Explanation: The MMSE score is within the normal range, and the patient maintains independence in daily activities without behavioral changes. These values do not indicate Alzheimer's.  
@@ -62,9 +61,9 @@ export class AdviceService {
 
             **Confirmed Diagnosis:** ${diagnosisText} (Confidence: ${data.prediction.confidenceScore * 100}%).
 
-            Now explain the diagnosis and end with one brief tip.
+            Provide an explanation of the diagnosis and end with one brief tip.
             `,
-          max_tokens: 500,
+          model: 'command-nightly',
           temperature: 0.7,
         },
         {
@@ -75,8 +74,7 @@ export class AdviceService {
         }
       );
 
-      const advice = response.data.generations[0].text.trim();
-
+      const advice = response.data.text.trim();
       return { tips: advice };
     } catch (err) {
       console.error('Error communicating with Cohere API:', err);
