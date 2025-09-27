@@ -3,6 +3,7 @@ import axios from 'axios';
 import DoctorLayout from './DoctorLayout';
 import GenderStatsCard from '../../Components/Patient/GenderStatsCard';
 import PatientSummaryCard from '../../Components/Patient/PatientSummaryCard';
+import PatientSimplifiedList from '../../Components/Patient/PatientSimplifiedList';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -38,7 +39,11 @@ const DoctorDashboard = () => {
   return (
     <DoctorLayout>
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2"></div>
+        <div className="lg:col-span-2">
+          <div className="pb-6">
+            <PatientSimplifiedList />
+          </div>
+        </div>
 
         <div className="flex flex-col gap-4">
           <GenderStatsCard />
