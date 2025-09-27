@@ -12,7 +12,9 @@ export class AdviceService {
   async generateAdvice(data: AdviceRequestDTO): Promise<AdviceResponseDTO> {
     try {
       const diagnosisText =
-        data.prediction.result === '0' ? "Alzheimer's" : "Non-Alzheimer's";
+        data.prediction.result === 'positive'
+          ? "Alzheimer's"
+          : "Non-Alzheimer's";
 
       const response = await axios.post(
         this.apiUrl,
