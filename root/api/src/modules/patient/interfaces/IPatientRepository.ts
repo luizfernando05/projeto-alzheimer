@@ -1,5 +1,6 @@
 import MedicalData from '../../../domain/entities/MedicalData';
 import Patient from '../../../domain/entities/Patient';
+import { GenderStatsDTO } from '../dto/GenderStatsDTO';
 
 export interface IPatientRepository {
   create(patient: Patient): Promise<Patient>;
@@ -10,6 +11,7 @@ export interface IPatientRepository {
   update(patient: Patient): Promise<Patient>;
   findByDoctorId(doctorId: string): Promise<Patient[]>;
   countByDoctorId(doctorId: string): Promise<number>;
+  getPositiveByGender(doctorId: string): Promise<GenderStatsDTO>;
 
   findByDoctorWithFilters(
     doctorId: string,

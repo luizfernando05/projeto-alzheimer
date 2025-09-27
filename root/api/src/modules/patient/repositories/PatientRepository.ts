@@ -9,12 +9,75 @@ import { AppDataSource } from '../../../config/data-source';
 import Patient from '../../../domain/entities/Patient';
 import { IPatientRepository } from '../interfaces/IPatientRepository';
 import { startOfDay, subDays, addDays, min } from 'date-fns';
+import { GenderStatsDTO } from '../dto/GenderStatsDTO';
+import { Prediction } from '../../../domain/entities/Prediction';
 
 export class PatientRepository implements IPatientRepository {
   private ormRepository: Repository<Patient>;
+  private predictRepository: Repository<Prediction>;
 
   constructor() {
     this.ormRepository = AppDataSource.getRepository(Patient);
+    this.predictRepository = AppDataSource.getRepository(Prediction);
+  }
+
+  async getPositiveByGender(doctorId: string): Promise<GenderStatsDTO> {
+    const today = new Date();
+    const lastWeek = new Date();
+    lastWeek.setDate(today.getDate() - 7);
+
+    const femaleTotal = await this.predictRepository.count({
+      where: {
+        prediction_result: 'Positive',
+        medicalData: {
+          patientId: { gender: 'Feminino', createdByDoctor: { id: doctorId } },
+        },
+      },
+    });
+
+    const maleTotal = await this.predictRepository.count({
+      where: {
+        prediction_result: 'Positive',
+        medicalData: {
+          patientId: { gender: 'Masculino', createdByDoctor: { id: doctorId } },
+        },
+      },
+    });
+
+    const femaleLastWeek = await this.predictRepository.count({
+      where: {
+        prediction_result: 'Positive',
+        created_at: Between(lastWeek, today),
+        medicalData: {
+          patientId: { gender: 'Feminino', createdByDoctor: { id: doctorId } },
+        },
+      },
+    });
+
+    const maleLastWeek = await this.predictRepository.count({
+      where: {
+        prediction_result: 'Positive',
+        created_at: Between(lastWeek, today),
+        medicalData: {
+          patientId: { gender: 'Masculino', createdByDoctor: { id: doctorId } },
+        },
+      },
+    });
+
+    const femaleVariation =
+      femaleTotal > 0 ? (femaleLastWeek / femaleTotal) * 100 : 0;
+    const maleVariation = maleTotal > 0 ? (maleLastWeek / maleTotal) * 100 : 0;
+
+    return {
+      female: {
+        total: femaleTotal,
+        variation: parseFloat(femaleVariation.toFixed(2)),
+      },
+      male: {
+        total: maleTotal,
+        variation: parseFloat(maleVariation.toFixed(2)),
+      },
+    };
   }
 
   async findByIdAndDoctor(

@@ -10,6 +10,7 @@ import ListPatientsByDoctorWithFiltersController from '../controllers/ListPatien
 import UpdatePatientController from '../controllers/UpdatePatientController';
 import { GetPatientDetailsController } from '../controllers/GetPatientDetailsController';
 import { DownloadPatientPdfController } from '../controllers/DownloadPatientPdfController';
+import { GetGenderStatsController } from '../controllers/GetGenderStatsController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -22,6 +23,7 @@ const listPatientsByDoctorWithFiltersController =
 const updatePatientController = new UpdatePatientController();
 const getPatientDetailsController = new GetPatientDetailsController();
 const downloadPatientPdfController = new DownloadPatientPdfController();
+const getGenderStatsController = new GetGenderStatsController();
 
 patientRoutes.post(
   '/',
@@ -61,6 +63,14 @@ patientRoutes.get(
   ensureDoctorAuthenticated,
   (req, res, next) => {
     getPatientsByLast7DaysController.handle(req, res, next);
+  }
+);
+
+patientRoutes.get(
+  '/gender-stats',
+  ensureDoctorAuthenticated,
+  (req, res, next) => {
+    getGenderStatsController.handle(req, res, next);
   }
 );
 
