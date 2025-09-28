@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import { Pie, PieChart, ResponsiveContainer, Sector, Cell } from 'recharts';
+import { Brain } from '@phosphor-icons/react';
 import axios from 'axios';
 
-const COLORS = ['#0088FE', '#FF8042'];
+const COLORS = ['#3E63DD', '#E5484D'];
 
 const renderActiveShape = ({
   cx,
@@ -79,6 +80,7 @@ const renderActiveShape = ({
 export default function StatusChart() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [chartData, setChartData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const onPieEnter = (_, index) => {
     setActiveIndex(index);
@@ -94,7 +96,6 @@ export default function StatusChart() {
           }
         );
 
-        // Transform API data to match our display format
         const formattedData = res.data.map((item) => ({
           name: item.name === 'negative' ? 'Negativo' : 'Positivo',
           value: item.value,
@@ -103,40 +104,79 @@ export default function StatusChart() {
         setChartData(formattedData);
       } catch (error) {
         console.error('Erro ao buscar dados', error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
 
-  if (chartData.length === 0) {
-    return <div>Carregando...</div>;
-  }
-
   return (
-    <div style={{ width: '100%', height: 400 }}>
-      <ResponsiveContainer>
-        <PieChart>
-          <Pie
-            activeIndex={activeIndex}
-            activeShape={renderActiveShape}
-            data={chartData}
-            cx="50%"
-            cy="50%"
-            innerRadius={60}
-            outerRadius={80}
-            dataKey="value"
-            onMouseEnter={onPieEnter}
-          >
-            {chartData.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
-            ))}
-          </Pie>
-        </PieChart>
-      </ResponsiveContainer>
+    <div className="bg-gray-02 rounded-lg border border-gray-06 overflow-hidden">
+      <div className="flex gap-6 pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
+        <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3">
+          <div className="border border-gray-06 p-1 rounded-sm">
+            <Brain size={16} />
+          </div>
+          Distribuição de Diagnósticos
+        </h2>
+      </div>
+
+      <div className="pt-4 pb-5 pr-6 pl-6">
+        {loading ? (
+          <div className="h-[400px] flex items-center justify-center">
+            <p className="text-gray-11">Carregando...</p>
+          </div>
+        ) : (
+          <>
+            <div className="grid grid-cols-1 gap-4 mb-4">
+              <div className="flex gap-4 items-center">
+                <div className="flex gap-2">
+                  {chartData.map((item, index) => (
+                    <div key={item.name} className="flex items-center gap-2">
+                      <div
+                        className="w-3 h-3 rounded-sm"
+                        style={{ backgroundColor: COLORS[index] }}
+                      />
+                      <span className="text-sm text-gray-11">{item.name}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div style={{ width: '100%', height: 400 }}>
+              <ResponsiveContainer>
+                <PieChart>
+                  <Pie
+                    activeIndex={activeIndex}
+                    activeShape={renderActiveShape}
+                    data={chartData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    dataKey="value"
+                    onMouseEnter={onPieEnter}
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <p className="text-xs text-gray-10 mt-4">
+              Atualizado em {new Date().toLocaleDateString('pt-BR')}
+            </p>
+          </>
+        )}
+      </div>
     </div>
   );
 }
