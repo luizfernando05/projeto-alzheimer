@@ -15,6 +15,27 @@ const calculateAge = (birthDate) => {
   return age;
 };
 
+const getDiagnosisLabel = (prediction) => {
+  if (!prediction) return '—';
+
+  const result =
+    prediction.prediction_result === 'positive' ? 'Positivo' : 'Negativo';
+  const confidence = Math.round(prediction.confidence_score * 100);
+
+  return (
+    <span
+      className={`py-1 px-2 rounded-sm text-xs font-medium 
+      ${
+        prediction.prediction_result === 'positive'
+          ? 'bg-red-03 text-red-11'
+          : 'bg-green-03 text-green-11'
+      }`}
+    >
+      {result} ({confidence}%)
+    </span>
+  );
+};
+
 const PatientSimplifiedList = () => {
   const [patients, setPatients] = useState([]);
   const apiUrl = import.meta.env.VITE_API_URL;
@@ -100,9 +121,9 @@ const PatientSimplifiedList = () => {
                       locale: ptBR,
                     })}
                   </td>
-                  <td className="py-3 px-6">—</td>
-                  {''}
-                  {/* MUDAR PARA O DIAGNOSTICO */}
+                  <td className="py-3 px-6">
+                    {getDiagnosisLabel(patient.lastPrediction)}
+                  </td>
                 </tr>
               );
             })}
