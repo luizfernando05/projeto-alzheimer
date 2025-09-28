@@ -2,6 +2,7 @@ import MedicalData from '../../../domain/entities/MedicalData';
 import Patient from '../../../domain/entities/Patient';
 import { GenderStatsDTO } from '../dto/GenderStatsDTO';
 import { PredictionSummaryResponseDTO } from '../dto/GetDoctorPredictionsSummaryDTO';
+import { PositiveByDayDTO } from '../dto/PositiveByDayDTO';
 
 export interface IPatientRepository {
   create(patient: Patient): Promise<Patient>;
@@ -16,6 +17,7 @@ export interface IPatientRepository {
   getSummaryByDoctorId(
     doctorId: string
   ): Promise<PredictionSummaryResponseDTO[]>;
+  getPositiveByDay(doctorId: string): Promise<PositiveByDayDTO[]>;
 
   findByDoctorWithFilters(
     doctorId: string,

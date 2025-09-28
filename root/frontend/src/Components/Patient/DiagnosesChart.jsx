@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
   BarChart,
   Bar,
@@ -8,11 +10,7 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 
-//aqui deve ser um array com o dia e a quantidade de positivos daquele dia
-const data = [
-  { date: '2023-03-01', diagnoses: 10000 }, //assim olha
-];
-
+// variável para controlar o mês nos ticks
 let lastMonth = null;
 
 const renderMonthTick = (props) => {
@@ -33,7 +31,33 @@ const renderMonthTick = (props) => {
 };
 
 const DiagnosesChart = () => {
-  lastMonth = null;
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    lastMonth = null; // reset para ticks
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          'http://localhost:3001/patient/positive-by-day',
+          {
+            withCredentials: true, // envia cookies/token
+          }
+        );
+        setData(res.data); // res.data deve ter [{ date, diagnoses }]
+      } catch (error) {
+        console.error('Erro ao buscar diagnósticos positivos:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p>Carregando gráfico...</p>;
+  }
 
   return (
     <ResponsiveContainer width="100%" height={400}>

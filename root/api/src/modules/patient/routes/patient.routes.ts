@@ -12,6 +12,7 @@ import { GetPatientDetailsController } from '../controllers/GetPatientDetailsCon
 import { DownloadPatientPdfController } from '../controllers/DownloadPatientPdfController';
 import { GetGenderStatsController } from '../controllers/GetGenderStatsController';
 import { GetDoctorPredictionsSummaryController } from '../controllers/GetDoctorPredictionsSummaryController';
+import { GetPositiveByDayController } from '../controllers/GetPositiveByDayController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -27,6 +28,7 @@ const downloadPatientPdfController = new DownloadPatientPdfController();
 const getGenderStatsController = new GetGenderStatsController();
 const getDoctorPredictionsSummaryController =
   new GetDoctorPredictionsSummaryController();
+const getPositiveByDayController = new GetPositiveByDayController();
 
 patientRoutes.post(
   '/',
@@ -84,6 +86,10 @@ patientRoutes.get(
     getDoctorPredictionsSummaryController.handle(req, res);
   }
 );
+
+patientRoutes.get('/positive-by-day', ensureDoctorAuthenticated, (req, res) => {
+  getPositiveByDayController.handle(req, res);
+});
 
 patientRoutes.get(
   '/:patientId',

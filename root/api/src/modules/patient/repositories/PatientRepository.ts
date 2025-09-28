@@ -14,6 +14,7 @@ import { Prediction } from '../../../domain/entities/Prediction';
 import { PredictionResult } from '../../prediction/types/PredictionTypes';
 import { PredictionSummaryResponseDTO } from '../dto/GetDoctorPredictionsSummaryDTO';
 import MedicalData from '../../../domain/entities/MedicalData';
+import { PositiveByDayDTO } from '../dto/PositiveByDayDTO';
 
 export class PatientRepository implements IPatientRepository {
   private ormRepository: Repository<Patient>;
@@ -24,6 +25,28 @@ export class PatientRepository implements IPatientRepository {
     this.ormRepository = AppDataSource.getRepository(Patient);
     this.predictRepository = AppDataSource.getRepository(Prediction);
     this.medicalDataRepository = AppDataSource.getRepository(MedicalData);
+  }
+
+  async getPositiveByDay(doctorId: string): Promise<PositiveByDayDTO[]> {
+    const result = await this.predictRepository
+      .createQueryBuilder('prediction')
+      .select("TO_CHAR(prediction.created_at, 'YYYY-MM-DD')", 'date')
+      .addSelect('COUNT(prediction.id)', 'diagnoses')
+      .innerJoin('prediction.medicalData', 'md')
+      .innerJoin('md.patientId', 'patient')
+      .innerJoin('patient.createdByDoctor', 'doctor')
+      .where('doctor.id = :doctorId', { doctorId })
+      .andWhere('prediction.prediction_result = :positive', {
+        positive: PredictionResult.POSITIVE,
+      })
+      .groupBy('date')
+      .orderBy('date', 'ASC')
+      .getRawMany();
+
+    return result.map((row) => ({
+      date: row.date,
+      diagnoses: parseInt(row.diagnoses, 10),
+    }));
   }
 
   async getSummaryByDoctorId(
