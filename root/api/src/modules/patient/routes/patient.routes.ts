@@ -11,6 +11,7 @@ import UpdatePatientController from '../controllers/UpdatePatientController';
 import { GetPatientDetailsController } from '../controllers/GetPatientDetailsController';
 import { DownloadPatientPdfController } from '../controllers/DownloadPatientPdfController';
 import { GetGenderStatsController } from '../controllers/GetGenderStatsController';
+import { GetDoctorPredictionsSummaryController } from '../controllers/GetDoctorPredictionsSummaryController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -24,6 +25,8 @@ const updatePatientController = new UpdatePatientController();
 const getPatientDetailsController = new GetPatientDetailsController();
 const downloadPatientPdfController = new DownloadPatientPdfController();
 const getGenderStatsController = new GetGenderStatsController();
+const getDoctorPredictionsSummaryController =
+  new GetDoctorPredictionsSummaryController();
 
 patientRoutes.post(
   '/',
@@ -71,6 +74,14 @@ patientRoutes.get(
   ensureDoctorAuthenticated,
   (req, res, next) => {
     getGenderStatsController.handle(req, res, next);
+  }
+);
+
+patientRoutes.get(
+  '/predictions/summary',
+  ensureDoctorAuthenticated,
+  (req, res) => {
+    getDoctorPredictionsSummaryController.handle(req, res);
   }
 );
 

@@ -1,12 +1,8 @@
+import { useEffect, useState } from 'react';
 import { Pie, PieChart, ResponsiveContainer, Sector, Cell } from 'recharts';
+import axios from 'axios';
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28'];
-
-const data = [
-  { name: 'Positivo', value: 400 },
-  { name: 'Negativo', value: 300 },
-  { name: 'Em análise', value: 300 },
-];
+const COLORS = ['#0088FE', '#FF8042'];
 
 const renderActiveShape = ({
   cx,
@@ -81,20 +77,58 @@ const renderActiveShape = ({
 };
 
 export default function StatusChart() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [chartData, setChartData] = useState([]);
+
+  const onPieEnter = (_, index) => {
+    setActiveIndex(index);
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          'http://localhost:3001/patient/predictions/summary',
+          {
+            withCredentials: true,
+          }
+        );
+
+        // Transform API data to match our display format
+        const formattedData = res.data.map((item) => ({
+          name: item.name === 'negative' ? 'Negativo' : 'Positivo',
+          value: item.value,
+        }));
+
+        setChartData(formattedData);
+      } catch (error) {
+        console.error('Erro ao buscar dados', error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (chartData.length === 0) {
+    return <div>Carregando...</div>;
+  }
+
   return (
     <div style={{ width: '100%', height: 400 }}>
       <ResponsiveContainer>
         <PieChart>
           <Pie
+            activeIndex={activeIndex}
             activeShape={renderActiveShape}
-            data={data}
+            data={chartData}
             cx="50%"
             cy="50%"
             innerRadius={60}
             outerRadius={80}
             dataKey="value"
+            onMouseEnter={onPieEnter}
           >
-            {data.map((entry, index) => (
+            {chartData.map((entry, index) => (
               <Cell
                 key={`cell-${index}`}
                 fill={COLORS[index % COLORS.length]}

@@ -12,14 +12,39 @@ import { startOfDay, subDays, addDays, min } from 'date-fns';
 import { GenderStatsDTO } from '../dto/GenderStatsDTO';
 import { Prediction } from '../../../domain/entities/Prediction';
 import { PredictionResult } from '../../prediction/types/PredictionTypes';
+import { PredictionSummaryResponseDTO } from '../dto/GetDoctorPredictionsSummaryDTO';
+import MedicalData from '../../../domain/entities/MedicalData';
 
 export class PatientRepository implements IPatientRepository {
   private ormRepository: Repository<Patient>;
   private predictRepository: Repository<Prediction>;
+  private medicalDataRepository: Repository<MedicalData>;
 
   constructor() {
     this.ormRepository = AppDataSource.getRepository(Patient);
     this.predictRepository = AppDataSource.getRepository(Prediction);
+    this.medicalDataRepository = AppDataSource.getRepository(MedicalData);
+  }
+
+  async getSummaryByDoctorId(
+    doctorId: string
+  ): Promise<PredictionSummaryResponseDTO[]> {
+    const result = await this.predictRepository
+      .createQueryBuilder('prediction')
+      .select('prediction.prediction_result', 'name')
+      .addSelect('COUNT(prediction.id)', 'value')
+      .innerJoin('prediction.medicalData', 'md')
+      .innerJoin('md.patientId', 'patient')
+      .innerJoin('patient.createdByDoctor', 'doctor')
+      .where('doctor.id = :doctorId', { doctorId })
+      .andWhere('prediction.prediction_result IS NOT NULL')
+      .groupBy('prediction.prediction_result')
+      .getRawMany();
+
+    return result.map((row) => ({
+      name: row.name,
+      value: parseInt(row.value, 10),
+    }));
   }
 
   async getPositiveByGender(doctorId: string): Promise<GenderStatsDTO> {
