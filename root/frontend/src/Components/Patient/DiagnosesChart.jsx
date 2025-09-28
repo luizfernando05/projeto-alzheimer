@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Brain, CaretDown, Check } from '@phosphor-icons/react';
+import { Brain, Calendar, CaretDown, Check } from '@phosphor-icons/react';
 import * as Select from '@radix-ui/react-select';
 import {
   BarChart,
@@ -109,7 +109,7 @@ const DiagnosesChart = () => {
       <div className="flex justify-between items-center pt-5 pb-5 pr-6 pl-6 border-b border-gray-06">
         <h2 className="text-base font-poppins font-normal text-gray-12 flex items-center gap-3">
           <div className="border border-gray-06 p-1 rounded-sm">
-            <Brain size={16} />
+            <Calendar size={16} />
           </div>
           Diagnósticos por Período
         </h2>
