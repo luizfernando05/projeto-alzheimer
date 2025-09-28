@@ -4,6 +4,8 @@ import DoctorLayout from './DoctorLayout';
 import GenderStatsCard from '../../Components/Patient/GenderStatsCard';
 import PatientSummaryCard from '../../Components/Patient/PatientSummaryCard';
 import PatientSimplifiedList from '../../Components/Patient/PatientSimplifiedList';
+import DiagnosesChart from '../../Components/Patient/DiagnosesChart';
+import StatusChart from '../../Components/Patient/StatusChart';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -41,6 +43,9 @@ const DoctorDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <div className="lg:col-span-2">
           <div className="pb-6">
+            <DiagnosesChart />
+          </div>
+          <div className="pb-6">
             <PatientSimplifiedList />
           </div>
         </div>
@@ -53,6 +58,7 @@ const DoctorDashboard = () => {
             growth={growth}
             weeklyData={weeklyData}
           />
+          <StatusChart />
         </div>
       </div>
     </DoctorLayout>
