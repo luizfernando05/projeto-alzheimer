@@ -38,8 +38,7 @@ const ListPatients = () => {
     minAge: '',
     maxAge: '',
     gender: '',
-    prediction: '',
-    sortOrder: 'DESC',
+    sortOrder: 'DESC', // Removed prediction from initial state
   });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -157,22 +156,6 @@ const ListPatients = () => {
             </div>
             <div className="relative w-52">
               <select
-                name="prediction"
-                value={filters.prediction}
-                onChange={handleChange}
-                className="w-full h-full appearance-none border border-gray-05 bg-gray-01 rounded-lg pr-4 pl-4 font-roboto text-sm text-gray-11 focus:outline-none focus:ring-1 focus:ring-gray-05"
-              >
-                <option value="">Todas as predições</option>
-                <option value="Diabetic">Diabético</option>
-                <option value="Non-Diabetic">Não diabético</option>
-                <option value="Predict-Diabetic">Predição</option>
-              </select>
-              <div className="pointer-events-none absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-11">
-                <CaretDown size={16} />
-              </div>
-            </div>
-            <div className="relative w-52">
-              <select
                 name="sortOrder"
                 value={filters.sortOrder}
                 onChange={handleChange}
@@ -196,7 +179,6 @@ const ListPatients = () => {
                 <th className="py-3 font-normal">Data de cadastro</th>
                 <th className="py-3 font-normal">Idade</th>
                 <th className="py-3 font-normal">Nascimento</th>
-                <th className="py-3 font-normal">Diagnóstico</th>
                 <th className="py-3 font-normal">Ações</th>
               </tr>
             </thead>
@@ -238,7 +220,6 @@ const ListPatients = () => {
                         locale: ptBR,
                       })}
                     </td>
-                    <td className="py-3">—</td> {/* predição futura */}
                     <td className="py-3">
                       <div className="flex items-center gap-4 pl-2">
                         <button
