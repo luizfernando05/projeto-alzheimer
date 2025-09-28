@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 import Doctor from './Doctor';
 import MedicalData from './MedicalData';
+import { Prediction } from './Prediction';
 
 @Entity('patients')
 export class Patient {
@@ -76,6 +77,9 @@ export class Patient {
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
+
+  @JoinColumn()
+  lastPrediction?: Prediction;
 }
 
 export default Patient;

@@ -198,11 +198,21 @@ export class PatientRepository implements IPatientRepository {
   }
 
   async findByDoctorId(doctorId: string): Promise<Patient[]> {
-    return this.ormRepository.find({
-      where: { createdByDoctor: { id: doctorId } },
-      relations: ['createdByDoctor'],
-      order: { createdAt: 'DESC' },
-    });
+    const { entities } = await this.ormRepository
+      .createQueryBuilder('patient')
+      .leftJoinAndSelect('patient.createdByDoctor', 'doctor')
+      .leftJoinAndSelect('patient.medicalData', 'medicalData')
+      .leftJoinAndMapOne(
+        'patient.lastPrediction',
+        Prediction,
+        'prediction',
+        'prediction.medical_data_id = medicalData.id'
+      )
+      .where('patient.created_by_doctor_id = :doctorId', { doctorId })
+      .orderBy('patient.createdAt', 'DESC')
+      .addOrderBy('prediction.created_at', 'DESC')
+      .getRawAndEntities();
+    return entities;
   }
 
   async create(patient: Patient): Promise<Patient> {
