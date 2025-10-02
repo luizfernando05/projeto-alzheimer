@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Logo from '../../Assets/Logo.svg?react';
 import { Link } from 'react-router-dom';
-import { List, X, CaretDown } from '@phosphor-icons/react';
+import { List, X, CaretDown, Moon, Sun } from '@phosphor-icons/react';
 
 const MainHeader = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [loginDropdownOpen, setLoginDropdownOpen] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const dropdownRef = useRef(null);
 
   // Fechar dropdown ao clicar fora
@@ -22,8 +23,34 @@ const MainHeader = () => {
     };
   }, []);
 
+  // Verificar modo escuro salvo no localStorage
+  useEffect(() => {
+    const savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia(
+      '(prefers-color-scheme: dark)'
+    ).matches;
+
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true);
+      document.documentElement.classList.add('dark');
+    }
+  }, []);
+
   const toggleLoginDropdown = () => {
     setLoginDropdownOpen(!loginDropdownOpen);
+  };
+
+  const toggleDarkMode = () => {
+    const newMode = !isDarkMode;
+    setIsDarkMode(newMode);
+
+    if (newMode) {
+      document.documentElement.classList.add('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      localStorage.setItem('theme', 'light');
+    }
   };
 
   return (
@@ -57,6 +84,15 @@ const MainHeader = () => {
         </nav>
 
         <div className="hidden md:flex items-center gap-4">
+          {/* Botão de modo escuro */}
+          <button
+            onClick={toggleDarkMode}
+            className="p-2 text-gray-12 hover:text-indigo-09 transition"
+            aria-label={isDarkMode ? 'Ativar modo claro' : 'Ativar modo escuro'}
+          >
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </button>
+
           {/* Dropdown de Login */}
           <div className="relative" ref={dropdownRef}>
             <button
@@ -112,6 +148,16 @@ const MainHeader = () => {
           <Link to="/contato" onClick={() => setMenuOpen(false)}>
             Contato
           </Link>
+
+          {/* Botão de modo escuro - Mobile */}
+          <button
+            onClick={toggleDarkMode}
+            className="flex items-center gap-2 text-gray-12 hover:text-indigo-09 transition"
+            aria-label={isDarkMode ? 'Ativar modo claro' : 'Ativar modo escuro'}
+          >
+            {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
+            {isDarkMode ? 'Modo Claro' : 'Modo Escuro'}
+          </button>
 
           {/* Menu Mobile - Login */}
           <div className="flex flex-col gap-2">
