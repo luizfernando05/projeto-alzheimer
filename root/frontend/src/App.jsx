@@ -11,7 +11,8 @@ import DoctorProfile from './Pages/DoctorPages/DoctorProfile';
 import PredictPage from './Pages/DoctorPages/PredictionModulePages/PredictPage';
 import ListPatients from './Pages/DoctorPages/PatientModulePages/ListPatients';
 import EditPatient from './Pages/DoctorPages/PatientModulePages/EditPatient';
-import PatientLogin from './Pages/DoctorPages/AuthPages/PatientLogin';
+import PatientLogin from './Pages/PatientPages/AuthPages/PatientLogin';
+import PatientDashboard from './Pages/PatientPages/PatientDashboard';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       {/* por enquanto, ir para a rota de login ao acessar '/' */}
       <Route path="/login/doctor" element={<DoctorLogin />} />
       <Route path="/login/patient" element={<PatientLogin />} />
+      <Route path="/patient/dashboard" element={<PatientDashboard />} />
       <Route path="/singin/doctor" element={<DoctorSingin />} />
       <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
       <Route
