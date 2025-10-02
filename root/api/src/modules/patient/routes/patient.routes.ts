@@ -13,6 +13,7 @@ import { DownloadPatientPdfController } from '../controllers/DownloadPatientPdfC
 import { GetGenderStatsController } from '../controllers/GetGenderStatsController';
 import { GetDoctorPredictionsSummaryController } from '../controllers/GetDoctorPredictionsSummaryController';
 import { GetPositiveByDayController } from '../controllers/GetPositiveByDayController';
+import { LoginPatientController } from '../controllers/LoginPatientController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -29,6 +30,11 @@ const getGenderStatsController = new GetGenderStatsController();
 const getDoctorPredictionsSummaryController =
   new GetDoctorPredictionsSummaryController();
 const getPositiveByDayController = new GetPositiveByDayController();
+const loginPatientController = new LoginPatientController();
+
+patientRoutes.post('/login', (req, res, next) => {
+  loginPatientController.handle(req, res, next);
+});
 
 patientRoutes.post(
   '/',
