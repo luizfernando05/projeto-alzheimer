@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { upload } from '../../../config/multer.config';
+import { Request, Response } from 'express';
 import CreatePatientController from '../controllers/CreatePatientController';
 import { ensureDoctorAuthenticated } from '../../shared/middlewares/ensureDoctorAuthenticated';
 import { ListPatientsByDoctorController } from '../controllers/ListPatientsByDoctorController';
@@ -43,6 +44,16 @@ const getMedicalHistoryController = new GetMedicalHistoryController();
 
 patientRoutes.post('/login', (req, res, next) => {
   loginPatientController.handle(req, res, next);
+});
+
+patientRoutes.post('/logout', (req, res) => {
+  res.clearCookie('auth_token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+  });
+
+  res.status(200).json({ message: 'Logout realizado com sucesso' });
 });
 
 patientRoutes.post(
