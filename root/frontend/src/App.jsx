@@ -22,8 +22,22 @@ function App() {
       {/* por enquanto, ir para a rota de login ao acessar '/' */}
       <Route path="/login/doctor" element={<DoctorLogin />} />
       <Route path="/login/patient" element={<PatientLogin />} />
-      <Route path="/patient/dashboard" element={<PatientDashboard />} />
-      <Route path="/patient/profile" element={<PatientProfile />} />
+      <Route
+        path="/patient/dashboard"
+        element={
+          <ProtectedRoute>
+            <PatientDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/patient/profile"
+        element={
+          <ProtectedRoute>
+            <PatientProfile />
+          </ProtectedRoute>
+        }
+      />
       <Route path="/singin/doctor" element={<DoctorSingin />} />
       <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
       <Route
