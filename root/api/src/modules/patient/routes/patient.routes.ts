@@ -14,6 +14,8 @@ import { GetGenderStatsController } from '../controllers/GetGenderStatsControlle
 import { GetDoctorPredictionsSummaryController } from '../controllers/GetDoctorPredictionsSummaryController';
 import { GetPositiveByDayController } from '../controllers/GetPositiveByDayController';
 import { LoginPatientController } from '../controllers/LoginPatientController';
+import GetPatientController from '../controllers/GetPatientController';
+import { ensurePatientAuthenticated } from '../../shared/middlewares/ensurePatientAuthenticated';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -31,6 +33,7 @@ const getDoctorPredictionsSummaryController =
   new GetDoctorPredictionsSummaryController();
 const getPositiveByDayController = new GetPositiveByDayController();
 const loginPatientController = new LoginPatientController();
+const getPatientController = new GetPatientController();
 
 patientRoutes.post('/login', (req, res, next) => {
   loginPatientController.handle(req, res, next);
@@ -44,6 +47,10 @@ patientRoutes.post(
     createPatientController.handle(req, res, next);
   }
 );
+
+patientRoutes.get('/get/data', ensurePatientAuthenticated, (req, res, next) => {
+  getPatientController.hanlde(req, res, next);
+});
 
 patientRoutes.get(
   '/doctors/list',
