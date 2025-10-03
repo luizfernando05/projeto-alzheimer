@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PatientLayout from './PatientLayout';
 import { Robot, Calendar, TrendUp, Heart, Brain } from '@phosphor-icons/react';
 import MMSEChart from '../../Components/Charts/MMSEChart';
 
 const PatientDashboard = () => {
+  const [patientData, setPatientData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const apiUrl = import.meta.env.VITE_API_URL;
+
   const mmseData = [
     { date: '2024-06-15', mmse: 30, label: 'Jun' },
     { date: '2024-07-20', mmse: 29, label: 'Jul' },
@@ -12,13 +17,60 @@ const PatientDashboard = () => {
     { date: '2024-10-01', mmse: 28, label: 'Out' },
   ];
 
+  useEffect(() => {
+    const fetchPatientData = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/patient/get/data`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setPatientData(data);
+        } else {
+          setError('Erro ao carregar dados do paciente');
+        }
+      } catch (err) {
+        setError('Erro de conexão com o servidor');
+        console.error('Erro ao buscar dados do paciente:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPatientData();
+  }, [apiUrl]);
+
+  if (loading) {
+    return (
+      <PatientLayout>
+        <div className="p-6 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      </PatientLayout>
+    );
+  }
+
+  if (error) {
+    return (
+      <PatientLayout>
+        <div className="p-6">
+          <div className="bg-red-02 border border-red-06 text-red-11 p-4 rounded-lg">
+            {error}
+          </div>
+        </div>
+      </PatientLayout>
+    );
+  }
+
   return (
     <PatientLayout>
       <div className="p-6 space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="font-poppins text-2xl font-semibold text-gray-12 mb-1">
-              Olá, Lalisa Manobal 👋
+              Olá, {patientData?.name || 'Paciente'} 👋
             </h1>
             <p className="font-roboto text-gray-11">
               Aqui está um resumo do seu estado de saúde
