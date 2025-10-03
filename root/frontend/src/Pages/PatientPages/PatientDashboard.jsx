@@ -5,41 +5,52 @@ import MMSEChart from '../../Components/Charts/MMSEChart';
 
 const PatientDashboard = () => {
   const [patientData, setPatientData] = useState(null);
+  const [mmseData, setMmseData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [hasMMSEData, setHasMMSEData] = useState(true);
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const mmseData = [
-    { date: '2024-06-15', mmse: 30, label: 'Jun' },
-    { date: '2024-07-20', mmse: 29, label: 'Jul' },
-    { date: '2024-08-25', mmse: 28, label: 'Ago' },
-    { date: '2024-09-15', mmse: 26, label: 'Set' },
-    { date: '2024-10-01', mmse: 28, label: 'Out' },
-  ];
-
   useEffect(() => {
-    const fetchPatientData = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch(`${apiUrl}/patient/get/data`, {
+        const patientResponse = await fetch(`${apiUrl}/patient/get/data`, {
           method: 'GET',
           credentials: 'include',
         });
 
-        if (response.ok) {
-          const data = await response.json();
-          setPatientData(data);
+        const mmseResponse = await fetch(`${apiUrl}/data/mmse/data`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+
+        if (patientResponse.ok) {
+          const patientData = await patientResponse.json();
+          setPatientData(patientData);
         } else {
           setError('Erro ao carregar dados do paciente');
         }
+
+        if (mmseResponse.ok) {
+          const mmseData = await mmseResponse.json();
+          if (mmseData && mmseData.length > 0) {
+            setMmseData(mmseData);
+            setHasMMSEData(true);
+          } else {
+            setHasMMSEData(false);
+          }
+        } else {
+          setHasMMSEData(false);
+        }
       } catch (err) {
         setError('Erro de conexão com o servidor');
-        console.error('Erro ao buscar dados do paciente:', err);
+        console.error('Erro ao buscar dados:', err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchPatientData();
+    fetchData();
   }, [apiUrl]);
 
   if (loading) {
@@ -67,13 +78,11 @@ const PatientDashboard = () => {
   const predictionResult = patientData?.prediction?.result;
   const confidenceScore = patientData?.prediction?.confidence;
 
-  // Determinar se é positivo ou negativo
   const isPositive =
     predictionResult === 'positive' || predictionResult === 'POSITIVE';
   const isNegative =
     predictionResult === 'negative' || predictionResult === 'NEGATIVE';
 
-  // Cores condicionais
   const cardColors = isPositive
     ? {
         bg: 'bg-red-02',
@@ -178,7 +187,27 @@ const PatientDashboard = () => {
           </div>
         </div>
 
-        <MMSEChart data={mmseData} />
+        {hasMMSEData ? (
+          <MMSEChart data={mmseData} />
+        ) : (
+          <div className="bg-gray-01 rounded-xl border border-gray-06 p-6 shadow-xs">
+            <div className="text-center py-8">
+              <div className="p-4 bg-gray-02 rounded-lg w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                <Brain size={32} className="text-gray-08" />
+              </div>
+              <h3 className="font-poppins text-lg font-semibold text-gray-12 mb-2">
+                Dados do MMSE
+              </h3>
+              <p className="font-roboto text-gray-10 mb-4">
+                Sem dados médicos cadastrados
+              </p>
+              <p className="font-roboto text-sm text-gray-09">
+                Os dados do Mini Exame do Estado Mental aparecerão aqui após
+                serem registrados pelo seu médico.
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="bg-gray-01 rounded-xl border border-gray-06 shadow-xs">
           <div className="p-6 border-b border-gray-06">
