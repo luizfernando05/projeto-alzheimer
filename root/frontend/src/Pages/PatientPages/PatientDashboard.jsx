@@ -64,6 +64,64 @@ const PatientDashboard = () => {
     );
   }
 
+  const predictionResult = patientData?.prediction?.result;
+  const confidenceScore = patientData?.prediction?.confidence;
+
+  // Determinar se é positivo ou negativo
+  const isPositive =
+    predictionResult === 'positive' || predictionResult === 'POSITIVE';
+  const isNegative =
+    predictionResult === 'negative' || predictionResult === 'NEGATIVE';
+
+  // Cores condicionais
+  const cardColors = isPositive
+    ? {
+        bg: 'bg-red-02',
+        border: 'border-red-06',
+        text: 'text-red-09',
+        icon: 'text-red-09',
+      }
+    : isNegative
+    ? {
+        bg: 'bg-green-02',
+        border: 'border-green-06',
+        text: 'text-green-09',
+        icon: 'text-green-09',
+      }
+    : {
+        bg: 'bg-red-02',
+        border: 'border-red-06',
+        text: 'text-red-09',
+        icon: 'text-red-09',
+      };
+
+  const sectionColors = isPositive
+    ? {
+        bg: 'bg-red-02',
+        border: 'border-red-06',
+        text: 'text-red-11',
+        title: 'text-red-10',
+      }
+    : isNegative
+    ? {
+        bg: 'bg-green-02',
+        border: 'border-green-06',
+        text: 'text-green-11',
+        title: 'text-green-10',
+      }
+    : {
+        bg: 'bg-red-02',
+        border: 'border-red-06',
+        text: 'text-red-11',
+        title: 'text-red-10',
+      };
+
+  const resultText = isPositive
+    ? 'Positivo para Alzheimer'
+    : isNegative
+    ? 'Negativo para Alzheimer'
+    : 'Resultado não disponível';
+
   return (
     <PatientLayout>
       <div className="p-6 space-y-6">
@@ -85,18 +143,22 @@ const PatientDashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-gray-01 rounded-xl border border-gray-06 p-6 shadow-xs">
             <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-red-02 rounded-lg">
-                <Brain size={24} className="text-red-09" />
+              <div className={`p-3 ${cardColors.bg} rounded-lg`}>
+                <Brain size={24} className={cardColors.icon} />
               </div>
-              <span className="font-poppins text-2xl font-bold text-red-09">
-                90%
+              <span
+                className={`font-poppins text-2xl font-bold ${cardColors.text}`}
+              >
+                {confidenceScore
+                  ? `${Math.round(confidenceScore * 100)}%`
+                  : '90%'}
               </span>
             </div>
             <h3 className="font-poppins font-semibold text-gray-12 mb-1">
               Score de Confiança
             </h3>
             <p className="font-roboto text-sm text-gray-10">
-              Resultado: Positivo
+              Resultado: {resultText}
             </p>
           </div>
 
@@ -134,21 +196,33 @@ const PatientDashboard = () => {
           </div>
 
           <div className="p-6">
-            <div className="flex items-center justify-between mb-6 p-4 bg-red-02 rounded-lg border border-red-06">
+            <div
+              className={`flex items-center justify-between mb-6 p-4 ${sectionColors.bg} rounded-lg ${sectionColors.border}`}
+            >
               <div>
-                <p className="font-roboto text-sm font-medium text-red-11">
+                <p
+                  className={`font-roboto text-sm font-medium ${sectionColors.text}`}
+                >
                   Resultado da predição
                 </p>
-                <p className="font-poppins text-lg font-semibold text-red-10">
-                  Positivo para Alzheimer
+                <p
+                  className={`font-poppins text-lg font-semibold ${sectionColors.title}`}
+                >
+                  {resultText}
                 </p>
               </div>
               <div className="text-right">
-                <p className="font-roboto text-sm font-medium text-red-11">
+                <p
+                  className={`font-roboto text-sm font-medium ${sectionColors.text}`}
+                >
                   Score de confiança
                 </p>
-                <p className="font-poppins text-2xl font-bold text-red-10">
-                  90%
+                <p
+                  className={`font-poppins text-2xl font-bold ${sectionColors.title}`}
+                >
+                  {confidenceScore
+                    ? `${Math.round(confidenceScore * 100)}%`
+                    : '90%'}
                 </p>
               </div>
             </div>
@@ -171,12 +245,11 @@ const PatientDashboard = () => {
               <div className="bg-gray-02 rounded-lg p-6 border border-gray-06">
                 <div className="prose prose-sm max-w-none text-gray-11 leading-relaxed">
                   <p className="font-roboto mb-4">
-                    Com base nas informações analisadas, nosso sistema
-                    identificou um padrão compatível com um possível quadro de
-                    Alzheimer. Diante disso, é fundamental adotar algumas
-                    medidas que podem contribuir para a manutenção da qualidade
-                    de vida, preservação das funções cognitivas e bem-estar
-                    geral.
+                    {isPositive
+                      ? 'Com base nas informações analisadas, nosso sistema identificou um padrão compatível com um possível quadro de Alzheimer. Diante disso, é fundamental adotar algumas medidas que podem contribuir para a manutenção da qualidade de vida, preservação das funções cognitivas e bem-estar geral.'
+                      : isNegative
+                      ? 'Com base nas informações analisadas, nosso sistema não identificou padrões compatíveis com Alzheimer. Continue mantendo hábitos saudáveis para preservar sua saúde cognitiva e bem-estar geral.'
+                      : 'Aguardando resultado da análise. Mantenha hábitos saudáveis para preservar sua saúde cognitiva.'}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
