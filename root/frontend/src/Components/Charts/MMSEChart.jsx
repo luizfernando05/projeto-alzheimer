@@ -109,7 +109,7 @@ const MMSEChart = ({ data = [] }) => {
         </div>
       </div>
 
-      <div className="relative">
+      <div className="relative pl-8">
         <div className="flex items-end justify-between h-48 mb-4">
           {chartData.map((item, index) => (
             <div key={index} className="flex flex-col items-center flex-1">
@@ -143,10 +143,11 @@ const MMSEChart = ({ data = [] }) => {
           {[30, 27, 24, 21, 18, 15, 12, 9, 6, 3].map((value) => (
             <div
               key={value}
-              className="absolute w-full border-t border-gray-05"
+              className="absolute w-full"
               style={{ bottom: `${getBarHeight(value)}%` }}
             >
-              <span className="absolute -left-8 -top-2 font-roboto text-xs text-gray-09">
+              <div className="ml-8 border-t border-gray-05 w-full"></div>
+              <span className="absolute left-0 -top-2 font-roboto text-xs text-gray-09 bg-gray-01 pr-2">
                 {value}
               </span>
             </div>
