@@ -48,4 +48,6 @@ export interface IPatientRepository {
     patientId: string,
     doctorId: string
   ): Promise<Patient | null>;
+
+  save(patient: Patient): Promise<Patient>;
 }

@@ -18,6 +18,7 @@ import GetPatientController from '../controllers/GetPatientController';
 import { ensurePatientAuthenticated } from '../../shared/middlewares/ensurePatientAuthenticated';
 import { AppError } from '../../shared/errors/AppError';
 import PatientRepository from '../repositories/PatientRepository';
+import UpdatePatientProfileController from '../controllers/UpdatePatientProfileController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -36,6 +37,7 @@ const getDoctorPredictionsSummaryController =
 const getPositiveByDayController = new GetPositiveByDayController();
 const loginPatientController = new LoginPatientController();
 const getPatientController = new GetPatientController();
+const updatePatientProfileController = new UpdatePatientProfileController();
 
 patientRoutes.post('/login', (req, res, next) => {
   loginPatientController.handle(req, res, next);
@@ -141,6 +143,14 @@ patientRoutes.get(
 patientRoutes.put('/:id', (req, res, next) => {
   updatePatientController.handle(req, res, next);
 });
+
+patientRoutes.put(
+  '/profile/update',
+  ensurePatientAuthenticated,
+  (req, res, next) => {
+    updatePatientProfileController.handle(req, res, next);
+  }
+);
 
 patientRoutes.get(
   '/:patientId/pdf',

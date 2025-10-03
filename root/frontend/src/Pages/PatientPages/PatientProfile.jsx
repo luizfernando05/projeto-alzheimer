@@ -29,28 +29,58 @@ const PatientProfile = () => {
   const [showToast, setShowToast] = useState(false);
   const [errors, setErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [personalData, setPersonalData] = useState({});
+  const [editData, setEditData] = useState({});
   const apiUrl = import.meta.env.VITE_API_URL;
 
-  const [personalData, setPersonalData] = useState({
-    name: 'Lalisa Manobal',
-    email: 'lalisa@example.com',
-    phoneNumber: '(11) 99999-9999',
-    birthDate: '27/03/1997',
-    gender: 'Feminino',
-    state: 'SP',
-    ethnicity: 'Asiática',
-    educationLevel: 'Superior Completo',
-  });
-
-  const [editData, setEditData] = useState({ ...personalData });
-
   useEffect(() => {
+    fetchPatientData();
     fetchMedicalData();
   }, []);
 
+  const fetchPatientData = async () => {
+    try {
+      const response = await fetch(`${apiUrl}/patient/get/data`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+
+        // Formatando a data de nascimento para o formato brasileiro
+        const formattedBirthDate = data.birthDate
+          ? new Date(data.birthDate).toLocaleDateString('pt-BR')
+          : '';
+
+        const patientInfo = {
+          name: data.name || '',
+          email: data.email || '',
+          phoneNumber: data.phoneNumber || '',
+          birthDate: formattedBirthDate,
+          gender: data.gender || '',
+          state: data.state || '',
+          ethnicity: data.ethnicity || '',
+          educationLevel: data.educationLevel || '',
+        };
+
+        setPersonalData(patientInfo);
+        setEditData(patientInfo);
+      } else {
+        setErrorMessage('Erro ao carregar dados do paciente');
+      }
+    } catch (error) {
+      console.error('Erro ao buscar dados do paciente:', error);
+      setErrorMessage('Erro de conexão com o servidor');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const fetchMedicalData = async () => {
     try {
-      // Simulando dados médicos - substituir pela chamada real da API
+      // Por enquanto mantendo dados mock até a API estar pronta
       const mockData = [
         {
           id: 1,
@@ -110,17 +140,68 @@ const PatientProfile = () => {
     setErrors((prev) => ({ ...prev, [name]: '' }));
   };
 
-  const handleSave = async () => {
-    try {
-      // Aqui faria a chamada para a API para salvar os dados
-      // const response = await fetch(`${apiUrl}/patient/update`, { ... });
+  const validateForm = () => {
+    const newErrors = {};
 
-      setPersonalData({ ...editData });
-      setIsEditing(false);
-      setShowToast(true);
+    if (!editData.name?.trim()) {
+      newErrors.name = 'Nome é obrigatório';
+    }
+
+    if (!editData.email?.trim()) {
+      newErrors.email = 'Email é obrigatório';
+    } else if (!/\S+@\S+\.\S+/.test(editData.email)) {
+      newErrors.email = 'Email inválido';
+    }
+
+    if (!editData.phoneNumber?.trim()) {
+      newErrors.phoneNumber = 'Telefone é obrigatório';
+    }
+
+    if (
+      editData.birthDate &&
+      !/^\d{2}\/\d{2}\/\d{4}$/.test(editData.birthDate)
+    ) {
+      newErrors.birthDate = 'Data deve estar no formato DD/MM/AAAA';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleSave = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await fetch(`${apiUrl}/patient/profile/update`, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editData),
+      });
+
+      if (response.ok) {
+        setPersonalData({ ...editData });
+        setIsEditing(false);
+        setShowToast(true);
+        setErrorMessage('');
+
+        // Recarregar os dados para garantir sincronização
+        await fetchPatientData();
+      } else {
+        const errorData = await response.json();
+        setErrorMessage(errorData.error || 'Erro ao salvar dados pessoais.');
+      }
     } catch (error) {
-      setErrorMessage('Erro ao salvar dados pessoais.');
-      console.error(error);
+      setErrorMessage('Erro de conexão com o servidor.');
+      console.error('Erro ao salvar dados:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -146,6 +227,16 @@ const PatientProfile = () => {
       setCurrentPage(currentPage - 1);
     }
   };
+
+  if (loading) {
+    return (
+      <PatientLayout>
+        <div className="p-6 flex items-center justify-center">
+          <div className="loader"></div>
+        </div>
+      </PatientLayout>
+    );
+  }
 
   return (
     <PatientLayout>
@@ -328,7 +419,7 @@ const PatientProfile = () => {
                     </div>
                   </div>
                 ) : (
-                  /* Visualização dos dados */
+                  /* Visualização dos dados reais da API */
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="bg-gray-02 rounded-lg p-4 border border-gray-06">
                       <div className="flex items-center gap-3 mb-2">
@@ -338,7 +429,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.name}
+                        {personalData.name || 'Não informado'}
                       </p>
                     </div>
 
@@ -349,7 +440,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.email}
+                        {personalData.email || 'Não informado'}
                       </p>
                     </div>
 
@@ -360,7 +451,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.phoneNumber}
+                        {personalData.phoneNumber || 'Não informado'}
                       </p>
                     </div>
 
@@ -372,7 +463,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.birthDate}
+                        {personalData.birthDate || 'Não informado'}
                       </p>
                     </div>
 
@@ -383,7 +474,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.gender}
+                        {personalData.gender || 'Não informado'}
                       </p>
                     </div>
 
@@ -394,7 +485,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.state}
+                        {personalData.state || 'Não informado'}
                       </p>
                     </div>
 
@@ -405,7 +496,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.ethnicity}
+                        {personalData.ethnicity || 'Não informado'}
                       </p>
                     </div>
 
@@ -416,7 +507,7 @@ const PatientProfile = () => {
                         </span>
                       </div>
                       <p className="font-poppins font-semibold text-gray-12">
-                        {personalData.educationLevel}
+                        {personalData.educationLevel || 'Não informado'}
                       </p>
                     </div>
                   </div>

@@ -228,7 +228,13 @@ export class PatientRepository implements IPatientRepository {
   }
 
   async findByEmail(email: string): Promise<Patient | null> {
-    return this.ormRepository.findOne({ where: { email } });
+    return this.ormRepository.findOne({
+      where: { email },
+    });
+  }
+
+  async save(patient: Patient): Promise<Patient> {
+    return this.ormRepository.save(patient);
   }
 
   async findById(id: string): Promise<Patient | null> {
