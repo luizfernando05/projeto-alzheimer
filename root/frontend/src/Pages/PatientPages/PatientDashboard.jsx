@@ -6,6 +6,7 @@ import MMSEChart from '../../Components/Charts/MMSEChart';
 const PatientDashboard = () => {
   const [patientData, setPatientData] = useState(null);
   const [mmseData, setMmseData] = useState([]);
+  const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasMMSEData, setHasMMSEData] = useState(true);
@@ -24,6 +25,14 @@ const PatientDashboard = () => {
           credentials: 'include',
         });
 
+        const recommendationsResponse = await fetch(
+          `${apiUrl}/patient/recommendations`,
+          {
+            method: 'GET',
+            credentials: 'include',
+          }
+        );
+
         if (patientResponse.ok) {
           const patientData = await patientResponse.json();
           setPatientData(patientData);
@@ -41,6 +50,11 @@ const PatientDashboard = () => {
           }
         } else {
           setHasMMSEData(false);
+        }
+
+        if (recommendationsResponse.ok) {
+          const recommendationsData = await recommendationsResponse.json();
+          setRecommendations(recommendationsData);
         }
       } catch (err) {
         setError('Erro de conexão com o servidor');
@@ -274,53 +288,72 @@ const PatientDashboard = () => {
               <div className="bg-gray-02 rounded-lg p-6 border border-gray-06">
                 <div className="prose prose-sm max-w-none text-gray-11 leading-relaxed">
                   <p className="font-roboto mb-4">
-                    {isPositive
-                      ? 'Com base nas informações analisadas, nosso sistema identificou um padrão compatível com um possível quadro de Alzheimer. Diante disso, é fundamental adotar algumas medidas que podem contribuir para a manutenção da qualidade de vida, preservação das funções cognitivas e bem-estar geral.'
-                      : isNegative
-                      ? 'Com base nas informações analisadas, nosso sistema não identificou padrões compatíveis com Alzheimer. Continue mantendo hábitos saudáveis para preservar sua saúde cognitiva e bem-estar geral.'
-                      : 'Aguardando resultado da análise. Mantenha hábitos saudáveis para preservar sua saúde cognitiva.'}
+                    {recommendations?.personalizedMessage ||
+                      (isPositive
+                        ? 'Com base nas informações analisadas, nosso sistema identificou um padrão compatível com um possível quadro de Alzheimer. Diante disso, é fundamental adotar algumas medidas que podem contribuir para a manutenção da qualidade de vida, preservação das funções cognitivas e bem-estar geral.'
+                        : isNegative
+                        ? 'Com base nas informações analisadas, nosso sistema não identificou padrões compatíveis com Alzheimer. Continue mantendo hábitos saudáveis para preservar sua saúde cognitiva e bem-estar geral.'
+                        : 'Aguardando resultado da análise. Mantenha hábitos saudáveis para preservar sua saúde cognitiva.')}
                   </p>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                      <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                        🥗 Alimentação
-                      </h4>
-                      <p className="font-roboto text-sm text-gray-10">
-                        Dieta rica em frutas, vegetais, grãos integrais, peixes
-                        e azeite de oliva para benefícios à saúde cerebral.
-                      </p>
-                    </div>
+                    {recommendations?.recommendations?.map((rec, index) => (
+                      <div
+                        key={index}
+                        className="bg-gray-01 p-4 rounded-lg border border-gray-06"
+                      >
+                        <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                          {rec.icon} {rec.title}
+                        </h4>
+                        <p className="font-roboto text-sm text-gray-10">
+                          {rec.description}
+                        </p>
+                      </div>
+                    )) || (
+                      // Fallback para quando não há recomendações da IA
+                      <>
+                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                            🥗 Alimentação
+                          </h4>
+                          <p className="font-roboto text-sm text-gray-10">
+                            Dieta rica em frutas, vegetais, grãos integrais,
+                            peixes e azeite de oliva para benefícios à saúde
+                            cerebral.
+                          </p>
+                        </div>
 
-                    <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                      <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                        🏃‍♀️ Atividade Física
-                      </h4>
-                      <p className="font-roboto text-sm text-gray-10">
-                        Exercícios moderados como caminhadas, hidroginástica e
-                        yoga para melhorar a circulação sanguínea.
-                      </p>
-                    </div>
+                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                            🏃‍♀️ Atividade Física
+                          </h4>
+                          <p className="font-roboto text-sm text-gray-10">
+                            Exercícios moderados como caminhadas, hidroginástica
+                            e yoga para melhorar a circulação sanguínea.
+                          </p>
+                        </div>
 
-                    <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                      <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                        🧠 Estimulação Cognitiva
-                      </h4>
-                      <p className="font-roboto text-sm text-gray-10">
-                        Atividades que desafiem a mente como leitura, jogos e
-                        aprendizado de novas habilidades.
-                      </p>
-                    </div>
+                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                            🧠 Estimulação Cognitiva
+                          </h4>
+                          <p className="font-roboto text-sm text-gray-10">
+                            Atividades que desafiem a mente como leitura, jogos
+                            e aprendizado de novas habilidades.
+                          </p>
+                        </div>
 
-                    <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                      <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                        👥 Suporte Social
-                      </h4>
-                      <p className="font-roboto text-sm text-gray-10">
-                        Mantenha conexões sociais ativas e busque apoio de
-                        familiares e profissionais de saúde.
-                      </p>
-                    </div>
+                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                            👥 Suporte Social
+                          </h4>
+                          <p className="font-roboto text-sm text-gray-10">
+                            Mantenha conexões sociais ativas e busque apoio de
+                            familiares e profissionais de saúde.
+                          </p>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>

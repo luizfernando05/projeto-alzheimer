@@ -21,6 +21,7 @@ import { AppError } from '../../shared/errors/AppError';
 import PatientRepository from '../repositories/PatientRepository';
 import UpdatePatientProfileController from '../controllers/UpdatePatientProfileController';
 import GetMedicalHistoryController from '../controllers/GetMedicalHistoryController';
+import GetPersonalizedRecommendationsController from '../controllers/GetPersonalizedRecommendationsController';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -41,6 +42,8 @@ const loginPatientController = new LoginPatientController();
 const getPatientController = new GetPatientController();
 const updatePatientProfileController = new UpdatePatientProfileController();
 const getMedicalHistoryController = new GetMedicalHistoryController();
+const getPersonalizedRecommendationsController =
+  new GetPersonalizedRecommendationsController();
 
 patientRoutes.post('/login', (req, res, next) => {
   loginPatientController.handle(req, res, next);
@@ -106,6 +109,14 @@ patientRoutes.get(
   ensureDoctorAuthenticated,
   (req, res, next) => {
     getGenderStatsController.handle(req, res, next);
+  }
+);
+
+patientRoutes.get(
+  '/recommendations',
+  ensurePatientAuthenticated,
+  (req, res, next) => {
+    getPersonalizedRecommendationsController.handle(req, res, next);
   }
 );
 
@@ -178,5 +189,4 @@ patientRoutes.get(
   ensureDoctorAuthenticated,
   (req, res, next) => downloadPatientPdfController.handle(req, res, next)
 );
-
 export { patientRoutes };
