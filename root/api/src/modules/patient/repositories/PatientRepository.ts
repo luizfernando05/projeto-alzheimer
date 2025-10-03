@@ -27,6 +27,13 @@ export class PatientRepository implements IPatientRepository {
     this.medicalDataRepository = AppDataSource.getRepository(MedicalData);
   }
 
+  async findAllInfosById(id: string): Promise<Patient | null> {
+    return this.ormRepository.findOne({
+      where: { id },
+      relations: ['medicalData', 'medicalData.predictions'],
+    });
+  }
+
   async getPositiveByDay(doctorId: string): Promise<PositiveByDayDTO[]> {
     const result = await this.predictRepository
       .createQueryBuilder('prediction')
