@@ -80,46 +80,21 @@ const PatientProfile = () => {
 
   const fetchMedicalData = async () => {
     try {
-      // Por enquanto mantendo dados mock até a API estar pronta
-      const mockData = [
-        {
-          id: 1,
-          dateExam: '2024-10-01',
-          mmse: 28,
-          functionalAssessment: 8,
-          bmi: 22.5,
-          cholesterolLdl: 120,
-          cholesterolHdl: 60,
-          cholesterolTriglycerides: 150,
-          smoking: false,
-          alcoholConsumption: false,
-          physicalActivity: true,
-          memoryComplaints: false,
-          behavioralProblems: false,
-          confusion: false,
-          forgetfulness: false,
-        },
-        {
-          id: 2,
-          dateExam: '2024-09-15',
-          mmse: 26,
-          functionalAssessment: 7,
-          bmi: 23.1,
-          cholesterolLdl: 115,
-          cholesterolHdl: 55,
-          cholesterolTriglycerides: 140,
-          smoking: false,
-          alcoholConsumption: false,
-          physicalActivity: true,
-          memoryComplaints: true,
-          behavioralProblems: false,
-          confusion: false,
-          forgetfulness: true,
-        },
-      ];
-      setMedicalData(mockData);
+      const response = await fetch(`${apiUrl}/patient/medical/history`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMedicalData(data);
+      } else {
+        console.log('Nenhum histórico médico encontrado');
+        setMedicalData([]);
+      }
     } catch (error) {
       console.error('Erro ao buscar dados médicos:', error);
+      setMedicalData([]);
     }
   };
 
@@ -206,6 +181,13 @@ const PatientProfile = () => {
   };
 
   const formatDate = (dateString) => {
+    if (!dateString) return 'Data não informada';
+
+    if (dateString.includes('-')) {
+      const [year, month, day] = dateString.split('-');
+      return `${day}/${month}/${year}`;
+    }
+
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
