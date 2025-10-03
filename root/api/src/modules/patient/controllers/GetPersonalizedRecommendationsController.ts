@@ -11,6 +11,7 @@ export class GetPersonalizedRecommendationsController {
   ): Promise<Response | void> {
     try {
       const patientId = req.user?.id;
+      const forceRefresh = req.query.refresh === 'true';
 
       if (!patientId) {
         return res.status(401).json({ error: 'Paciente não autenticado' });
@@ -25,9 +26,16 @@ export class GetPersonalizedRecommendationsController {
         );
 
       const recommendations =
-        await getPersonalizedRecommendationsUseCase.execute(patientId);
+        await getPersonalizedRecommendationsUseCase.execute(
+          patientId,
+          forceRefresh
+        );
 
-      return res.status(200).json(recommendations);
+      return res.status(200).json({
+        ...recommendations,
+        cached: !forceRefresh, // Indica se veio do cache
+        timestamp: new Date().toISOString(),
+      });
     } catch (err) {
       next(err);
     }

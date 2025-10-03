@@ -1,15 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import PatientLayout from './PatientLayout';
-import { Robot, Calendar, TrendUp, Heart, Brain } from '@phosphor-icons/react';
+import {
+  Robot,
+  Calendar,
+  TrendUp,
+  Heart,
+  Brain,
+  ArrowClockwise,
+} from '@phosphor-icons/react';
 import MMSEChart from '../../Components/Charts/MMSEChart';
+import { useRecommendations } from '../../contexts/RecommendationContext';
 
 const PatientDashboard = () => {
   const [patientData, setPatientData] = useState(null);
   const [mmseData, setMmseData] = useState([]);
-  const [recommendations, setRecommendations] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [hasMMSEData, setHasMMSEData] = useState(true);
+
+  const {
+    recommendations,
+    loading: recommendationsLoading,
+    fetchRecommendations,
+    isCacheValid,
+    lastFetch,
+  } = useRecommendations();
+
   const apiUrl = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -24,14 +40,6 @@ const PatientDashboard = () => {
           method: 'GET',
           credentials: 'include',
         });
-
-        const recommendationsResponse = await fetch(
-          `${apiUrl}/patient/recommendations`,
-          {
-            method: 'GET',
-            credentials: 'include',
-          }
-        );
 
         if (patientResponse.ok) {
           const patientData = await patientResponse.json();
@@ -52,10 +60,8 @@ const PatientDashboard = () => {
           setHasMMSEData(false);
         }
 
-        if (recommendationsResponse.ok) {
-          const recommendationsData = await recommendationsResponse.json();
-          setRecommendations(recommendationsData);
-        }
+        // Buscar recomendações (vai usar cache se disponível)
+        await fetchRecommendations();
       } catch (err) {
         setError('Erro de conexão com o servidor');
         console.error('Erro ao buscar dados:', err);
@@ -65,7 +71,12 @@ const PatientDashboard = () => {
     };
 
     fetchData();
-  }, [apiUrl]);
+  }, [apiUrl, fetchRecommendations]);
+
+  // Função para atualizar recomendações
+  const handleRefreshRecommendations = async () => {
+    await fetchRecommendations(true); // Force refresh
+  };
 
   if (loading) {
     return (
@@ -271,92 +282,124 @@ const PatientDashboard = () => {
             </div>
 
             <div className="space-y-4">
-              <div className="flex items-center gap-3 mb-4">
-                <div className="p-2 bg-indigo-02 rounded-lg">
-                  <Robot size={20} className="text-indigo-09" />
-                </div>
-                <div>
-                  <h3 className="font-poppins font-semibold text-gray-12">
-                    Recomendações Personalizadas
-                  </h3>
-                  <p className="font-roboto text-sm text-gray-10">
-                    Gerado por Inteligência Artificial
-                  </p>
-                </div>
-              </div>
-
-              <div className="bg-gray-02 rounded-lg p-6 border border-gray-06">
-                <div className="prose prose-sm max-w-none text-gray-11 leading-relaxed">
-                  <p className="font-roboto mb-4">
-                    {recommendations?.personalizedMessage ||
-                      (isPositive
-                        ? 'Com base nas informações analisadas, nosso sistema identificou um padrão compatível com um possível quadro de Alzheimer. Diante disso, é fundamental adotar algumas medidas que podem contribuir para a manutenção da qualidade de vida, preservação das funções cognitivas e bem-estar geral.'
-                        : isNegative
-                        ? 'Com base nas informações analisadas, nosso sistema não identificou padrões compatíveis com Alzheimer. Continue mantendo hábitos saudáveis para preservar sua saúde cognitiva e bem-estar geral.'
-                        : 'Aguardando resultado da análise. Mantenha hábitos saudáveis para preservar sua saúde cognitiva.')}
-                  </p>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    {recommendations?.recommendations?.map((rec, index) => (
-                      <div
-                        key={index}
-                        className="bg-gray-01 p-4 rounded-lg border border-gray-06"
-                      >
-                        <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                          {rec.icon} {rec.title}
-                        </h4>
-                        <p className="font-roboto text-sm text-gray-10">
-                          {rec.description}
-                        </p>
-                      </div>
-                    )) || (
-                      // Fallback para quando não há recomendações da IA
-                      <>
-                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                            🥗 Alimentação
-                          </h4>
-                          <p className="font-roboto text-sm text-gray-10">
-                            Dieta rica em frutas, vegetais, grãos integrais,
-                            peixes e azeite de oliva para benefícios à saúde
-                            cerebral.
-                          </p>
-                        </div>
-
-                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                            🏃‍♀️ Atividade Física
-                          </h4>
-                          <p className="font-roboto text-sm text-gray-10">
-                            Exercícios moderados como caminhadas, hidroginástica
-                            e yoga para melhorar a circulação sanguínea.
-                          </p>
-                        </div>
-
-                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                            🧠 Estimulação Cognitiva
-                          </h4>
-                          <p className="font-roboto text-sm text-gray-10">
-                            Atividades que desafiem a mente como leitura, jogos
-                            e aprendizado de novas habilidades.
-                          </p>
-                        </div>
-
-                        <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
-                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
-                            👥 Suporte Social
-                          </h4>
-                          <p className="font-roboto text-sm text-gray-10">
-                            Mantenha conexões sociais ativas e busque apoio de
-                            familiares e profissionais de saúde.
-                          </p>
-                        </div>
-                      </>
-                    )}
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-2 bg-indigo-02 rounded-lg">
+                    <Robot size={20} className="text-indigo-09" />
+                  </div>
+                  <div>
+                    <h3 className="font-poppins font-semibold text-gray-12">
+                      Recomendações Personalizadas
+                    </h3>
+                    <p className="font-roboto text-sm text-gray-10">
+                      Gerado por Inteligência Artificial
+                      {lastFetch && (
+                        <span className="ml-2 text-gray-09">
+                          • Última atualização:{' '}
+                          {new Date(lastFetch).toLocaleString()}
+                        </span>
+                      )}
+                    </p>
                   </div>
                 </div>
+
+                <button
+                  onClick={handleRefreshRecommendations}
+                  disabled={recommendationsLoading}
+                  className="flex items-center gap-2 px-3 py-2 text-sm bg-indigo-09 text-white rounded-lg hover:bg-indigo-10 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                >
+                  <ArrowClockwise
+                    size={16}
+                    className={recommendationsLoading ? 'animate-spin' : ''}
+                  />
+                  {recommendationsLoading ? 'Atualizando...' : 'Atualizar'}
+                </button>
               </div>
+
+              {recommendationsLoading ? (
+                <div className="bg-gray-02 rounded-lg p-6 border border-gray-06 flex items-center justify-center">
+                  <div className="flex items-center gap-3">
+                    <div className="loader w-5 h-5"></div>
+                    <span className="font-roboto text-sm text-gray-10">
+                      Gerando recomendações personalizadas...
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-gray-02 rounded-lg p-6 border border-gray-06">
+                  <div className="prose prose-sm max-w-none text-gray-11 leading-relaxed">
+                    <p className="font-roboto mb-4">
+                      {recommendations?.personalizedMessage ||
+                        (isPositive
+                          ? 'Com base nas informações analisadas, nosso sistema identificou um padrão compatível com um possível quadro de Alzheimer. Diante disso, é fundamental adotar algumas medidas que podem contribuir para a manutenção da qualidade de vida, preservação das funções cognitivas e bem-estar geral.'
+                          : isNegative
+                          ? 'Com base nas informações analisadas, nosso sistema não identificou padrões compatíveis com Alzheimer. Continue mantendo hábitos saudáveis para preservar sua saúde cognitiva e bem-estar geral.'
+                          : 'Aguardando resultado da análise. Mantenha hábitos saudáveis para preservar sua saúde cognitiva.')}
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                      {recommendations?.recommendations?.map((rec, index) => (
+                        <div
+                          key={index}
+                          className="bg-gray-01 p-4 rounded-lg border border-gray-06"
+                        >
+                          <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                            {rec.icon} {rec.title}
+                          </h4>
+                          <p className="font-roboto text-sm text-gray-10">
+                            {rec.description}
+                          </p>
+                        </div>
+                      )) || (
+                        // Fallback para quando não há recomendações da IA
+                        <>
+                          <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                            <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                              🥗 Alimentação
+                            </h4>
+                            <p className="font-roboto text-sm text-gray-10">
+                              Dieta rica em frutas, vegetais, grãos integrais,
+                              peixes e azeite de oliva para benefícios à saúde
+                              cerebral.
+                            </p>
+                          </div>
+
+                          <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                            <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                              🏃‍♀️ Atividade Física
+                            </h4>
+                            <p className="font-roboto text-sm text-gray-10">
+                              Exercícios moderados como caminhadas,
+                              hidroginástica e yoga para melhorar a circulação
+                              sanguínea.
+                            </p>
+                          </div>
+
+                          <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                            <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                              🧠 Estimulação Cognitiva
+                            </h4>
+                            <p className="font-roboto text-sm text-gray-10">
+                              Atividades que desafiem a mente como leitura,
+                              jogos e aprendizado de novas habilidades.
+                            </p>
+                          </div>
+
+                          <div className="bg-gray-01 p-4 rounded-lg border border-gray-06">
+                            <h4 className="font-poppins font-semibold text-gray-12 mb-2">
+                              👥 Suporte Social
+                            </h4>
+                            <p className="font-roboto text-sm text-gray-10">
+                              Mantenha conexões sociais ativas e busque apoio de
+                              familiares e profissionais de saúde.
+                            </p>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

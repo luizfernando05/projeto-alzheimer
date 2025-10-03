@@ -1,6 +1,7 @@
 import { AppError } from '../../shared/errors/AppError';
 import { IPatientRepository } from '../interfaces/IPatientRepository';
 import CohereService from '../services/CohereService';
+import { recommendationCache } from '../services/RecommendationCacheService';
 
 interface RecommendationResponse {
   personalizedMessage: string;
@@ -18,7 +19,19 @@ export class GetPersonalizedRecommendationsUseCase {
     private cohereService: CohereService
   ) {}
 
-  async execute(patientId: string): Promise<RecommendationResponse> {
+  async execute(
+    patientId: string,
+    forceRefresh: boolean = false
+  ): Promise<RecommendationResponse> {
+    // Verificar cache primeiro (se não for refresh forçado)
+    if (!forceRefresh) {
+      const cachedRecommendations = recommendationCache.get(patientId);
+      if (cachedRecommendations) {
+        console.log('Retornando recomendações do cache');
+        return cachedRecommendations;
+      }
+    }
+
     const patient = await this.patientRepository.findAllInfosById(patientId);
 
     if (!patient) {
@@ -78,7 +91,14 @@ export class GetPersonalizedRecommendationsUseCase {
       hasSymptoms: hasSymptoms,
     };
 
-    return await this.cohereService.generateRecommendations(patientProfile);
+    console.log('Gerando novas recomendações via Cohere...');
+    const recommendations =
+      await this.cohereService.generateRecommendations(patientProfile);
+
+    // Salvar no cache
+    recommendationCache.set(patientId, recommendations);
+
+    return recommendations;
   }
 }
 

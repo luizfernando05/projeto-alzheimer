@@ -1,4 +1,6 @@
+import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { RecommendationProvider } from './contexts/RecommendationContext';
 import DoctorLogin from './Pages/DoctorPages/AuthPages/DoctorLogin';
 import DoctorSingin from './Pages/DoctorPages/AuthPages/DoctorSingin';
 import DoctorSinginConfirm from './Pages/DoctorPages/AuthPages/DoctorSinginConfirm';
@@ -17,94 +19,98 @@ import PatientProfile from './Pages/PatientPages/PatientProfile';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Navigate to="/login/doctor" />} />{' '}
-      {/* por enquanto, ir para a rota de login ao acessar '/' */}
-      <Route path="/login/doctor" element={<DoctorLogin />} />
-      <Route path="/login/patient" element={<PatientLogin />} />
-      <Route
-        path="/patient/dashboard"
-        element={
-          <ProtectedRoute>
-            <PatientDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/patient/profile"
-        element={
-          <ProtectedRoute>
-            <PatientProfile />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="/singin/doctor" element={<DoctorSingin />} />
-      <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
-      <Route
-        path="/doctor/dashboard"
-        element={
-          <ProtectedRoute>
-            <DoctorDashboard />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/patient"
-        element={
-          <ProtectedRoute>
-            <MainModule />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/patients/:patientId/medical-data"
-        element={
-          <ProtectedRoute>
-            <CreateMedicalData />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/profile"
-        element={
-          <ProtectedRoute>
-            <DoctorProfile />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/patient/create"
-        element={
-          <ProtectedRoute>
-            <CreatePatient />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/predict/:patientId"
-        element={
-          <ProtectedRoute>
-            <PredictPage />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/patient/edit/:patientId"
-        element={
-          <ProtectedRoute>
-            <EditPatient />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/doctor/patient/list"
-        element={
-          <ProtectedRoute>
-            <ListPatients />
-          </ProtectedRoute>
-        }
-      />
-    </Routes>
+    <RecommendationProvider>
+      <Routes>
+        <Route path="/" element={<Navigate to="/login/doctor" />} />
+        <Route path="/login/doctor" element={<DoctorLogin />} />
+        <Route path="/login/patient" element={<PatientLogin />} />
+        <Route
+          path="/patient/dashboard"
+          element={
+            <ProtectedRoute>
+              <PatientDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patient/profile"
+          element={
+            <ProtectedRoute>
+              <PatientProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/singin/doctor" element={<DoctorSingin />} />
+        <Route
+          path="/singin/doctor/confirm"
+          element={<DoctorSinginConfirm />}
+        />
+        <Route
+          path="/doctor/dashboard"
+          element={
+            <ProtectedRoute>
+              <DoctorDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/patient"
+          element={
+            <ProtectedRoute>
+              <MainModule />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/patients/:patientId/medical-data"
+          element={
+            <ProtectedRoute>
+              <CreateMedicalData />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/profile"
+          element={
+            <ProtectedRoute>
+              <DoctorProfile />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/patient/create"
+          element={
+            <ProtectedRoute>
+              <CreatePatient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/predict/:patientId"
+          element={
+            <ProtectedRoute>
+              <PredictPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/patient/edit/:patientId"
+          element={
+            <ProtectedRoute>
+              <EditPatient />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/doctor/patient/list"
+          element={
+            <ProtectedRoute>
+              <ListPatients />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </RecommendationProvider>
   );
 }
 
