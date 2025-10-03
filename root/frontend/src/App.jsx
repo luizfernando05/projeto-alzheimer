@@ -13,6 +13,7 @@ import ListPatients from './Pages/DoctorPages/PatientModulePages/ListPatients';
 import EditPatient from './Pages/DoctorPages/PatientModulePages/EditPatient';
 import PatientLogin from './Pages/PatientPages/AuthPages/PatientLogin';
 import PatientDashboard from './Pages/PatientPages/PatientDashboard';
+import PatientProfile from './Pages/PatientPages/PatientProfile';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/login/doctor" element={<DoctorLogin />} />
       <Route path="/login/patient" element={<PatientLogin />} />
       <Route path="/patient/dashboard" element={<PatientDashboard />} />
+      <Route path="/patient/profile" element={<PatientProfile />} />
       <Route path="/singin/doctor" element={<DoctorSingin />} />
       <Route path="/singin/doctor/confirm" element={<DoctorSinginConfirm />} />
       <Route

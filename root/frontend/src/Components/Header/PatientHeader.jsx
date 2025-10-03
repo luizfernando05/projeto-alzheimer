@@ -38,7 +38,7 @@ const PatientHeader = () => {
           Início
         </button>
         <button
-          onClick={() => navigate('/doctor/profile')}
+          onClick={() => navigate('/patient/profile')}
           className="flex items-center gap-1 px-3 py-1.5 rounded border border-gray-06 text-sm hover:bg-gray-03"
         >
           <User size={16} />
@@ -48,7 +48,7 @@ const PatientHeader = () => {
 
       {/* Ações */}
       <div className="flex items-center gap-4">
-        <button className="hover:text-gray-700 transition">
+        <button className="hover:text-gray-11 transition">
           <Bell size={20} />
         </button>
 
