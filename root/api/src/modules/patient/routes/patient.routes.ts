@@ -16,6 +16,8 @@ import { GetPositiveByDayController } from '../controllers/GetPositiveByDayContr
 import { LoginPatientController } from '../controllers/LoginPatientController';
 import GetPatientController from '../controllers/GetPatientController';
 import { ensurePatientAuthenticated } from '../../shared/middlewares/ensurePatientAuthenticated';
+import { AppError } from '../../shared/errors/AppError';
+import PatientRepository from '../repositories/PatientRepository';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -103,6 +105,30 @@ patientRoutes.get(
 patientRoutes.get('/positive-by-day', ensureDoctorAuthenticated, (req, res) => {
   getPositiveByDayController.handle(req, res);
 });
+
+patientRoutes.get(
+  '/profile',
+  ensurePatientAuthenticated,
+  async (req, res, next) => {
+    try {
+      const patientRepository = new PatientRepository();
+      const patient = await patientRepository.findById(req.user.id);
+
+      if (!patient) {
+        return next(new AppError('Paciente não encontrado', 404));
+      }
+
+      res.status(200).json({
+        id: patient.id,
+        name: patient.name,
+        email: patient.email,
+        role: 'patient',
+      });
+    } catch (err) {
+      next(err);
+    }
+  }
+);
 
 patientRoutes.get(
   '/:patientId',
