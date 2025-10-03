@@ -49,7 +49,6 @@ const PatientProfile = () => {
       if (response.ok) {
         const data = await response.json();
 
-        // Formatando a data de nascimento para o formato brasileiro
         const formattedBirthDate = data.birthDate
           ? new Date(data.birthDate).toLocaleDateString('pt-BR')
           : '';
@@ -166,7 +165,6 @@ const PatientProfile = () => {
         setShowToast(true);
         setErrorMessage('');
 
-        // Recarregar os dados para garantir sincronização
         await fetchPatientData();
       } else {
         const errorData = await response.json();
@@ -183,12 +181,23 @@ const PatientProfile = () => {
   const formatDate = (dateString) => {
     if (!dateString) return 'Data não informada';
 
-    if (dateString.includes('-')) {
-      const [year, month, day] = dateString.split('-');
-      return `${day}/${month}/${year}`;
-    }
+    try {
+      if (dateString.includes('-') && dateString.length === 10) {
+        const [year, month, day] = dateString.split('-');
+        return `${day}/${month}/${year}`;
+      }
 
-    return new Date(dateString).toLocaleDateString('pt-BR');
+      const date = new Date(dateString);
+
+      if (isNaN(date.getTime())) {
+        return 'Data inválida';
+      }
+
+      return date.toLocaleDateString('pt-BR');
+    } catch (error) {
+      console.error('Erro ao formatar data:', error);
+      return 'Data inválida';
+    }
   };
 
   const formatBoolean = (value) => {
@@ -230,7 +239,6 @@ const PatientProfile = () => {
           />
         )}
 
-        {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>
             <h1 className="font-poppins text-2xl font-semibold text-gray-12 mb-1">
@@ -243,7 +251,6 @@ const PatientProfile = () => {
           </div>
         </div>
 
-        {/* Tabs */}
         <div className="bg-gray-01 rounded-xl border border-gray-06 shadow-xs">
           <div className="flex border-b border-gray-06">
             <button
@@ -270,11 +277,9 @@ const PatientProfile = () => {
             </button>
           </div>
 
-          {/* Tab Content */}
           <div className="p-6">
             {activeTab === 'personal' && (
               <div className="space-y-6">
-                {/* Header da seção pessoal */}
                 <div className="flex items-center justify-between">
                   <h3 className="font-poppins text-lg font-semibold text-gray-12">
                     Informações Pessoais
@@ -307,7 +312,6 @@ const PatientProfile = () => {
                   )}
                 </div>
 
-                {/* Formulário */}
                 {isEditing ? (
                   <div className="space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -401,7 +405,6 @@ const PatientProfile = () => {
                     </div>
                   </div>
                 ) : (
-                  /* Visualização dos dados reais da API */
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <div className="bg-gray-02 rounded-lg p-4 border border-gray-06">
                       <div className="flex items-center gap-3 mb-2">
@@ -505,7 +508,6 @@ const PatientProfile = () => {
 
             {activeTab === 'medical' && (
               <div className="space-y-6">
-                {/* Header da seção médica */}
                 <div className="flex items-center justify-between">
                   <h3 className="font-poppins text-lg font-semibold text-gray-12">
                     Histórico de Exames Médicos
@@ -559,7 +561,7 @@ const PatientProfile = () => {
                 ) : (
                   currentMedicalRecord && (
                     <div className="space-y-6">
-                      {/* Data do exame */}
+                      {/* Data do exame - CORRIGIDO */}
                       <div className="bg-indigo-02 rounded-lg p-4 border border-indigo-06">
                         <div className="flex items-center gap-3">
                           <CalendarBlank size={24} className="text-indigo-09" />
@@ -574,7 +576,6 @@ const PatientProfile = () => {
                         </div>
                       </div>
 
-                      {/* Funções Cognitivas */}
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <Brain size={24} className="text-purple-09" />
@@ -610,7 +611,6 @@ const PatientProfile = () => {
                         </div>
                       </div>
 
-                      {/* Dados Físicos */}
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <Heart size={24} className="text-red-09" />
@@ -655,7 +655,6 @@ const PatientProfile = () => {
                         </div>
                       </div>
 
-                      {/* Estilo de Vida */}
                       <div className="space-y-4">
                         <div className="flex items-center gap-3">
                           <Flask size={24} className="text-green-09" />
@@ -695,7 +694,6 @@ const PatientProfile = () => {
                         </div>
                       </div>
 
-                      {/* Sintomas */}
                       <div className="space-y-4">
                         <h4 className="font-poppins text-lg font-semibold text-gray-12">
                           Sintomas Relatados
