@@ -76,25 +76,128 @@ const EditPatient = () => {
 
   const handleDownloadPdf = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/patient/${patientId}/pdf`, {
-        responseType: 'blob',
-        withCredentials: true,
-      });
+      // Preparar os dados no formato esperado pela API Python
+      const selectedMedicalData = patientData.medicalData?.[selectedExamIndex];
 
-      const blob = new Blob([response.data], { type: 'application/pdf' });
+      if (!selectedMedicalData) {
+        alert('Dados médicos não encontrados para gerar o relatório.');
+        return;
+      }
+
+      const requestData = {
+        patient: {
+          name: patientData.name || '',
+          email: patientData.email || '',
+          birthDate: patientData.birthDate || '',
+          gender: patientData.gender || '',
+          state: patientData.state || '',
+          ethnicity: patientData.ethnicity || '',
+          educationLevel: patientData.educationLevel || '',
+          phoneNumber: patientData.phoneNumber || '',
+        },
+        medicalData: {
+          dateExam: selectedMedicalData.dateExam || '',
+          bmi: parseFloat(selectedMedicalData.bmi) || 0,
+          weight: parseFloat(selectedMedicalData.weight) || 0,
+          height: parseFloat(selectedMedicalData.height) || 0,
+          sleepQuality: parseFloat(selectedMedicalData.sleepQuality) || 0,
+          dietQuality: parseFloat(selectedMedicalData.dietQuality) || 0,
+          cholesterolLdl: parseFloat(selectedMedicalData.cholesterolLdl) || 0,
+          cholesterolHdl: parseFloat(selectedMedicalData.cholesterolHdl) || 0,
+          cholesterolTriglycerides:
+            parseFloat(selectedMedicalData.cholesterolTriglycerides) || 0,
+          cholesterolTotal:
+            parseFloat(selectedMedicalData.cholesterolTotal) || 0,
+          systolicBP: parseFloat(selectedMedicalData.systolicBP) || 0,
+          diastolicBP: parseFloat(selectedMedicalData.diastolicBP) || 0,
+          physicalActivity:
+            selectedMedicalData.physicalActivity === true ||
+            selectedMedicalData.physicalActivity === 'true',
+          smoking:
+            selectedMedicalData.smoking === true ||
+            selectedMedicalData.smoking === 'true',
+          alcoholConsumption:
+            selectedMedicalData.alcoholConsumption === true ||
+            selectedMedicalData.alcoholConsumption === 'true',
+          familyHistory:
+            selectedMedicalData.familyHistory === true ||
+            selectedMedicalData.familyHistory === 'true',
+          cardiovascularDisease:
+            selectedMedicalData.cardiovascularDisease === true ||
+            selectedMedicalData.cardiovascularDisease === 'true',
+          diabetes:
+            selectedMedicalData.diabetes === true ||
+            selectedMedicalData.diabetes === 'true',
+          depression:
+            selectedMedicalData.depression === true ||
+            selectedMedicalData.depression === 'true',
+          headTrauma:
+            selectedMedicalData.headTrauma === true ||
+            selectedMedicalData.headTrauma === 'true',
+          hypertension:
+            selectedMedicalData.hypertension === true ||
+            selectedMedicalData.hypertension === 'true',
+          mmse: parseFloat(selectedMedicalData.mmse) || 0,
+          adl: parseFloat(selectedMedicalData.adl) || 0,
+          functionalAssessment:
+            parseFloat(selectedMedicalData.functionalAssessment) || 0,
+          memoryComplaints:
+            selectedMedicalData.memoryComplaints === true ||
+            selectedMedicalData.memoryComplaints === 'true',
+          behavioralProblems:
+            selectedMedicalData.behavioralProblems === true ||
+            selectedMedicalData.behavioralProblems === 'true',
+          confusion:
+            selectedMedicalData.confusion === true ||
+            selectedMedicalData.confusion === 'true',
+          disorientation:
+            selectedMedicalData.disorientation === true ||
+            selectedMedicalData.disorientation === 'true',
+          forgetfulness:
+            selectedMedicalData.forgetfulness === true ||
+            selectedMedicalData.forgetfulness === 'true',
+          personalityChanges:
+            selectedMedicalData.personalityChanges === true ||
+            selectedMedicalData.personalityChanges === 'true',
+          difficultyCompletingTasks:
+            selectedMedicalData.difficultyCompletingTasks === true ||
+            selectedMedicalData.difficultyCompletingTasks === 'true',
+        },
+      };
+
+      console.log('Dados sendo enviados:', requestData); // Para debug
+
+      const response = await axios.post(
+        'http://localhost:5001/generate-report',
+        requestData,
+        {
+          responseType: 'blob',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      const blob = new Blob([response.data], {
+        type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+      });
       const url = window.URL.createObjectURL(blob);
 
       const link = document.createElement('a');
       const sanitizedName = patientData.name.replace(/\s+/g, '_');
       link.href = url;
-      link.setAttribute('download', `${sanitizedName}_relatorio.pdf`);
+      link.setAttribute('download', `${sanitizedName}_relatorio.docx`);
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error('Erro ao gerar o PDF:', error);
-      alert('Erro ao gerar o PDF.');
+      console.error('Erro ao gerar o relatório:', error);
+      if (error.response) {
+        console.error('Dados da resposta:', error.response.data);
+        console.error('Status:', error.response.status);
+      }
+      alert('Erro ao gerar o relatório.');
     }
   };
 

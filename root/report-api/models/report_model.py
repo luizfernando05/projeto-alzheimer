@@ -1,57 +1,47 @@
-from pydantic import BaseModel, Field
+from dataclasses import dataclass
 from typing import Optional
 
-class Patient(BaseModel):
+@dataclass
+class Patient:
     name: str
     email: str
-    birthDate: str
+    birth_date: str
     gender: str
-    state: str
-    ethnicity: str
-    educationLevel: str
-    phoneNumber: str
+    state: Optional[str] = None
+    ethnicity: Optional[str] = None
+    education_level: Optional[str] = None
+    phone_number: Optional[str] = None
 
-class MedicalData(BaseModel):
-    
-    # dados gerais
-    dateExam: str
+@dataclass
+class MedicalData:
+    date_exam: str
     bmi: float
     weight: float
     height: float
-    sleepQuality: str
-    dietQuality: int
-    cholesterolLdl: int
-    cholesterolHdl: int
-    cholesterolTriglycerides: int
-    cholesterolTotal: int
-    systolicBP: int
-    diastolicBP: int
-    physicalActivity: bool
+    sleep_quality: float
+    diet_quality: float
+    cholesterol_ldl: float
+    cholesterol_hdl: float
+    cholesterol_triglycerides: float
+    cholesterol_total: float
+    systolic_bp: float
+    diastolic_bp: float
+    physical_activity: bool
     smoking: bool
-    alcoholConsumption: bool
-
-    # histórico médico
-    familyHistory: bool
-    cardiovascularDisease: bool
+    alcohol_consumption: bool
+    family_history: bool
+    cardiovascular_disease: bool
     diabetes: bool
     depression: bool
-    headTrauma: bool
+    head_trauma: bool
     hypertension: bool
-
-    # funções cognitivas
-    mmse: int
-    adl: int
-    functionalAssessment: int
-    memoryComplaints: bool
-    behavioralProblems: bool
-    
-    # sintomas cognitivos
+    mmse: float
+    adl: float
+    functional_assessment: float
+    memory_complaints: bool
+    behavioral_problems: bool
     confusion: bool
     disorientation: bool
-    personalityChanges: bool
-    difficultyCompletingTasks: bool
     forgetfulness: bool
-
-class ReportData(BaseModel):
-    patient: Patient
-    medicalData: MedicalData
+    personality_changes: bool
+    difficulty_completing_tasks: bool

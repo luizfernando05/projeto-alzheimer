@@ -1,82 +1,138 @@
 from docx import Document
-import io
+from docx.shared import Inches
 from datetime import datetime
+import os
+import tempfile
 
-def generate_docx_report(data):
-    template = Document("modelo_relatorio_do_paciente.docx")
-    patient = data.patient
-    medical = data.medicalData
-
-    mapping = {
-        # dados pessoais
-        "NOME": patient.name,
-        "EMAIL": patient.email,
-        "NASCIMENTO": patient.birthDate,
-        "GENERO": patient.gender,
-        "ESTADO": patient.state,
-        "ETNIA": patient.ethnicity,
-        "ESCOLARIDADE": patient.educationLevel,
-        "TELEFONE": patient.phoneNumber,
-
-        # dados médicos
-        "DATA_EXAM": medical.dateExam,
-        "IMC_N": str(medical.bmi),
-        "PESO": str(medical.weight),
-        "ALTURA": str(medical.height),
-        "QUALI_SONO": medical.sleepQuality,
-        "QUALI_DIETA": str(medical.dietQuality),
-        "LDL_N": str(medical.cholesterolLdl),
-        "HDL_N": str(medical.cholesterolHdl),
-        "TRIGLIC": str(medical.cholesterolTriglycerides),
-        "C_TOTAL": str(medical.cholesterolTotal),
-        "PRESSAO_S": str(medical.systolicBP),
-        "PRESSAO_D": str(medical.diastolicBP),
-        "EX_FISICO": "Sim" if medical.physicalActivity else "Não" if medical.physicalActivity is not None else "",
-        "TABAGISMO": "Sim" if medical.smoking else "Não" if medical.smoking is not None else "",
-        "ALC": "Sim" if medical.alcoholConsumption else "Não" if medical.alcoholConsumption is not None else "",
-
-        # histórico médico
-        "HIST_ALZ": "Sim" if medical.familyHistory else "Não" if medical.familyHistory is not None else "",
-        "HIST_CAR": "Sim" if medical.cardiovascularDisease else "Não" if medical.cardiovascularDisease is not None else "",
-        "HIST_DIA": "Sim" if medical.diabetes else "Não" if medical.diabetes is not None else "",
-        "HIST_DEP": "Sim" if medical.depression else "Não" if medical.depression is not None else "",
-        "HIST_TRA": "Sim" if medical.headTrauma else "Não" if medical.headTrauma is not None else "",
-        "HIST_HIP": "Sim" if medical.hypertension else "Não" if medical.hypertension is not None else "",
-
-        # funções cognitivas
-        "MMSE_N": str(medical.mmse),
-        "ADL_N": str(medical.adl),
-        "ATV_FUNC": str(medical.functionalAssessment),
-        "QUEI_MEM": "Sim" if medical.memoryComplaints else "Não" if medical.memoryComplaints is not None else "",
-        "PROB_C": "Sim" if medical.behavioralProblems else "Não" if medical.behavioralProblems is not None else "",
-
-        # sintomas cognitivos
-        "SINT_CON": "Sim" if medical.confusion else "Não" if medical.confusion is not None else "",
-        "SINT_DES": "Sim" if medical.disorientation else "Não" if medical.disorientation is not None else "",
-        "SINT_ESQ": "Sim" if medical.forgetfulness else "Não" if medical.forgetfulness is not None else "",
-        "SINT_MUD": "Sim" if medical.personalityChanges else "Não" if medical.personalityChanges is not None else "",
-        "SINT_DIF": "Sim" if medical.difficultyCompletingTasks else "Não" if medical.difficultyCompletingTasks is not None else "",
-
-    }
-
-    # substituir no docx
-    for table in template.tables:
-        for row in table.rows:
-            for cell in row.cells:
-                for paragraph in cell.paragraphs:
-                    for label, value in mapping.items():
-                        if value is not None:
-                            full_text = "".join(run.text for run in paragraph.runs)
-                            if label in full_text:
-                                new_text = full_text.replace(label, str(value))
-                                for run in paragraph.runs:
-                                    run.text = ""
-                                paragraph.runs[0].text = new_text
-          
-    # salvar em memória
-    file_stream = io.BytesIO()
-    template.save(file_stream)
-    file_stream.seek(0)
-
-    filename = f"relatório_{patient.name}_{datetime.now().strftime('%Y%m%d')}.docx"
-    return file_stream, filename
+class ReportService:
+    def __init__(self):
+        pass
+    
+    def generate_report(self, patient, medical_data):
+        # Criar um novo documento Word
+        doc = Document()
+        
+        # Título do documento
+        title = doc.add_heading('Relatório Médico - Alzheimer', 0)
+        title.alignment = 1  # Centralizar
+        
+        # Dados do paciente
+        doc.add_heading('Dados do Paciente', level=1)
+        patient_table = doc.add_table(rows=8, cols=2)
+        patient_table.style = 'Table Grid'
+        
+        patient_data = [
+            ('Nome:', patient.get('name', '')),
+            ('Email:', patient.get('email', '')),
+            ('Data de Nascimento:', patient.get('birthDate', '')),
+            ('Gênero:', patient.get('gender', '')),
+            ('Estado:', patient.get('state', '')),
+            ('Etnia:', patient.get('ethnicity', '')),
+            ('Nível Educacional:', patient.get('educationLevel', '')),
+            ('Telefone:', patient.get('phoneNumber', ''))
+        ]
+        
+        for i, (label, value) in enumerate(patient_data):
+            patient_table.cell(i, 0).text = label
+            patient_table.cell(i, 1).text = str(value)
+        
+        # Dados médicos
+        doc.add_heading('Dados Médicos', level=1)
+        doc.add_paragraph(f"Data do Exame: {medical_data.get('dateExam', '')}")
+        
+        # Fatores de estilo de vida
+        doc.add_heading('Fatores de Estilo de Vida', level=2)
+        lifestyle_table = doc.add_table(rows=6, cols=2)
+        lifestyle_table.style = 'Table Grid'
+        
+        lifestyle_data = [
+            ('Peso (kg):', medical_data.get('weight', '')),
+            ('Altura (cm):', medical_data.get('height', '')),
+            ('IMC:', medical_data.get('bmi', '')),
+            ('Qualidade da Dieta (0-10):', medical_data.get('dietQuality', '')),
+            ('Qualidade do Sono (0-10):', medical_data.get('sleepQuality', '')),
+            ('Atividade Física:', 'Sim' if medical_data.get('physicalActivity') else 'Não')
+        ]
+        
+        for i, (label, value) in enumerate(lifestyle_data):
+            lifestyle_table.cell(i, 0).text = label
+            lifestyle_table.cell(i, 1).text = str(value)
+        
+        # Histórico médico
+        doc.add_heading('Histórico Médico', level=2)
+        history_table = doc.add_table(rows=6, cols=2)
+        history_table.style = 'Table Grid'
+        
+        history_data = [
+            ('Histórico Familiar de Alzheimer:', 'Sim' if medical_data.get('familyHistory') else 'Não'),
+            ('Doença Cardiovascular:', 'Sim' if medical_data.get('cardiovascularDisease') else 'Não'),
+            ('Diabetes:', 'Sim' if medical_data.get('diabetes') else 'Não'),
+            ('Depressão:', 'Sim' if medical_data.get('depression') else 'Não'),
+            ('Traumatismo Craniano:', 'Sim' if medical_data.get('headTrauma') else 'Não'),
+            ('Hipertensão:', 'Sim' if medical_data.get('hypertension') else 'Não')
+        ]
+        
+        for i, (label, value) in enumerate(history_data):
+            history_table.cell(i, 0).text = label
+            history_table.cell(i, 1).text = str(value)
+        
+        # Avaliações cognitivas
+        doc.add_heading('Avaliações Cognitivas', level=2)
+        cognitive_table = doc.add_table(rows=5, cols=2)
+        cognitive_table.style = 'Table Grid'
+        
+        cognitive_data = [
+            ('MMSE (0-30):', medical_data.get('mmse', '')),
+            ('ADL (0-10):', medical_data.get('adl', '')),
+            ('Avaliação Funcional (0-10):', medical_data.get('functionalAssessment', '')),
+            ('Queixas de Memória:', 'Sim' if medical_data.get('memoryComplaints') else 'Não'),
+            ('Problemas Comportamentais:', 'Sim' if medical_data.get('behavioralProblems') else 'Não')
+        ]
+        
+        for i, (label, value) in enumerate(cognitive_data):
+            cognitive_table.cell(i, 0).text = label
+            cognitive_table.cell(i, 1).text = str(value)
+        
+        # Sintomas
+        doc.add_heading('Sintomas', level=2)
+        symptoms_table = doc.add_table(rows=5, cols=2)
+        symptoms_table.style = 'Table Grid'
+        
+        symptoms_data = [
+            ('Confusão:', 'Sim' if medical_data.get('confusion') else 'Não'),
+            ('Desorientação:', 'Sim' if medical_data.get('disorientation') else 'Não'),
+            ('Esquecimento:', 'Sim' if medical_data.get('forgetfulness') else 'Não'),
+            ('Mudanças de Personalidade:', 'Sim' if medical_data.get('personalityChanges') else 'Não'),
+            ('Dificuldade em Completar Tarefas:', 'Sim' if medical_data.get('difficultyCompletingTasks') else 'Não')
+        ]
+        
+        for i, (label, value) in enumerate(symptoms_data):
+            symptoms_table.cell(i, 0).text = label
+            symptoms_table.cell(i, 1).text = str(value)
+        
+        # Medições clínicas
+        doc.add_heading('Medições Clínicas', level=2)
+        clinical_table = doc.add_table(rows=6, cols=2)
+        clinical_table.style = 'Table Grid'
+        
+        clinical_data = [
+            ('Colesterol Total:', medical_data.get('cholesterolTotal', '')),
+            ('Colesterol LDL:', medical_data.get('cholesterolLdl', '')),
+            ('Colesterol HDL:', medical_data.get('cholesterolHdl', '')),
+            ('Triglicerídeos:', medical_data.get('cholesterolTriglycerides', '')),
+            ('Pressão Sistólica:', medical_data.get('systolicBP', '')),
+            ('Pressão Diastólica:', medical_data.get('diastolicBP', ''))
+        ]
+        
+        for i, (label, value) in enumerate(clinical_data):
+            clinical_table.cell(i, 0).text = label
+            clinical_table.cell(i, 1).text = str(value)
+        
+        # Salvar o documento em um arquivo temporário
+        temp_dir = tempfile.gettempdir()
+        filename = f"relatorio_{patient.get('name', 'paciente').replace(' ', '_')}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.docx"
+        file_path = os.path.join(temp_dir, filename)
+        
+        doc.save(file_path)
+        
+        return file_path
