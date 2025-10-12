@@ -15,11 +15,11 @@ export class MedicalDataRepository implements IMedicalDataRepository {
     const medicalData = await this.ormRepository
       .createQueryBuilder('medicalData')
       .where('medicalData.patientId = :patientId', { patientId })
-      .orderBy('medicalData.createdAt', 'ASC')
+      .orderBy('medicalData.dateExam', 'ASC')
       .getMany();
 
     return medicalData.map((data) => {
-      const date = new Date(data.createdAt);
+      const date = new Date(data.dateExam);
       return {
         date: date.toISOString().split('T')[0],
         mmse: data.mmse || 0,

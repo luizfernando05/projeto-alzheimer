@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
-import { IPredictionRepository } from '../interfaces/IPredictionRepository';
-import { Prediction } from '../../../domain/entities/Prediction';
 import { AppDataSource } from '../../../config/data-source';
+import { Prediction } from '../../../domain/entities/Prediction';
+import { IPredictionRepository } from '../interfaces/IPredictionRepository';
 
 export class PredictionRepository implements IPredictionRepository {
   private repository: Repository<Prediction>;
@@ -38,5 +38,14 @@ export class PredictionRepository implements IPredictionRepository {
 
   async delete(id: string): Promise<void> {
     await this.repository.delete(id);
+  }
+
+  async findByPatientId(patientId: string): Promise<Prediction[]> {
+    return await this.repository
+      .createQueryBuilder('prediction')
+      .leftJoinAndSelect('prediction.medicalData', 'medicalData')
+      .where('medicalData.patient_id = :patientId', { patientId })
+      .orderBy('prediction.created_at', 'DESC')
+      .getMany();
   }
 }

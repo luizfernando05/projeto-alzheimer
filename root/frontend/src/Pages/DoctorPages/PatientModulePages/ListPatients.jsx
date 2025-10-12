@@ -223,7 +223,7 @@ const ListPatients = () => {
                     <td className="py-3">
                       <div className="flex items-center gap-4 pl-2">
                         <button
-                          onClick={() => alert('Favoritar')}
+                          onClick={() => navigate(`/doctor/predict/${p.id}`)}
                           className="text-indigo-10 hover:text-indigo-11"
                         >
                           <Sparkle size={20} weight="regular" />

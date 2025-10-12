@@ -52,6 +52,7 @@ const PatientDashboard = () => {
           const mmseData = await mmseResponse.json();
           if (mmseData && mmseData.length > 0) {
             setMmseData(mmseData);
+            console.log(mmseData);
             setHasMMSEData(true);
           } else {
             setHasMMSEData(false);
@@ -174,42 +175,25 @@ const PatientDashboard = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-01 rounded-xl border border-gray-06 p-6 shadow-xs">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`p-3 ${cardColors.bg} rounded-lg`}>
-                <Brain size={24} className={cardColors.icon} />
-              </div>
-              <span
-                className={`font-poppins text-2xl font-bold ${cardColors.text}`}
-              >
-                {confidenceScore
-                  ? `${Math.round(confidenceScore * 100)}%`
-                  : '90%'}
-              </span>
+        <div className="bg-gray-01 rounded-xl border border-gray-06 p-6 shadow-xs">
+          <div className="flex items-center justify-between mb-4">
+            <div className={`p-3 ${cardColors.bg} rounded-lg`}>
+              <Brain size={24} className={cardColors.icon} />
             </div>
-            <h3 className="font-poppins font-semibold text-gray-12 mb-1">
-              Score de Confiança
-            </h3>
-            <p className="font-roboto text-sm text-gray-10">
-              Resultado: {resultText}
-            </p>
+            <span
+              className={`font-poppins text-2xl font-bold ${cardColors.text}`}
+            >
+              {confidenceScore
+                ? `${Math.round(confidenceScore * 100)}%`
+                : '90%'}
+            </span>
           </div>
-
-          <div className="bg-gray-01 rounded-xl border border-gray-06 p-6 shadow-xs">
-            <div className="flex items-center justify-between mb-4">
-              <div className="p-3 bg-green-02 rounded-lg">
-                <Heart size={24} className="text-green-09" />
-              </div>
-              <span className="font-roboto text-sm font-medium text-green-09">
-                Ativo
-              </span>
-            </div>
-            <h3 className="font-poppins font-semibold text-gray-12 mb-1">
-              Acompanhamento
-            </h3>
-            <p className="font-roboto text-sm text-gray-10">Cuidados diários</p>
-          </div>
+          <h3 className="font-poppins font-semibold text-gray-12 mb-1">
+            Score de Confiança
+          </h3>
+          <p className="font-roboto text-sm text-gray-10">
+            Resultado: {resultText}
+          </p>
         </div>
 
         {hasMMSEData ? (

@@ -6,10 +6,7 @@ import {
 import { IPatientRepository } from '../interfaces/IPatientRepository';
 
 export class GetMedicalHistoryUseCase {
-  constructor(
-    private medicalHistoryRepository: IMedicalHistoryRepository,
-    private patientRepository: IPatientRepository
-  ) {}
+  constructor(private patientRepository: IPatientRepository) {}
 
   async execute(patientId: string): Promise<MedicalHistoryData[]> {
     // Verificar se o paciente existe
@@ -20,11 +17,13 @@ export class GetMedicalHistoryUseCase {
     }
 
     const medicalHistory =
-      await this.medicalHistoryRepository.getMedicalHistoryByPatientId(
-        patientId
-      );
+      await this.patientRepository.getMedicalHistory(patientId);
 
-    return medicalHistory;
+    // Garantir que o dateExam está sendo retornado corretamente
+    return (medicalHistory as MedicalHistoryData[]).map((record) => ({
+      ...record,
+      dateExam: record.dateExam, // Certificar que dateExam está sendo retornado
+    }));
   }
 }
 

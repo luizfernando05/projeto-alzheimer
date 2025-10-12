@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DoctorLayout from '../DoctorLayout';
 import InputField from '../../../Components/Form/InputField';
 import SelectField from '../../../Components/Form/SelectField';
-import { ArrowLeft, FilePdf } from '@phosphor-icons/react';
+import { ArrowLeft, FileDoc } from '@phosphor-icons/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { estadosBrasileiros } from '../../../Utils/states';
@@ -160,9 +160,9 @@ const EditPatient = () => {
               className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03"
             >
               <div className="pr-2 pl-2 pt-1 pb-1 border-r border-gray-06">
-                <FilePdf size={16} />
+                <FileDoc size={16} />
               </div>
-              <span className="pr-2 pl-2 pt-1 pb-1">Baixar PDF</span>
+              <span className="pr-2 pl-2 pt-1 pb-1">Baixar Prontuário</span>
             </button>
           </div>
 

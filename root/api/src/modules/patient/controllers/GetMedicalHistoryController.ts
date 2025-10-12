@@ -19,7 +19,6 @@ export class GetMedicalHistoryController {
       const medicalHistoryRepository = new MedicalHistoryRepository();
       const patientRepository = new PatientRepository();
       const getMedicalHistoryUseCase = new GetMedicalHistoryUseCase(
-        medicalHistoryRepository,
         patientRepository
       );
 

@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import DoctorLayout from '../DoctorLayout';
 import InputField from '../../../Components/Form/InputField';
-import { ArrowLeft, FilePdf, Sparkle, Warning } from '@phosphor-icons/react';
+import {
+  ArrowLeft,
+  FileDoc,
+  Sparkle,
+  Warning,
+  Calendar,
+} from '@phosphor-icons/react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import translate from 'translate';
@@ -14,6 +20,7 @@ const PredictPage = () => {
 
   const [patientData, setPatientData] = useState(null);
   const [prediction, setPrediction] = useState(null);
+  const [previousPredictions, setPreviousPredictions] = useState([]);
   const [advice, setAdvice] = useState('');
   const [loadingPrediction, setLoadingPrediction] = useState(false);
   const [selectedExamIndex, setSelectedExamIndex] = useState(0);
@@ -25,6 +32,9 @@ const PredictPage = () => {
           withCredentials: true,
         });
         setPatientData(response.data);
+
+        // Buscar predições anteriores
+        await fetchPreviousPredictions();
       } catch (error) {
         console.error('Erro ao buscar dados do paciente:', error);
       }
@@ -32,6 +42,20 @@ const PredictPage = () => {
 
     fetchPatient();
   }, [patientId]);
+
+  const fetchPreviousPredictions = async () => {
+    try {
+      const response = await axios.get(
+        `${apiUrl}/predict/${patientId}/predictions`,
+        {
+          withCredentials: true,
+        }
+      );
+      setPreviousPredictions(response.data || []);
+    } catch (error) {
+      console.error('Erro ao buscar predições anteriores:', error);
+    }
+  };
 
   const handleDownloadPdf = async () => {
     try {
@@ -151,6 +175,10 @@ const PredictPage = () => {
 
   const selectedExam = patientData.medicalData[selectedExamIndex];
 
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString('pt-BR');
+  };
+
   return (
     <DoctorLayout>
       <section className="w-full">
@@ -200,17 +228,69 @@ const PredictPage = () => {
               className="flex items-center gap-2 text-xs text-gray-11 hover:text-gray-12 shadow-xs rounded-sm border border-gray-06 bg-gray-02 hover:bg-gray-03"
             >
               <div className="pr-2 pl-2 pt-1 pb-1 border-r border-gray-06">
-                <FilePdf size={16} />
+                <FileDoc size={16} />
               </div>
-              <span className="pr-2 pl-2 pt-1 pb-1">Baixar PDF</span>
+              <span className="pr-2 pl-2 pt-1 pb-1">Baixar Prontuário</span>
             </button>
           </div>
+
+          {/* Seção de Predições Anteriores */}
+          {previousPredictions.length > 0 && (
+            <div className="pt-6 pr-8 pl-8 border-b border-gray-06">
+              <div className="flex flex-col gap-3 mb-5">
+                <h3 className="font-roboto text-base font-normal text-gray-12">
+                  Últimas Predições
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {previousPredictions.slice(-3).map((pred, index) => (
+                    <div
+                      key={pred.id}
+                      className="border border-gray-06 rounded-lg bg-gray-02 p-4"
+                    >
+                      <div className="flex items-center gap-2 mb-2">
+                        <Calendar size={16} className="text-gray-11" />
+                        <span className="text-sm text-gray-11">
+                          {formatDate(pred.created_at)}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm text-gray-11">Resultado:</span>
+                        <span
+                          className={`text-sm font-medium ${
+                            pred.prediction_result === 'positive'
+                              ? 'text-red-09'
+                              : 'text-green-09'
+                          }`}
+                        >
+                          {pred.prediction_result === 'positive'
+                            ? 'Positivo'
+                            : 'Negativo'}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="text-sm text-gray-11">Confiança:</span>
+                        <span className="text-sm text-gray-12">
+                          {Math.round(pred.confidence_score * 100)}%
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm text-gray-11">Exame:</span>
+                        <span className="text-sm text-gray-12">
+                          {formatDate(pred.medicalData.dateExam)}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="pt-6 pr-8 pl-8">
             <div className="mb-4">
               <div className="flex flex-col gap-3 mb-5">
                 <h3 className="font-roboto text-base font-normal text-gray-12">
-                  Predição
+                  Nova Predição
                 </h3>
                 <p className="font-roboto text-sm font-normal text-gray-12">
                   São consideradas as seguintes características para essa
@@ -219,6 +299,41 @@ const PredictPage = () => {
                   Funcional.
                 </p>
               </div>
+
+              {/* Seção de Seleção de Data do Exame */}
+              {patientData.medicalData?.length > 1 && (
+                <div className="mb-6">
+                  <label className="block text-sm text-gray-12 mb-2">
+                    Selecionar data do exame
+                  </label>
+                  <div className="flex flex-wrap gap-2">
+                    {patientData.medicalData.map((item, index) => {
+                      const formattedDate = item.dateExam
+                        .split('-')
+                        .reverse()
+                        .join('/');
+                      const isSelected = selectedExamIndex === index;
+
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          onClick={() => setSelectedExamIndex(index)}
+                          className={`px-4 py-2 text-sm rounded-md border transition
+                            ${
+                              isSelected
+                                ? 'bg-gray-04 text-gray-12 border-gray-06'
+                                : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
+                            }
+                          `}
+                        >
+                          {formattedDate}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className="flex flex-col gap-3 mb-5">
                 <h3 className="font-roboto text-base font-normal text-gray-12">
@@ -487,40 +602,6 @@ const PredictPage = () => {
                 </div>
               </div>
             </div>
-
-            {patientData.medicalData?.length > 1 && (
-              <div className="mb-6">
-                <label className="block text-sm text-gray-12 mb-2">
-                  Selecionar data do exame
-                </label>
-                <div className="flex flex-wrap gap-2">
-                  {patientData.medicalData.map((item, index) => {
-                    const formattedDate = item.dateExam
-                      .split('-')
-                      .reverse()
-                      .join('/');
-                    const isSelected = selectedExamIndex === index;
-
-                    return (
-                      <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => setSelectedExamIndex(index)}
-                        className={`px-4 py-2 text-sm rounded-md border transition
-                          ${
-                            isSelected
-                              ? 'bg-gray-04 text-gray-12 border-gray-06'
-                              : 'bg-gray-02 text-gray-11 border-gray-06 hover:bg-gray-03'
-                          }
-                        `}
-                      >
-                        {formattedDate}
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>

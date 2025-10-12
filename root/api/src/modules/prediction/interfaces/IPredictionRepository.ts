@@ -4,6 +4,7 @@ export interface IPredictionRepository {
   create(predictionData: Partial<Prediction>): Promise<Prediction>;
   findById(id: string): Promise<Prediction | null>;
   findByMedicalDataId(medicalDataId: string): Promise<Prediction[]>;
+  findByPatientId(patientId: string): Promise<Prediction[]>;
   list(): Promise<Prediction[]>;
   delete(id: string): Promise<void>;
 }

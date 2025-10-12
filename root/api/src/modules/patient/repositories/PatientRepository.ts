@@ -304,6 +304,16 @@ export class PatientRepository implements IPatientRepository {
 
     return { data: filtered, total };
   }
+
+  async getMedicalHistory(patientId: string): Promise<MedicalData[]> {
+    const medicalData = await this.medicalDataRepository
+      .createQueryBuilder('medicalData')
+      .where('medicalData.patientId = :patientId', { patientId })
+      .orderBy('medicalData.dateExam', 'DESC') // Ordenar por dateExam ao invés de createdAt
+      .getMany();
+
+    return medicalData;
+  }
 }
 
 export default PatientRepository;

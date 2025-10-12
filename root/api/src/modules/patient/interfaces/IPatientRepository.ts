@@ -5,6 +5,7 @@ import { PredictionSummaryResponseDTO } from '../dto/GetDoctorPredictionsSummary
 import { PositiveByDayDTO } from '../dto/PositiveByDayDTO';
 
 export interface IPatientRepository {
+  getMedicalHistory(patientId: string): unknown;
   create(patient: Patient): Promise<Patient>;
   findByEmail(email: string): Promise<Patient | null>;
   findById(id: string): Promise<Patient | null>;
