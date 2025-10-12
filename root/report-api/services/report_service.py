@@ -3,7 +3,7 @@ import io
 from datetime import datetime
 
 def generate_docx_report(data):
-    template = Document("root/report-api/template/modelo_relatorio_do_paciente.docx")
+    template = Document("modelo_relatorio_do_paciente.docx")
     patient = data.patient
     medical = data.medicalData
 
@@ -62,8 +62,8 @@ def generate_docx_report(data):
     # substituir no docx
     for paragraph in template.paragraphs:
         for label in mapping:
+            value = mapping[label]
             if value is not None:
-                value = mapping[label]
                 paragraph.text = paragraph.text.replace(label, value)
             
     # salvar em memória
