@@ -14,7 +14,7 @@ def generate_docx_report(data):
         "NASCIMENTO": patient.birthDate,
         "GENERO": patient.gender,
         "ESTADO": patient.state,
-        "ERNIA": patient.ethnicity,
+        "ETNIA": patient.ethnicity,
         "ESCOLARIDADE": patient.educationLevel,
         "TELEFONE": patient.phoneNumber,
 
@@ -60,12 +60,19 @@ def generate_docx_report(data):
     }
 
     # substituir no docx
-    for paragraph in template.paragraphs:
-        for label in mapping:
-            value = mapping[label]
-            if value is not None:
-                paragraph.text = paragraph.text.replace(label, value)
-            
+    for table in template.tables:
+        for row in table.rows:
+            for cell in row.cells:
+                for paragraph in cell.paragraphs:
+                    for label, value in mapping.items():
+                        if value is not None:
+                            full_text = "".join(run.text for run in paragraph.runs)
+                            if label in full_text:
+                                new_text = full_text.replace(label, str(value))
+                                for run in paragraph.runs:
+                                    run.text = ""
+                                paragraph.runs[0].text = new_text
+          
     # salvar em memória
     file_stream = io.BytesIO()
     template.save(file_stream)
