@@ -3,7 +3,7 @@ import io
 from datetime import datetime
 
 def generate_docx_report(data):
-    template = Document("modelo_relatorio_do_paciente.docx")
+    template = Document("root/report-api/template/modelo_relatorio_do_paciente.docx")
     patient = data.patient
     medical = data.medicalData
 
