@@ -314,6 +314,40 @@ export class PatientRepository implements IPatientRepository {
 
     return medicalData;
   }
+
+  async delete(id: string): Promise<void> {
+    const queryRunner = AppDataSource.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      const medicalDataList = await queryRunner.manager.find(MedicalData, {
+        where: { patientId: { id } },
+        relations: ['predictions'],
+      });
+
+      for (const medicalData of medicalDataList) {
+        if (medicalData.predictions && medicalData.predictions.length > 0) {
+          await queryRunner.manager.delete(Prediction, {
+            medicalData: { id: medicalData.id },
+          });
+        }
+      }
+
+      await queryRunner.manager.delete(MedicalData, {
+        patientId: { id },
+      });
+
+      await queryRunner.manager.delete(Patient, id);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+      throw error;
+    } finally {
+      await queryRunner.release();
+    }
+  }
 }
 
 export default PatientRepository;

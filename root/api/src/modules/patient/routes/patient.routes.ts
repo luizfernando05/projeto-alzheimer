@@ -22,6 +22,8 @@ import PatientRepository from '../repositories/PatientRepository';
 import UpdatePatientProfileController from '../controllers/UpdatePatientProfileController';
 import GetMedicalHistoryController from '../controllers/GetMedicalHistoryController';
 import GetPersonalizedRecommendationsController from '../controllers/GetPersonalizedRecommendationsController';
+import { DeletePatientController } from '../controllers/DeletePatientController';
+import { DeletePatientUseCase } from '../useCases/DeletePatientUseCase';
 
 const patientRoutes = Router();
 const createPatientController = new CreatePatientController();
@@ -44,6 +46,7 @@ const updatePatientProfileController = new UpdatePatientProfileController();
 const getMedicalHistoryController = new GetMedicalHistoryController();
 const getPersonalizedRecommendationsController =
   new GetPersonalizedRecommendationsController();
+const deletePatientController = new DeletePatientController();
 
 patientRoutes.post('/login', (req, res, next) => {
   loginPatientController.handle(req, res, next);
@@ -181,6 +184,18 @@ patientRoutes.put(
   ensurePatientAuthenticated,
   (req, res, next) => {
     updatePatientProfileController.handle(req, res, next);
+  }
+);
+
+patientRoutes.delete(
+  '/delete/:id',
+  ensureDoctorAuthenticated,
+  async (req, res, next) => {
+    try {
+      await deletePatientController.handle(req, res);
+    } catch (err) {
+      next(err);
+    }
   }
 );
 

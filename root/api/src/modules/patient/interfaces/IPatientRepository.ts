@@ -13,6 +13,7 @@ export interface IPatientRepository {
   findAll(): Promise<Patient[]>;
   findByCelphone(phoneNumber: string): Promise<Patient | null>;
   update(patient: Patient): Promise<Patient>;
+  delete(id: string): Promise<void>;
   findByDoctorId(doctorId: string): Promise<Patient[]>;
   countByDoctorId(doctorId: string): Promise<number>;
   getPositiveByGender(doctorId: string): Promise<GenderStatsDTO>;

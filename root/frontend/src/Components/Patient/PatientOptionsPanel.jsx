@@ -74,11 +74,6 @@ const PatientOptionsPanel = () => {
             <Sparkle size={12} />
             <span className="text-gray-12">Predição</span>
           </button>
-
-          <button className="cursor-pointer bg-gray-01 flex gap-2.5 items-center font-roboto text-sm text-gray-11 font-normal rounded-sm border border-gray-06 px-2 py-1 hover:bg-gray-03">
-            <HeadCircuit size={12} />
-            <span className="text-gray-12">Roteiro do Mini-Exame Mental</span>
-          </button>
         </div>
       </div>
 

@@ -38,7 +38,7 @@ const ListPatients = () => {
     minAge: '',
     maxAge: '',
     gender: '',
-    sortOrder: 'DESC', // Removed prediction from initial state
+    sortOrder: 'DESC',
   });
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -64,6 +64,34 @@ const ListPatients = () => {
     setPatients(result.data || []);
     setTotalItems(result.total || 0);
     setTotalPages(Math.ceil(result.total / itemsPerPage));
+  };
+
+  const handleDeletePatient = async (patientId, patientName) => {
+    if (
+      !window.confirm(
+        `Tem certeza que deseja excluir o paciente ${patientName}?`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`${apiUrl}/patient/delete/${patientId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        alert('Paciente excluído com sucesso!');
+        fetchPatients(); // Recarrega a lista
+      } else {
+        const error = await response.json();
+        alert(`Erro ao excluir paciente: ${error.error}`);
+      }
+    } catch (error) {
+      alert('Erro ao excluir paciente. Tente novamente.');
+      console.error('Erro:', error);
+    }
   };
 
   useEffect(() => {
@@ -237,7 +265,7 @@ const ListPatients = () => {
                           <PencilSimple size={20} weight="regular" />
                         </button>
                         <button
-                          onClick={() => alert('Excluir paciente')}
+                          onClick={() => handleDeletePatient(p.id, p.name)}
                           className="text-red-09 hover:text-red-12"
                         >
                           <Trash size={20} weight="regular" />
